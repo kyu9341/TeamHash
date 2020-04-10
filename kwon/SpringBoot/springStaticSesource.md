@@ -24,9 +24,11 @@ spring.mvc.static-path-pattern=/static/**
 이렇게 변경한다면 다음과 같이 /static/hello.html 로 요청해야 정상적으로 응답이 된다.
 
 <div style="width: 600px; height: 80px;">
-    <img src="https://github.com/kyu9341/TeamHash_Practice/tree/master/kwon/image/static1.png" style="width: 600px
+    <img src="https://github.com/kyu9341/TeamHash_Practice/blob/master/kwon/image/static1.png" style="width: 600px
     ; height: 80px;">
 </div>
+
+![static](https://github.com/kyu9341/TeamHash_Practice/blob/master/kwon/image/static1.png)
 
 
 
@@ -66,10 +68,11 @@ Hello2~ Static Resource
 이제 /m/hello2.html로 요청을 보내면 정상적인 응답을 받을 수 있다.
 
 <div style="width: 600px; height: 80px;">
-    <img src="https://github.com/kyu9341/TeamHash_Practice/tree/master/kwon/image/static2.png" style="width: 600px
+    <img src="https://github.com/kyu9341/TeamHash_Practice/blob/master/kwon/image/static2.png" style="width: 600px
     ; height: 80px;">
 </div>
 
+![static](https://github.com/kyu9341/TeamHash_Practice/blob/master/kwon/image/static2.png)
 
 
 
