@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h1>Member Modify</h1>
+	<form action="/lec19/member/memModify" method="post">
+		ID : <input type="text" name="memId" ><br />
+		PW : <input type="password" name="memPw" ><br />
+		MAIL : <input type="text" name="memMail" ><br />
+		PHONE1 : <input type="text" name="memPhones[0].memPhone1" size="5"> -
+				 <input type="text" name="memPhones[0].memPhone2" size="5"> -
+				 <input type="text" name="memPhones[0].memPhone3" size="5"><br />
+		PHONE2 : <input type="text" name="memPhones[1].memPhone1" size="5"> -
+				 <input type="text" name="memPhones[1].memPhone2" size="5"> -
+				 <input type="text" name="memPhones[1].memPhone3" size="5"><br />
+		AGE : <input type="text" name="memAge" size="4" value="0"><br />
+		ADULT : <input type="radio" name="memAdult" value="true">Yes, 
+				<input type="radio" name="memAdult" value="false">No <br />
+		GENDER : <input type="radio" name="memGender" value="M">Men, 
+				 <input type="radio" name="memGender" value="W">Women<br />
+		FAVORITE SPORT : <input type="checkbox" name="memFSports" value="soccer">Soccer, 
+				<input type="checkbox" name="memFSports" value="baseball">Baseball, 
+				<input type="checkbox" name="memFSports" value="basketball">Basketball,
+				<input type="checkbox" name="memFSports" value="volleyball">Volleyball,
+				<input type="checkbox" name="memFSports" value="billiards">Billiards <br />
+		<input type="submit" value="Modify" >
+		<input type="reset" value="Cancel" >
+	</form>
+	<a href="/lec19/resources/html/index.html">MAIN</a>
+</body>
+</html>

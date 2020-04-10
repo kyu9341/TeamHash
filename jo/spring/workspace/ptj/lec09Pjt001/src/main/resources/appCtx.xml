@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+ 		http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="wordDao" class="com.word.dao.WordDao" />
+	
+	<bean id="registerService" class="com.word.service.WordRegisterService">
+		<constructor-arg ref="wordDao" />
+	</bean>
+	
+	<bean id="searchService" class="com.word.service.WordSearchService">
+		<constructor-arg ref="wordDao" />
+	</bean>
+	
+</beans>

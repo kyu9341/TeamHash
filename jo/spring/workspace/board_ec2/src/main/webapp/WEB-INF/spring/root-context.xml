@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd
+		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+
+	
+	<bean
+	 class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+	 id="dataSource">
+	 <property name="driverClassName" value="org.mariadb.jdbc.Driver" />
+	 <property name="url" value="jdbc:mariadb://127.0.0.1:3306/" />
+	 <property name="username" value="board" />
+	 <property name="password" value="1111" />
+	</bean>
+	
+	<bean id="sqlSessionFactory"
+	 class="org.mybatis.spring.SqlSessionFactoryBean">
+	 <property name="dataSource" ref="dataSource" />
+	 <property name="configLocation" value="classpath:/mybatis-config.xml" />
+	 <property name="mapperLocations" value="classpath:mappers/**/*Mapper.xml" />
+	</bean>
+	
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="clearCache">
+	 <constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"/>
+	</bean>
+</beans>

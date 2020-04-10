@@ -1,0 +1,8 @@
+table {
+	border: 1px solid #cccccc;
+}
+	
+table td {
+	padding: 3px;
+	border: 1px solid #cccccc;
+}

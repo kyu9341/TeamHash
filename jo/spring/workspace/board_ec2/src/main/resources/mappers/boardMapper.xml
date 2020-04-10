@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring4.board_ec2.mappers.board">
+	<!-- 게시물 목록 -->
+	<select id="list" resultType="com.spring4.board_ec2.domain.BoardVO">
+	 select
+	 	bno, title, content, writer, regDate, viewCnt
+	 from board.tbl_board
+	</select>
+	
+		<!-- 게시물 작성 -->
+	<insert id="write" parameterType="com.spring4.board_ec2.domain.BoardVO">
+	 INSERT INTO board.tbl_board(title,content,writer) VALUES(#{title}, #{content}, #{writer})
+	</insert>
+
+</mapper>
