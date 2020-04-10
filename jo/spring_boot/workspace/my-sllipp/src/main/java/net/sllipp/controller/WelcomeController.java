@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class WelcomeController {
 
-    @GetMapping("/dotest")
+    @GetMapping("/welcome")
     public String welcome(Model model){
-        model.addAttribute("name", "jsh");
+        model.addAttribute("name", "jsasdsadh");
         return "welcome";
     }
 }

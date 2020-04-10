@@ -1,4 +1,4 @@
-package com.example.spring_boot;
+package com.example.spring_boot.test;
 
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.stereotype.Controller;
