@@ -28,9 +28,6 @@ spring.mvc.static-path-pattern=/static/**
     ; height: 80px;">
 </div>
 
-![static](https://github.com/kyu9341/TeamHash_Practice/blob/master/kwon/image/static1.png)
-
-
 
 #### WebMvcConfigurer의 addRersourceHandlers로 커스터마이징
 - com.kwon.demospringmvc/config/WebConfig 파일
@@ -71,9 +68,6 @@ Hello2~ Static Resource
     <img src="https://github.com/kyu9341/TeamHash_Practice/blob/master/kwon/image/static2.png" style="width: 600px
     ; height: 80px;">
 </div>
-
-![static](https://github.com/kyu9341/TeamHash_Practice/blob/master/kwon/image/static2.png)
-
 
 
 
