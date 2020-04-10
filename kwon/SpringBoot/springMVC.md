@@ -37,6 +37,7 @@ public class UserControllerTest {
 }
 ```
 위의 get에서 빨간줄이 생긴다면 아래의 두 방법으로 대체할 수 있다.
+
 1.
 ```java
 mockMvc.perform(MockMvcRequestBuilders.get("/hello"))
