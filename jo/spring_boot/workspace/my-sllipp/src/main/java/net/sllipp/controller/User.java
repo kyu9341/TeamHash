@@ -1,10 +1,10 @@
 package net.sllipp.controller;
 
 public class User {
-    private String userId;
-    private String password;
-    private String name;
-    private String email;
+    String userId;
+    String password;
+    String name;
+    String email;
 
    
 

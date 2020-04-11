@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello Thymeleaf</title>
+</head>
+
+<body>
+    <dl th:each="hoge : ${hogeList}">
+        <dt>id</dt>
+        <dd th:text="${hoge.id}"></dd>
+        <dt>value</dt>
+        <dd th:text="${hoge.value}"></dd>
+    </dl>
+</body>
+
+</html>
