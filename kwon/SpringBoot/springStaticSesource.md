@@ -69,6 +69,68 @@ Hello2~ Static Resource
 </div>
 
 
+### 스프링 부트 웹 jar
+스프링 부트는 웹 jar에 대한 기본 매핑도 제공한다.
+[mvnrepository](https://mvnrepository.com/) 에서 원하는 웹 jar을 검색하여 의존성을 추가하면 된다.
+
+- jquery의존성 추가
+```xml
+<!-- https://mvnrepository.com/artifact/org.webjars.bower/jquery -->
+<dependency>
+    <groupId>org.webjars.bower</groupId>
+    <artifactId>jquery</artifactId>
+    <version>3.4.1</version>
+</dependency>
+
+```
+- 다음과 같이 jquery를 테스트해 보자.
+- static/hello.html
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+Hello Static Resource
+<script src="/webjars/jquery/3.4.1/dist/jquery.min.js"></script>
+<!--/webjars/jquery/dist/jquery.min.js -->
+<script>
+    $(function(){
+       alert("ready!");
+    });
+
+</script>
+</body>
+</html>
+```
+- 이때 `/webjars/jquery/3.4.1/dist/jquery.min.js` 와 같이 버전을 명시하였는데, 만약 jquery버전을 변경할 때마다 소스 코드를 찾아서 변경해야 한다면 번거로우니 생략할 수 있다.
+  - `/webjars/jquery/dist/jquery.min.js`
+- 버전을 생략하려면 다음과 같은 `webjars-locator-core`라는 의존성을 추가해주어야 한다.
+```xml
+<!-- https://mvnrepository.com/artifact/org.webjars/webjars-locator-core -->
+<dependency>
+    <groupId>org.webjars</groupId>
+    <artifactId>webjars-locator-core</artifactId>
+    <version>0.44</version>
+</dependency>
+
+```
+
+이제 http://localhost:8080/hello.html 로 요청하니 정상적으로 작동하는 것을 볼 수 있다.
+<div style="width: 800px; height: 80px;">
+    <img src="https://github.com/kyu9341/TeamHash_Practice/blob/master/kwon/image/static3.png" style="width: 800px
+    ; height: 80px;">
+</div>
+
+
+
+
+
+
+
+
 
 > 참조
 > <https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81%EB%B6%80%ED%8A%B8/dashboard>
