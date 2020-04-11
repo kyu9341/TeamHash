@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+
+	
+</head>
+<body>
+	<div class="row">
+		<table class="table table-condensed">
+			<caption>사용자 목록</caption>
+			<thead>
+				<tr>
+					<th>사용자 아이디</th>
+					<th>이름</th>
+					<th>이메일</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="user : ${users}">
+					<td th:text="${user.userId}">userId</td>
+					
+					
+				</tr>
+
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>
