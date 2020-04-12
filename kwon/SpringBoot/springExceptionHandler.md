@@ -123,6 +123,7 @@ public class SampleController {
     ; height: 120px;">
 </div>
 - `/`에 대한 페이지를 작성하지 않았기 때문에 Not Found(404)에러가 발생하여 404.html이 반환된 것을 확인할 수 있다.
+
 ---
 
 - 5xx.html
