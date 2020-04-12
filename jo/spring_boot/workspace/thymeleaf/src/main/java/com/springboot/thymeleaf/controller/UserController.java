@@ -1,4 +1,4 @@
-package net.sllipp.controller;
+package com.springboot.thymeleaf.controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +17,7 @@ public class UserController {
     public String Creater(User user){
         System.out.println(user);
         users.add(user);
-        return "redirect:/list";
+        return "create";
     }
 
     @GetMapping("/list")
