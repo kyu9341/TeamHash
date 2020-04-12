@@ -22,6 +22,8 @@
   </dependency>
 ```
 
+---
+
 - 테스트 코드 작성
 ```java
 @RunWith(SpringRunner.class)
@@ -49,6 +51,7 @@ public class SampleControllerTest {
 - 뷰의 이름과 모델의 데이터, 렌더링 된 결과를 확인하는 테스트
 - Thymeleaf에서 렌더링한 HTML을 확인할 수 있다.
 
+---
 
 - 소스 코드 작성
 - SpringbootmvcApplication.java
@@ -76,8 +79,9 @@ public class SampleController {
     }
 }
 ```
-- Model 객체에 키값이 name,
+- Model 객체에 name:kwon을 추가
 
+---
 
 - 템플릿 작성
 - resources/tamplates/hello.html
@@ -104,6 +108,7 @@ public class SampleController {
     ; height: 120px;">
 </div>
 
+---
 
 ### HtmlUnit
 - HtmlUnit : HTML을 단위테스트 하기 위한 툴
