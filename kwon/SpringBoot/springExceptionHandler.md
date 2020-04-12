@@ -84,6 +84,7 @@ public class SampleController {
   - 이때, 404와 같이 파일명이 상태 코드와 같거나 5xx같이 패턴을 맞추어 파일명을 만들어야 한다.
 ---
 - 위에서 작성했던 SampleController에서 @ExceptionHandler 부분을 주석으로 변경하여 500번대 에러를 발생시킬 수 있도록 한다.
+
 ```Java
 @Controller
 public class SampleController {
@@ -101,6 +102,7 @@ public class SampleController {
   }*/
 }
 ```
+---
 - resources/static/ 의 경로에 다음과 같이 html파일을 작성한다.
 
 - 404.html
@@ -120,9 +122,11 @@ public class SampleController {
     <img src="https://github.com/kyu9341/TeamHash_Practice/blob/master/kwon/image/exception2.png" style="width: 400px
     ; height: 120px;">
 </div>
-- "/"에 대한 페이지를 작성하지 않았기 때문에 Not Found(404)에러가 발생하여 404.html이 반환된 것을 확인할 수 있다.
+- `/`에 대한 페이지를 작성하지 않았기 때문에 Not Found(404)에러가 발생하여 404.html이 반환된 것을 확인할 수 있다.
 ---
+
 - 5xx.html
+
 ```html
 <!DOCTYPE html>
 <html lang="en">
@@ -135,11 +139,14 @@ public class SampleController {
 </body>
 </html>
 ```
+
 <div style="width: 400px; height: 120px;">
     <img src="https://github.com/kyu9341/TeamHash_Practice/blob/master/kwon/image/exception3.png" style="width: 400px
     ; height: 120px;">
 </div>
-- "/hello" 요청을 보내면 예외를 발생시키도록 작성해두었으므로 500번대 서버 에러가 발생하여 5xx.html 이 반환된 것을 볼 수 있다.
+- `/hello` 요청을 보내면 예외를 발생시키도록 작성해두었으므로 500번대 서버 에러가 발생하여 5xx.html 이 반환된 것을 볼 수 있다.
+
+
 
 
 
