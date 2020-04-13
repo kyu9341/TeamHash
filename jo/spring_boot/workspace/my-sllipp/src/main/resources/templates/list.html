@@ -21,10 +21,10 @@
 			<tbody>
 				<tr th:each="user : ${users}">
 				
-					<td th:text="${user.userId}"></td>
-					<td th:text="${user.name}"></td>
-					<td th:text="${user.password}"></td>
-					<td th:text="${user.email}"></td>
+					<td th:text="${user.getUserId}"></td>
+					<td th:text="${user.getName}"></td>
+					<td th:text="${user.getPassword}"></td>
+					<td th:text="${user.getEmail}"></td>
 
 				</tr>
 

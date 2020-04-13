@@ -1,10 +1,10 @@
 package net.sllipp.controller;
 
 public class User {
-    public String userId;
-    public String password;
-    public String name;
-    public String email;
+    String userId;
+    String password;
+    String name;
+    String email;
 
    
 
@@ -12,7 +12,9 @@ public class User {
         this.userId = userId;
     }
 
-  
+    public String getUserId(){
+        return this.userId;
+    }
 
     public void setPassword(String password) {
         this.password = password;
