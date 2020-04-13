@@ -6,7 +6,7 @@
 - **Single-Origin Policy** 에서는 하나의 Origin이 다른 Origin을 서로 호출할 수 없다.
 - 예를 들어, REST api를 제공하는 서버가 http://localhost:8080 에서 제공이 되고, 그 REST api를 http://localhost:18080 을 사용하는 application이 호출할 수 없다.
 
-- Cross-Origin Resource Sharing 에서는 위와 같이 동일한 Origin이 아니더라도 서로 다른 Origin에서 자원을 요청하여 사용할 수 있게 해준다.
+- **Cross-Origin Resource Sharing** 에서는 위와 같이 동일한 Origin이 아니더라도 서로 다른 Origin에서 자원을 요청하여 사용할 수 있게 해준다.
 - CORS을 적용하려면 웹 어플리케이션에 그에 따른 처리를 해야하고 스프링 부트에서는 `@CrossOrigin` 어노테이션 혹은 WebConfig를 통해 CORS를 적용하는 방법을 제공한다.
 
 #### Single-Origin Policy
