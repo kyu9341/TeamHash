@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class HelloController {
     @RequestMapping(method = RequestMethod.GET)
     public String hello(Model model) {
+/*
         List<Hoge> list = Arrays.asList(new Hoge() {
             {
                 id = 10;
@@ -26,6 +27,32 @@ public class HelloController {
             {
                 id = 30;
                 value = "piyo";
+            }
+        });
+        model.addAttribute("hogeList", list);
+        return "hello";
+*/
+
+        List<User> list = Arrays.asList(new User() {
+            {
+                userId = "tes";
+                password = "test";
+                name = "tests";
+                email = "test";
+            }
+        }, new User() {
+            {
+                userId = "tes";
+                password = "test";
+                name = "tests";
+                email = "test";
+            }
+        }, new User() {
+            {
+                userId = "tes";
+                password = "test";
+                name = "tests";
+                email = "test";
             }
         });
         model.addAttribute("hogeList", list);

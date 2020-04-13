@@ -1,4 +1,4 @@
-package net.sllipp.controller;
+package com.springboot.thymeleaf.controller;
 
 public class User {
     public String userId;
