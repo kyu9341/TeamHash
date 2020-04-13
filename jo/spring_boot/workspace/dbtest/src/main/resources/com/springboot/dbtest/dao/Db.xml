@@ -4,7 +4,7 @@
  
     <!-- /* select dual */ -->
     <select id="getDual" resultType="java.lang.String">
-        SELECT  * FROM `board`.`tbl_board`
+        SELECT  `title` FROM `board`.`tbl_board`
     </select>
 
     <select id="getNow" resultType="java.lang.String">
