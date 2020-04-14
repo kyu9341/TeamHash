@@ -43,9 +43,9 @@ spring.datasource.driverClassName=org.mariadb.jdbc.Driver
 # database명이 springboot이다.
 spring.datasource.url=jdbc:mariadb://localhost:3307/springboot
 # 자신의 userid (루트 계정이라면 root)
-spring.datasource.username=root
+spring.datasource.username=userid
 # 자신의 password
-spring.datasource.password=asas1207
+spring.datasource.password=password
 ```
 
 ---

@@ -8,9 +8,9 @@ spring.datasource.driverClassName=org.mariadb.jdbc.Driver
 # database명이 springboot이다.
 spring.datasource.url=jdbc:mariadb://localhost:3307/springboot
 # 자신의 userid (루트 계정이라면 root)
-spring.datasource.username=root
+spring.datasource.username=userid
 # 자신의 password
-spring.datasource.password=asas1207
+spring.datasource.password=password
 
 spring.jpa.hibernate.ddl-auto=update
 # 기본값 : false
@@ -77,7 +77,7 @@ spring.jpa.show-sql=true
     <img src="https://github.com/kyu9341/TeamHash_Practice/blob/master/kwon/image/dbinit4.png" style="width: 600px; height: 100px;">
 </div>
 
-div style="width: 550px; height: 50px;">
+<div style="width: 550px; height: 50px;">
     <img src="https://github.com/kyu9341/TeamHash_Practice/blob/master/kwon/image/dbinit5.png" style="width: 550px; height: 50px;">
 </div>
 
