@@ -74,14 +74,13 @@ spring.jpa.show-sql=true
 
 - 다음과 같이 테이블에 email 컬럼이 추가되어 alter 가 적용된 것을 볼 수 있다.
 <div style="width: 600px; height: 100px;">
-    <img src="https://github.com/kyu9341/TeamHash_Practice/blob/master/kwon/image/dbinit4.png" style="width: 600px
-    ; height: 100px;">
+    <img src="https://github.com/kyu9341/TeamHash_Practice/blob/master/kwon/image/dbinit4.png" style="width: 600px; height: 100px;">
 </div>
 
 div style="width: 550px; height: 50px;">
-    <img src="https://github.com/kyu9341/TeamHash_Practice/blob/master/kwon/image/dbinit5.png" style="width: 550px
-    ; height: 50px;">
+    <img src="https://github.com/kyu9341/TeamHash_Practice/blob/master/kwon/image/dbinit5.png" style="width: 550px; height: 50px;">
 </div>
+
 - 위와 같이 변경 사항이 적용된 것을 볼 수 있다. 하지만 이미 존재하는 컬럼의 이름을 바꾸는 것은 JPA가 자동으로 업데이트 해주지는 않는다.
 
 
