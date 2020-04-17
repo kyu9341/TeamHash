@@ -1,2 +1,2 @@
-# TeamHash_Practice
-프로젝트 Team# 공부 자료 정리
+# TeamHash
+졸업 작품 프로젝트 Team# 
