@@ -1,4 +1,4 @@
-# TeamHash_Practice on jo
+# TeamHash_Practice on master_jo
 프로젝트 대비 연습 자료
 
 ## Srping Boot
