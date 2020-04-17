@@ -3,6 +3,8 @@
 데이터베이스와 연계하여데이터를 저장하고 검색하는 과정을 진행한다.
 해당 어플리케이션은 Spring Data JPA를 사용하여 진행된다.
 
+https://spring.io/guides/gs/accessing-data-jpa/
+
 ## What we will build
 
 이번 어플리케이션에서 저장할 데이터는 데이터 베이스 메모리에 기반한 Customer POJOs(Plain Old Java Objects)이다.
@@ -54,6 +56,8 @@ Spring Data JPA의 강점으로 우리는 저장소 인터페이스를 직접 �
 이것에는 단 한줄의 XML 코드도 없는데 이곳에는 web.xml파일이 없으며 해당 웹 어플리케이션은 100% 자바로 이루어져 있기 때문이다. 우리는 하부구조의 구성을 다루지 않아도 된다.
 
 이제 콘솔에 로그를 남기기 위한 이니셜라이져 클래스가 하나 필요하다. 위에서 생성한 어플리케이션 클래스를 수정하자.
+
+./mvnw spring-boot:run으로 실행
 
 # 마치며
 
