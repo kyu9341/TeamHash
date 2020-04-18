@@ -1,9 +1,9 @@
-package com.springboot.accessing_data_db;
+package com.springboot.loginapp;
 
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.springboot.accessing_data_db.User;
+import com.springboot.loginapp.User;
 
 // This will be AUTO IMPLEMENTED by Spring into a Bean called userRepository
 // CRUD refers Create, Read, Update, Delete
