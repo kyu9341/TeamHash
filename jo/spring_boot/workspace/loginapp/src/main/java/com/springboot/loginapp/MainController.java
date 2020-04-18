@@ -1,8 +1,8 @@
 package com.springboot.loginapp;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,17 +46,46 @@ public class MainController {
 */
 
 @PostMapping(path="/create") // Map ONLY POST Requests
-public String addNewUser (@RequestParam String name
+public String addNewUser (@RequestParam String name , @RequestParam String password
     , @RequestParam String email) {
   // @ResponseBody means the returned String is the response, not a view name
   // @RequestParam means it is a parameter from the GET or POST request
 
   User n = new User();
   n.setName(name);
+  n.setPassword(password);
   n.setEmail(email);
   userRepository.save(n);
+
   return "redirect:/all";
 }
+
+@PostMapping(path="login")
+public String loginUser(@RequestParam String email, @RequestParam String password,Model model){
+  
+  
+  
+  User user = userRepository.findByEmail(email);
+
+  if(user == null){
+    
+    model.addAttribute("text", "no user");
+    return "nou";
+  }
+    
+
+  if(password.equals(user.getPassword())){
+    model.addAttribute("name", user.getName());
+    return "welcome";
+  }
+  else{
+    model.addAttribute("text", "wrong password");
+    return "nou";
+  }
+
+
+}
+
 @GetMapping(path="/all")
 public @ResponseBody Iterable<User> getAllUsers() {
   // This returns a JSON or XML with the users

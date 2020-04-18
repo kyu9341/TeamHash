@@ -10,5 +10,5 @@ import com.springboot.accessing_data_db.User;
 
 public interface UserRepository extends CrudRepository<User, Integer> {
 
-    Iterable<User> findByName(String name);
+    User findByName(String name);
 }

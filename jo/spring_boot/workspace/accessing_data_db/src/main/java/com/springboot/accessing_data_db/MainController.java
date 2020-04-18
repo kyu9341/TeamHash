@@ -36,12 +36,20 @@ public class MainController {
     return userRepository.findAll();
   }
 
-  @GetMapping(path="/find")
-  public @ResponseBody Iterable<User> findUser(@RequestParam String name) {
+  @GetMapping(path="/find")// rep.find method can change return type 
+  public @ResponseBody User findUser(@RequestParam String name) {
     // This returns a JSON or XML with the users
     
-    return userRepository.findByName(name);
     
+    User user = userRepository.findByName(name);
+    User user2 = new User();
+
+    if(user == null)
+      return user2;
+
+    return user;
+
+
   }
 
 
