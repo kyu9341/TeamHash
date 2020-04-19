@@ -7,6 +7,7 @@ import com.springboot.jpaboard.dto.BoardDto;
 
 import org.springframework.stereotype.Service;
 
+
 @Service
 public class BoardService {
 

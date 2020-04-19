@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-DemoApplication<board>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.springboot.board.DemoApplication",
+            "projectName": "board",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-AccessingDataMysqlApplication<board>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.springboot.board.AccessingDataMysqlApplication",
+            "projectName": "board",
+            "args": ""
+        }
+    ]
+}

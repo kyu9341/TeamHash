@@ -38,6 +38,7 @@ public class Board extends TimeEntity{
         this.writer = writer;
 
     }
+/* lombok적용으로 getter와 setter가 필요 없다
 
     public Long getId() {
         return id;
@@ -57,7 +58,7 @@ public class Board extends TimeEntity{
     public String getContent() {
         return content;
     }
-
+*/
 
     
 }
