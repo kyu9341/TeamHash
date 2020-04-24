@@ -6,9 +6,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
 <title>TEAM# Sign Up</title>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
 <style type="text/css">
 	body {
 		color: #fff;
@@ -92,7 +91,7 @@
 
 <body>
 <div class="signup-form">
-    <form class="needs-validation" action="#"
+    <form id="needs-validation" class="needs-validation" action="#"
 		  th:action="@{/sign-up}" th:object="${signUpForm}" method="post" novalidate>
 
 		<h2>TEAM#</h2>
@@ -100,11 +99,10 @@
 		
 		<hr>
         <div class="form-group">
-			<label>닉네임</label>
-			<label for="nickname"></label>
+			<label for="nickname">닉네임</label>
 			<input id="nickname" type="text" th:field="*{nickname}" class="form-control"
 				   placeholder="nickname" required minlength="3" maxlength="20">
-			<small id="nicknameHelp" class="form-text">
+			<small id="nicknameHelp" class="form-text text-muted">
 				공백없이 문자와 숫자로만 3자 이상 20자 이내로 입력하세요. 가입 후에 변경할 수 있습니다.
 			</small>
 			<small class="invalid-feedback">닉네임을 입력하세요.</small>
@@ -113,8 +111,7 @@
         </div>
 
 		<div class="form-group">
-			<label>이메일</label>
-			<label for="email"></label>
+			<label for="email">이메일</label>
 			<input id="email" type="email" th:field="*{email}" class="form-control"
 											  placeholder="your@email.com" required>
 			<small class="invalid-feedback">이메일을 입력하세요.</small>
@@ -137,9 +134,9 @@
 		<div class="form-group">
 			<label for="check-password">비밀번호 확인</label>
 			<input id="check-password" type="password"
-				   placeholder="password" class="form-control" required minlength="6" maxlength="50">
-			<small class="invalid-feedback">비밀번호를 확인하세요.</small>
-			<small class="form-text text-danger"></small>
+				   placeholder="password" class="form-control" required minlength="6" maxlength="50" onchange="isSame()">
+			<!--<small class="invalid-feedback" >비밀번호를 확인하세요.</small>-->
+			<small id="same" class="form-text "></small>
 		</div>
 
 		<div class="form-group">
@@ -155,8 +152,53 @@
     </form>
 	<div class="text-center">이미 회원이신가요? <a href="#">로그인</a></div>
 </div>
-
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 <script type="application/javascript">
+	(function () {
+		'use strict';
+
+		window.addEventListener('load', function () {
+
+			var forms = document.getElementsByClassName('needs-validation');
+
+			Array.prototype.filter.call(forms, function (form) {
+				form.addEventListener('submit', function (event) {
+					if(form.checkValidity() === false){
+						event.preventDefault();
+						event.stopPropagation();
+					}
+
+					form.classList.add('was-validated');
+
+				}, false);
+
+			});
+
+		}, false);
+
+	}());
+
+	function isSame() {
+		if(document.getElementById("password").value !== '' && document.getElementById("check-password").value !== ''){
+			if(document.getElementById('password').value === document.getElementById('check-password').value){
+				document.getElementById('same').innerHTML='비밀번호가 일치합니다.';
+				document.getElementById('same').style.color='blue';
+			}
+			else{ // TODO 비밀번호 6자 이상일 때 비밀번호가 일치하지 않는 경우 빨간 테두리로 표시되도록 변경해야 함.
+				document.getElementById('same').innerHTML='비밀번호가 일치하지 않습니다.';
+				document.getElementById('same').style.color='red';
+				var form = document.getElementById('needs-validation');
+				form.addEventListener('submit', function (event) {
+					event.preventDefault();
+					event.stopPropagation();
+				});
+			}
+
+		}
+
+	}
 
 </script>
 
