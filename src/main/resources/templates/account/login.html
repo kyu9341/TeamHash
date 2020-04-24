@@ -24,7 +24,7 @@ test*/
   -webkit-font-smoothing: antialiased;
 }
 
-hgroup {   text-align:center;  margin-top: 3em;  opacity: 0.7;  padding: 30px;  background-image: url('imges/12.png');}
+hgroup {   text-align:center;  margin-top: 3em;  opacity: 0.7;  padding: 30px;  background-image: url('/images/Teamhash.png');}
 h1, h3 { font-weight: 300; }
 h1 { color: #fff; }
 form {      padding: 30px;    padding-top: 60px;    background: #fff;}
@@ -127,12 +127,17 @@ html, body{   background-size:cover;    margin:0;padding:0;    height:100%;}
   div.background2{ margin-top: -10%; }
   div.background2:before{ width: 100%; }
 }
-</style></head><body>
+</style>
+</head>
+<body>
   <div class="background"></div>
   <div class="background2"></div>
     <div class="loginForm"> 
     <hgroup>
-      <h1></br></br></h1>
+      <h1>
+        <br>
+      </h1>
+
     </hgroup>
     <form>
       <div class="group">
@@ -143,9 +148,15 @@ html, body{   background-size:cover;    margin:0;padding:0;    height:100%;}
         <input type="password"><span class="highlight"></span><span class="bar"></span>
         <label>Password</label>
       </div>
-      <button type="button" class="buttonui "> <span> login </span>
+
+      <button type="button" class="buttonui"> <span> login </span>
             <div class="ripples buttonRipples"><span class="ripplesCircle"></span></div>
-          </button>        
+      </button>
+
+      <button type="button" class="buttonui" onclick="location.href='/sign-up'"> <span> sign up </span>
+        <div class="ripples buttonRipples"> <span class="ripplesCircle"></span></div>
+      </button>
+
     </form>
     <div class="powered">
           Powered by <a href="http://www.team#.com"> TEAM# </a> 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -92,33 +92,73 @@
 
 <body>
 <div class="signup-form">
-    <form action="/examples/actions/confirmation.php" method="post">
+    <form class="needs-validation" action="#"
+		  th:action="@{/sign-up}" th:object="${signUpForm}" method="post" novalidate>
+
 		<h2>TEAM#</h2>
-		<h3><bar>회원가입</h3>
+		<h3>회원가입</h3>
 		
 		<hr>
         <div class="form-group">
-			<label>사용자 이름</label>
-        	<input type="text" class="form-control" name="username" required="required">
+			<label>닉네임</label>
+			<label for="nickname"></label>
+			<input id="nickname" type="text" th:field="*{nickname}" class="form-control"
+				   placeholder="nickname" required minlength="3" maxlength="20">
+			<small id="nicknameHelp" class="form-text">
+				공백없이 문자와 숫자로만 3자 이상 20자 이내로 입력하세요. 가입 후에 변경할 수 있습니다.
+			</small>
+			<small class="invalid-feedback">닉네임을 입력하세요.</small>
+			<small class="form-text text-danger" th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}">Nickname
+				Error</small>
         </div>
-        <div class="form-group">
+
+		<div class="form-group">
 			<label>이메일</label>
-        	<input type="email" class="form-control" name="email" required="required">
-        </div>
+			<label for="email"></label>
+			<input id="email" type="email" th:field="*{email}" class="form-control"
+											  placeholder="your@email.com" required>
+			<small class="invalid-feedback">이메일을 입력하세요.</small>
+			<small class="form-text text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email
+				Error</small>
+		</div>
+
 		<div class="form-group">
-			<label>비밀번호</label>
-            <input type="password" class="form-control" name="password" required="required">
-        </div>
+			<label for="password">비밀번호</label>
+			<input id="password" type="password" th:field="*{password}"
+				   placeholder="password" class="form-control" required minlength="6" maxlength="50">
+			<small id="passwordHelp" class="form-text text-muted">
+				6자 이상 50자 이내로 입력하세요. 영문자, 숫자, 특수기호를 사용할 수 있으며 공백은 사용할 수 없습니다.
+			</small>
+			<small class="invalid-feedback">비밀번호를 입력하세요.</small>
+			<small class="form-text text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">
+				Error</small>
+		</div>
+
 		<div class="form-group">
-			<label>비밀번호 확인</label>
-            <input type="password" class="form-control" name="confirm_password" required="required">
-        </div>
+			<label for="check-password">비밀번호 확인</label>
+			<input id="check-password" type="password"
+				   placeholder="password" class="form-control" required minlength="6" maxlength="50">
+			<small class="invalid-feedback">비밀번호를 확인하세요.</small>
+			<small class="form-text text-danger"></small>
+		</div>
+
 		<div class="form-group">
-            <button type="submit" class="btn btn-primary btn-block btn-lg">회원가입</button>
+            <button type="submit" class="btn btn-primary btn-block btn-lg">
+				회원가입</button>
+			<small id="submitHelp" class="form-text text-muted">
+				<a href="#">약관</a>에 동의하시면 가입하기 버튼을 클릭하세요.
+			</small>
+
         </div>
+
 		<p class="small text-center">Make sure it's at least 15 characters OR at least 8 characters including a number and a lowercase letter.<br><a href="#">Learn more.</a></p>
     </form>
 	<div class="text-center">이미 회원이신가요? <a href="#">로그인</a></div>
 </div>
+
+<script type="application/javascript">
+
+</script>
+
 </body>
 </html>                   
