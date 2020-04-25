@@ -1,4 +1,4 @@
-package kr.co.teamhash.domain;
+package kr.co.teamhash.domain.entity;
 
 import lombok.*;
 

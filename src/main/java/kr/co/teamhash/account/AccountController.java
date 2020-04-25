@@ -1,7 +1,10 @@
 package kr.co.teamhash.account;
 
-import kr.co.teamhash.domain.Account;
+import kr.co.teamhash.domain.entity.Account;
+import kr.co.teamhash.domain.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -21,7 +24,7 @@ public class AccountController {
 
     private final SignUpValidator signUpValidator;
     private final AccountRepository accountRepository;
-
+    private final PasswordEncoder passwordEncoder;
     
     @GetMapping("/login")
     public String loginForm(){
@@ -50,7 +53,7 @@ public class AccountController {
         Account account = Account.builder()
                 .email(signUpForm.getEmail())
                 .nickname(signUpForm.getNickname())
-                .password(signUpForm.getPassword()) // TODO encoding
+                .password(passwordEncoder.encode(signUpForm.getPassword()))
                 .build();
         Account newAccount = accountRepository.save(account);
 

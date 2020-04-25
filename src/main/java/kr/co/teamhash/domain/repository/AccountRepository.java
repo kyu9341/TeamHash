@@ -1,6 +1,6 @@
-package kr.co.teamhash.account;
+package kr.co.teamhash.domain.repository;
 
-import kr.co.teamhash.domain.Account;
+import kr.co.teamhash.domain.entity.Account;
 
 import java.util.Optional;
 
@@ -13,5 +13,7 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
 
     boolean existsByNickname(String nickname);
 
-    Optional<Account> findByNickname(String nickname);//로그인 시 nickname을 통해 유저 정보를 가져옴
+    //Account findByEmail(String email);//로그인 시 email을 통해 유저 정보를 가져옴
+    Optional<Account> findByEmail(String email);
+
 }
