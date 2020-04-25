@@ -10,6 +10,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @Controller
 @RequiredArgsConstructor
@@ -18,10 +22,12 @@ public class AccountController {
     private final SignUpValidator signUpValidator;
     private final AccountRepository accountRepository;
 
+    
     @GetMapping("/login")
     public String loginForm(){
         return "account/login";
     }
+    
 
     @GetMapping("/sign-up")
     public String signUpForm(Model model){
@@ -51,6 +57,12 @@ public class AccountController {
 
         return "redirect:/";
     }
+
+    @RequestMapping(value="/main")//로그인 한 뒤 처음 보는 페이지
+    public String userMain() {
+        return "main";
+    }
+    
 
 
 }

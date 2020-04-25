@@ -26,7 +26,7 @@ test*/
 
 hgroup {   text-align:center;  margin-top: 3em;  opacity: 0.7;  padding: 30px;  background-image: url('/images/Teamhash.png');}
 h1, h3 { font-weight: 300; }
-h1 { color: #fff; }
+h1 { color: #ff0000; }
 form {      padding: 30px;    padding-top: 60px;    background: #fff;}
 .powered{    padding: 10px;    margin-top: -16px;    line-height: 25px;    background: #0f4c81;}
 .powered a {    color: #ddd;    text-decoration: none;}
@@ -139,9 +139,13 @@ html, body{   background-size:cover;    margin:0;padding:0;    height:100%;}
       </h1>
 
     </hgroup>
-    <form>
+
+    <form th:action="@{/login}" method="POST">
+      <h1 th:if="${param.error}">
+        Invalid username and password.
+      </h1>
       <div class="group">
-        <input type="email" class="used"><span class="highlight"></span><span class="bar"></span>
+        <input type="username" class="used"><span class="highlight"></span><span class="bar"></span>
         <label>Username</label>
       </div>
       <div class="group">
@@ -149,7 +153,7 @@ html, body{   background-size:cover;    margin:0;padding:0;    height:100%;}
         <label>Password</label>
       </div>
 
-      <button type="button" class="buttonui"> <span> login </span>
+      <button type="submit" class="buttonui"> <span> login </span>
             <div class="ripples buttonRipples"><span class="ripplesCircle"></span></div>
       </button>
 
