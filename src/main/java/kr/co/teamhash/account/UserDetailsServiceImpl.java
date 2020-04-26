@@ -3,6 +3,7 @@ package kr.co.teamhash.account;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,19 +22,29 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
     
-    
-    AccountRepository accountRepository;
+    @Autowired
+    AccountRepository accountRepository; //회원 정보를 조회할 repository 생성
 
+    public UserDetailsServiceImpl(AccountRepository accountRepository){
+        this.accountRepository = accountRepository;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        
-        // TODO Auto-generated method stub
-        
+        System.out.println("-----------------------------------");
+        System.out.println("find user :"+email);
+        System.out.println("-----------------------------------");
+       
+   
 
         Account account = accountRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException(email));
+                .orElseThrow(() -> new UsernameNotFoundException("no user"));
+       String password = account.getPassword();
 
+       System.out.println("-----------------------------------");
+       System.out.println("user password:");
+       System.out.println("-----------------------------------");
+      
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
 
         grantedAuthorities.add(new SimpleGrantedAuthority(Role.MEMBER.getValue()));
