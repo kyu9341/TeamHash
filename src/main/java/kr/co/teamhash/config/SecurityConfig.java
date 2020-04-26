@@ -1,6 +1,5 @@
 package kr.co.teamhash.config;
 
-
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,16 +15,18 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import kr.co.teamhash.account.UserDetailsServiceImpl;
 import kr.co.teamhash.domain.repository.AccountRepository;
+import lombok.RequiredArgsConstructor;
 
 
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor 
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
 
-    AccountRepository accountrepository; // userDetailsService에 사용될 repository
+    private final AccountRepository accountrepository; // userDetailsService에 사용될 repository
 
     @Bean// 비밀번호 암호화
     public PasswordEncoder passwordEncoder() {
@@ -41,6 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .formLogin()// 로그인 폼 사용
                 .defaultSuccessUrl("/main") // 로그인 성공시 main 호출
                 .loginPage("/login")
+                .usernameParameter("email") // username 
                 .permitAll()
                 .and()
             .logout()

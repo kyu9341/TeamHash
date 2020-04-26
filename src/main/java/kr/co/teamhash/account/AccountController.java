@@ -53,7 +53,8 @@ public class AccountController {
         Account account = Account.builder()
                 .email(signUpForm.getEmail())
                 .nickname(signUpForm.getNickname())
-                .password(passwordEncoder.encode(signUpForm.getPassword()))
+                //.password(signUpForm.getPassword())
+                .password(passwordEncoder.encode(signUpForm.getPassword()))//password encode
                 .build();
         Account newAccount = accountRepository.save(account);
 

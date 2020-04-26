@@ -19,11 +19,10 @@ import lombok.RequiredArgsConstructor;
 
 //유저 정보 인증에 사용되는 UserDetailsService 구현
 @Service
-@RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
     
     @Autowired
-    AccountRepository accountRepository; //회원 정보를 조회할 repository 생성
+    private final AccountRepository accountRepository; //회원 정보를 조회할 repository 생성
 
     public UserDetailsServiceImpl(AccountRepository accountRepository){
         this.accountRepository = accountRepository;
@@ -37,14 +36,27 @@ public class UserDetailsServiceImpl implements UserDetailsService {
        
    
 
-        Account account = accountRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("no user"));
-       String password = account.getPassword();
+        // Account account = accountRepository.findByEmail(email)
+        //         .orElseThrow(() -> new UsernameNotFoundException("no user"));
+       
+        System.out.println("-----------------------------------");
+        System.out.println("find user :"+accountRepository.existsByEmail(email));
+        System.out.println("-----------------------------------");
+
+
+        Account account = accountRepository.findByEmail(email);
+        if(account == null){
+            throw new UsernameNotFoundException("not found "+email);
+        }
+        String password = account.getPassword();
 
        System.out.println("-----------------------------------");
        System.out.println("user password:");
        System.out.println("-----------------------------------");
       
+        // Account account = new Account();
+        // account.setEmail("test@naver.com");
+        // account.setPassword("$2a$10$pCWLKrq267sajhKzO0nbTelSVYof4a9gtifAkelLIizEtgiHeYJUC");
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
 
         grantedAuthorities.add(new SimpleGrantedAuthority(Role.MEMBER.getValue()));
