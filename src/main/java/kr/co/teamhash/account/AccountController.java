@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
@@ -24,13 +22,12 @@ public class AccountController {
 
     private final SignUpValidator signUpValidator;
     private final AccountRepository accountRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder; // password 인코딩
     
-    @GetMapping("/login")
+    @GetMapping("/login")//로그인 페이지
     public String loginForm(){
         return "account/login";
     }
-    
 
     @GetMapping("/sign-up")
     public String signUpForm(Model model){
@@ -53,7 +50,6 @@ public class AccountController {
         Account account = Account.builder()
                 .email(signUpForm.getEmail())
                 .nickname(signUpForm.getNickname())
-                //.password(signUpForm.getPassword())
                 .password(passwordEncoder.encode(signUpForm.getPassword()))//password encode
                 .build();
         Account newAccount = accountRepository.save(account);

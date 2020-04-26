@@ -15,7 +15,7 @@ import kr.co.teamhash.domain.entity.Account;
 import kr.co.teamhash.domain.entity.Role;
 import kr.co.teamhash.domain.entity.SecurityAccount;
 import kr.co.teamhash.domain.repository.AccountRepository;
-import lombok.RequiredArgsConstructor;
+
 
 //유저 정보 인증에 사용되는 UserDetailsService 구현
 @Service
@@ -30,39 +30,19 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        System.out.println("-----------------------------------");
-        System.out.println("find user :"+email);
-        System.out.println("-----------------------------------");
-       
-   
 
-        // Account account = accountRepository.findByEmail(email)
-        //         .orElseThrow(() -> new UsernameNotFoundException("no user"));
-       
-        System.out.println("-----------------------------------");
-        System.out.println("find user :"+accountRepository.existsByEmail(email));
-        System.out.println("-----------------------------------");
-
-
-        Account account = accountRepository.findByEmail(email);
+        Account account = accountRepository.findByEmail(email);//login.html form에서 받은 email로 회원 검색
         if(account == null){
-            throw new UsernameNotFoundException("not found "+email);
+            throw new UsernameNotFoundException("not found "+email);//해당 이메일이 없을 때 throw
         }
-        String password = account.getPassword();
-
-       System.out.println("-----------------------------------");
-       System.out.println("user password:");
-       System.out.println("-----------------------------------");
       
-        // Account account = new Account();
-        // account.setEmail("test@naver.com");
-        // account.setPassword("$2a$10$pCWLKrq267sajhKzO0nbTelSVYof4a9gtifAkelLIizEtgiHeYJUC");
-        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-
+        Set<GrantedAuthority> grantedAuthorities = new HashSet<>(); // 유저의 권한 삽입 
+                                                                    // 유저 정보를 넘기기 위해 임시적으로 생성한 것
+                                                                    // 이후 수정 필요
         grantedAuthorities.add(new SimpleGrantedAuthority(Role.MEMBER.getValue()));
         
         
-        return new SecurityAccount(account,grantedAuthorities);
+        return new SecurityAccount(account,grantedAuthorities); // User를 확장한 SecurityAccount클래스에 유저 정보와 권한을 삽입하여 반환
         
     }
 

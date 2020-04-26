@@ -28,7 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final AccountRepository accountrepository; // userDetailsService에 사용될 repository
 
-    @Bean// 비밀번호 암호화
+    @Bean// 비밀번호 인코딩
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
@@ -42,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .formLogin()// 로그인 폼 사용
                 .defaultSuccessUrl("/main") // 로그인 성공시 main 호출
                 .loginPage("/login")
-                .usernameParameter("email") // username 
+                .usernameParameter("email") // username 파라미터 설정
                 .permitAll()
                 .and()
             .logout()
@@ -57,16 +57,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // 스태틱 리소스들은 시큐리티 적용 x
     }
 
-    // @Override
-    // public void configure(AuthenticationManagerBuilder auth) throws Exception {
-    //     auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-    // }
 
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {//사용자 정보 비교
-        auth.userDetailsService(new UserDetailsServiceImpl(accountrepository)).passwordEncoder(passwordEncoder());
-       // auth.inMemoryAuthentication().withUser("test4@naver.com").password("testtest").roles("MEMBER");
-        
+        auth.userDetailsService(new UserDetailsServiceImpl(accountrepository)).passwordEncoder(passwordEncoder()); 
     }
 
 }
