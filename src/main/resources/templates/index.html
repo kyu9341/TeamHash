@@ -1,247 +1,270 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width = device-width, initial-scale = 1.0">
-    <meta http-equiv="X-UA-Compatible" content = "ie=edge">
-    <title> TEAM# </title>
-    <style>
-        *{padding: 0; margin: 0;}
-
-        li{
-            list-style: none;
-        }
-
-        a{
-            text-decoration: none;
-        }
-
-
-        img{
-            display: block; /* 박스화 */
-        }
-
-        body{
-            font-size: 14px;
-            line-height: 26px;
-            color: #fffefc;
-            font-family: '맑은 고딕', 'Arial';
-            background-color: white;
-        }
-
-
-        /* 상단 */
-        header{
-            width: 100%;
-            height: 115px;
-            overflow: hidden;
-            background-color: #ffffff;
-        }
-
-        #top{
-            width: 1750px;
-            height: 110px;
-            margin: 0;
-            overflow: hidden;
-            text-align: center;
-        }
-
-
-        #top .t_left>img{
-            display: block;
-            float: left;
-            margin-left: 70px;
-        }
-
-        #top ul>li{
-            float: left;
-            line-height: 30px;
-        }
-
-        #top .t_left>ul>li{
-            float: left;
-        }
-
-
-        #top .t_right>ul>li{
-            float: right;
-        }
-
-        #top ul>li>a{
-            color: #000;
-            font-size: 25px;
-            font-weight: 600;
-            display: block;
-            padding: 40px 40px;
-            margin-top: 10px;
-            margin-left: 40px;
-        }
-
-        #top ul>li>a:hover{
-            color: lightskyblue;
-        }
-
-        #main{
-            width: 100%;
-            height: 900px;
-            overflow: hidden;
-            background-color: #0f4c81;
-
-
-        }
-
-        #main .left{
-            float: left;
-            width: 750px;
-            height: 400px;
-            padding: 100px;
-            margin-left: 50px;
-            margin-top: 100px;
-            font-weight: 900;
-            font-size: 25px;
-            color: white;
-            line-height: 1.5;
-        }
-
-
-        #main .right>img{
-            float: right;
-            width: 500px;
-            height: 500px;
-            padding: 150px;
-        }
-
-        #main .left>h3{
-            width: 750px;
-            font-weight: 300;
-            font-size: 20px;
-            margin-top: 0px;
-        }
-
-
-        #main input{
-            display: inline-block;
-            width: 200px;
-            height: 30px;
-            float: left;
-            margin-top: 30px;
-            overflow: hidden;
-        }
-
-        #main .start{
-
-            float: right;
-            padding-top: 23px;
-            padding-right: 260px;
-            background-color:
-
-        }
-
-
-        /* ----------반응형----------------------------------------------*/
-        @media screen and (max-width:960px){
-            #top{
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width = device-width, initial-scale = 1.0">
+        <meta http-equiv="X-UA-Compatible" content = "ie=edge">
+        <title> TEAM# </title>
+        <style>
+             *{padding: 0; margin: 0;}
+            
+             li{
+                list-style: none;
+            }
+            
+             a{
+                text-decoration: none;
+            }
+            
+            
+            img{
+                display: block; /* 박스화 */
+            }
+            
+            body{
+                font-size: 14px;
+                line-height: 26px;
+                color: #fffefc;
+                font-family: '맑은 고딕', 'Arial';
+                background-color: white;
+            }
+            
+            
+               /* 상단 */
+            header{
                 width: 100%;
-                transition-duration: 0.7s;
+                height: 90px;
+                overflow: hidden;
+                background-color: #ffffff;
             }
-
-            #top .logo{
-                margin: 0 auto;
-                float: none;
-                margin-top: 15px;
+            
+             #top{
+                width: 1750px;
+                height: 110px;
+                margin: 0;
+                overflow: hidden;
+                text-align: center;
             }
-
-            #top ul{
-                display: none;
-            }
-
-
-            #main div{
-                /* (960/1900)*100 */
-                width: 50.52%;
-                transition-duration: 0.7s;
-            }
-
-            #main div>h1{
+                        
+            
+            #top .t_left>img{
+                display: block;
                 float: left;
-                width: 33.33%; /* 2줄 3칸 */
-                font-size: 1px;
+                margin-left: 70px;
             }
-
-            #main div>h3{
+            
+            
+            
+            #top ul>li{
                 float: left;
-                width: 33.33%; /* 2줄 3칸 */
-                font-size: 10px;
+                line-height: 5px;
+            }
+            
+             #top .t_left>ul>li{
+                float: left;
+            }
+            
+            
+            #top .t_right>ul>li{
+                float: right;
+                padding: 0px -20px;
+            }
+            
+            #top ul>li>a{
+                color: #000;
+                font-size: 25px;
+                font-weight: 600;
+                display: block;
+                padding: 40px 40px;
+                margin-top: 10px;
+                margin-left: 20px;
+            }
+            
+            #top ul>li>a:hover{
+                color: lightskyblue;
+            }
+            
+            
+            #main{
+                width: 100%;
+                height: 900px;
+                overflow: hidden;
+                background-color: #0f4c81;
+                
+                
+            }
+            
+            
+            #main .left{
+                float: left;
+                width: 750px;
+                height: 400px;
+                padding: 100px;
+                margin-left: 50px;
+                margin-top: 100px;
+                font-weight: 900;
+                font-size: 25px;
+                color: white;
+                line-height: 1.5;
+            }
+            
+            
+            
+            #main .right>img{
+                float: right;
+                width: 500px;
+                height: 500px;
+                padding: 150px;
+            }
+            
+            #main .left>h3{
+                width: 750px;
+                font-weight: 300;
+                font-size: 20px;
+                margin-top: 0px;
+            }
+            
+            
+            #main input{
+                display: inline-block;
+                width: 200px;
+                height: 30px;
+                float: left;
+                margin-top: 30px;
+                overflow: hidden;
+            }
+            
+            #main .start{
+                
+                float: right;
+                padding-top: 23px;
+                padding-right: 260px;
+                background-color: 
+                
+            }
+            
+            
+            
+            
+            /* ----------반응형----------------------------------------------*/
+            @media screen and (max-width:960px){
+                #top{
+                    width: 100%;
+                    transition-duration: 0.7s;
+                }
+                
+                #top .logo{
+                    margin: 0 auto;
+                    float: none;
+                    margin-top: 15px;
+                }
+                
+                #top ul{
+                    display: none;
+                }
+                
+                
+                
+                
+                #main div{
+                    /* (960/1900)*100 */
+                    width: 50.52%;
+                    transition-duration: 0.7s;
+                }
+                
+                #main div>h1{
+                    float: left;
+                    width: 33.33%; /* 2줄 3칸 */
+                    font-size: 1px;
+                }
+                
+                
+                #main div>h3{
+                    float: left;
+                    width: 33.33%; /* 2줄 3칸 */
+                    font-size: 10px;
+                    height: 100px;
+                }
+                
+               
+                
+                
+            }
+            
+            footer .right{
                 height: 100px;
+                background-color: white;
             }
-
-        }
-
-        footer .right{
-            height: 100px;
-            background-color: white;
-            float: right;
-        }
-
-    </style>
-</head>
-
-<body>
-<!-- 상단 -->
-<header>
-    <div id="top">
-        <div class="t_left">
-            <img src="/images/Teamhash.png" alt="TeamHash" width="170" height="125" />
-            <ul>
-                <li><a href="#">Products</a></li>
-                <li><a href="#">pricing</a></li>
-                <li><a href="#">About us</a></li>
-            </ul>
+            
+            
+            
+            
+            
+            
+        </style>
+    </head>
+    
+    <body>
+        <!-- 상단 -->
+        <header>
+            <div id="top">
+                <div class="t_left">
+                    <img src="img/Teamhash.png" alt="TeamHas" width="170" height="100" />
+                    <ul>
+                        <li><a href="#">Products</a></li>
+                        <li><a href="#">pricing</a></li>
+                        <li><a href="#">About us</a></li>
+                    </ul>
+                </div>
+                <div class="t_right">
+                    <ul>
+                         <li><a href="file:///C:/Users/yulgon/Desktop/TeamHash/login.html">Sign up</a></li>
+                         <li><a href="file:///C:/Users/yulgon/Desktop/TeamHash/sign-up.html">Sign in</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+        </header>       
+        <!-- //상단 -->
+        
+        
+        
+        
+        <!--메인이미지-->
+        <div id="main">
+            <div class="left">
+                <h1>Designing Your Brand Has Never Been so Easy!</h1>
+                <h3>Create your corporate style instantly with Logaster Brand Maker! Start with
+                    logo creation and get other design items in a few clicks!
+                </h3>
+                <form>
+                    <div>
+                        <input type="brand" placeholder="Enter Your Brand Name" />
+                    </div>
+                    <div class="">
+                        <h3 class="start">START BRANDING</h3>
+                    </div>
+                </form>
+            </div>
+                
+            <div class="right">
+                <img src="img/cover.png">            
+            </div>
         </div>
-        <div class="t_right">
-            <ul>
-                <li><a href="/login">Sign in</a></li>
-            </ul>
-        </div>
-    </div>
-
-</header>
-<!-- //상단 -->
-
-
-
-
-<!--메인이미지-->
-<div id="main">
-    <div class="left">
-        <h1>Designing Your Brand Has Never Been so Easy!</h1>
-        <h3>Create your corporate style instantly with Logaster Brand Maker! Start with
-            logo creation and get other design items in a few clicks!
-        </h3>
-        <form>
+        <!--//메인이미지-->
+        
+         <footer>
             <div>
-                <input type="brand" placeholder="Enter Your Brand Name" />
+                <div class="right">
+                   <br />
+                </div>
             </div>
-            <div class="">
-                <h3 class="start">START BRANDING</h3>
-            </div>
-        </form>
-    </div>
-
-    <div class="right">
-        <img src="/images/cover.png">
-    </div>
-</div>
-<!--//메인이미지-->
-
-<footer>
-    <div>
-        <div class="right">
-            <br />
-        </div>
-    </div>
-</footer>
-
-
-</body>
+        </footer>     
+        
+        
+        
+        
+        
+        
+    </body>
 </html>
