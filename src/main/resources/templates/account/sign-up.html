@@ -1,20 +1,17 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="utf-8">
+	<head th:replace="fragments.html :: head"></head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
-<title>TEAM# Sign Up</title>
-	<link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css"/>
-
 <style type="text/css">
 	body {
-		color: #fff;
-		background: #0f4c81;
-		font-family: 'Roboto', sans-serif;
-	}
-	.form-control {		
+								color: #fff;
+								background: #0f4c81;
+								font-family: 'Roboto', sans-serif;
+							}
+	.form-control {
 		min-height: 41px;
 		box-shadow: none;
 		border-color: #e1e4e5;
@@ -22,9 +19,9 @@
 	.form-control:focus {
 		border-color: #4181a1;
 	}
-	.form-control, .btn {        
-        border-radius: 3px;
-    }
+	.form-control, .btn {
+		border-radius: 3px;
+	}
 	.signup-form {
 		width: 400px;
 		margin: 0 auto;
@@ -33,26 +30,26 @@
 	.signup-form form {
 		color: #9ba5a8;
 		border-radius: 3px;
-    	margin-bottom: 15px;
-        background: #fff;
-        box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-        padding: 30px;
-    }
+		margin-bottom: 15px;
+		background: #fff;
+		box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+		padding: 30px;
+	}
 	.signup-form h2 {
 		color: #333;
 		font-weight: bold;
-        margin-top: 0;
-    }
+		margin-top: 0;
+	}
 
 	.signup-form h3 {
 		color: #333;
 		font-weight: normal;
-        margin-top: 0;
-    }
+		margin-top: 0;
+	}
 
-    .signup-form hr {
-        margin: 0 -30px 20px;
-    }    
+	.signup-form hr {
+		margin: 0 -30px 20px;
+	}
 	.signup-form .form-group {
 		margin-top: 20px;
 		margin-bottom: 20px;
@@ -152,8 +149,6 @@
     </form>
 	<div class="text-center">이미 회원이신가요? <a href="#">로그인</a></div>
 </div>
-<script src="/node_modules/jquery/dist/jquery.min.js"></script>
-<script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script type="application/javascript">
 	(function () {
 		'use strict';

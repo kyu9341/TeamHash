@@ -1,15 +1,13 @@
 <!DOCTYPE html>
-<html>
-<!------ Include the above in your HEAD tag ---------->
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<html class="">
+
 <head>
-<title> TEAM# login</title>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <head th:insert="fragments.html :: head"></head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
 <link href="https://fonts.googleapis.com/css?family=Lato|Open+Sans|PT+Sans|Roboto|Roboto+Slab|Titillium+Web" rel="stylesheet">
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
 <style class="cp-pen-styles">* { box-sizing:border-box; }
 
 body {
@@ -19,7 +17,7 @@ font-family: 'Lato', sans-serif;
 font-family: 'PT Sans', sans-serif;
 font-family: 'Roboto Slab', serif;
 font-family: 'Titillium Web', sans-serif;
-test*/ 
+test*/
   background: #ebebeb;
   -webkit-font-smoothing: antialiased;
 }
@@ -129,6 +127,7 @@ html, body{   background-size:cover;    margin:0;padding:0;    height:100%;}
 }
 </style>
 </head>
+
 <body>
   <div class="background"></div>
   <div class="background2"></div>
@@ -204,5 +203,5 @@ html, body{   background-size:cover;    margin:0;padding:0;    height:100%;}
 });
 
 </script>
-</body></html>
+</body>
 </html>
