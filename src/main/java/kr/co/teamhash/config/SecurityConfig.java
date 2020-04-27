@@ -37,22 +37,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .mvcMatchers("/","/sign-up", "/check-email-token").permitAll() // 인증 허가
-                .anyRequest().authenticated()
-                .and()
-            .formLogin()// 로그인 폼 사용
-                .defaultSuccessUrl("/main") // 로그인 성공시 main 호출
-                .loginPage("/login")
-                .usernameParameter("email") // username 파라미터 설정
-                .permitAll()
-                .and()
-            .logout()
-                .permitAll();
+                .anyRequest().authenticated();
+
+
+        http.formLogin()// 로그인 폼 사용
+            .defaultSuccessUrl("/main") // 로그인 성공시 main 호출
+            .loginPage("/login")
+            .usernameParameter("email") // username 파라미터 설정
+            .permitAll();
+
+        http.logout()
+            .logoutSuccessUrl("/main");
         
     }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring()
+                .mvcMatchers("/node_modules/**")
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
         // 스태틱 리소스들은 시큐리티 적용 x
     }
