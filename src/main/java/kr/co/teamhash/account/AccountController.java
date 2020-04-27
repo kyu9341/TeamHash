@@ -1,7 +1,10 @@
 package kr.co.teamhash.account;
 
-import kr.co.teamhash.domain.Account;
+import kr.co.teamhash.domain.entity.Account;
+import kr.co.teamhash.domain.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -10,6 +13,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 
 @Controller
 @RequiredArgsConstructor
@@ -17,8 +22,9 @@ public class AccountController {
 
     private final SignUpValidator signUpValidator;
     private final AccountRepository accountRepository;
-
-    @GetMapping("/login")
+    private final PasswordEncoder passwordEncoder; // password 인코딩
+    
+    @GetMapping("/login")//로그인 페이지
     public String loginForm(){
         return "account/login";
     }
@@ -44,13 +50,19 @@ public class AccountController {
         Account account = Account.builder()
                 .email(signUpForm.getEmail())
                 .nickname(signUpForm.getNickname())
-                .password(signUpForm.getPassword()) // TODO encoding
+                .password(passwordEncoder.encode(signUpForm.getPassword()))//password encode
                 .build();
         Account newAccount = accountRepository.save(account);
 
 
         return "redirect:/";
     }
+
+    @RequestMapping(value="/main")//로그인 한 뒤 처음 보는 페이지
+    public String userMain() {
+        return "main";
+    }
+    
 
 
 }
