@@ -37,7 +37,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.formLogin()// 로그인 폼 사용
             .defaultSuccessUrl("/main") // 로그인 성공시 main 호출
             .loginPage("/login")
-            .usernameParameter("email") // username 파라미터 설정
             .permitAll();
 
         http.logout()
