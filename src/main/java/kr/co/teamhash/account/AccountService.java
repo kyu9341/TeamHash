@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import javax.validation.Valid;
@@ -23,11 +24,12 @@ public class AccountService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final AccountRepository accountRepository;
 
+    @Transactional  // saveNewAccount 에서 트랜잭션이 종료되면 detached 상태가 되므로 persist 상태를 유지하기 위해
     public Account processNewAccount(SignUpForm signUpForm){
         Account newAccount = saveNewAccount(signUpForm);
-
         return newAccount;
     }
+
 
     private Account saveNewAccount(@ModelAttribute @Valid SignUpForm signUpForm){
         // 회원 저장
@@ -36,9 +38,8 @@ public class AccountService implements UserDetailsService {
                 .nickname(signUpForm.getNickname())
                 .password(passwordEncoder.encode(signUpForm.getPassword()))//password encode
                 .build();
-        Account newAccount = accountRepository.save(account);
 
-        return newAccount;
+        return accountRepository.save(account);
     }
 
 
@@ -50,4 +51,5 @@ public class AccountService implements UserDetailsService {
         }
         return new UserAccount(account); // User 를 확장한 UserAccount 클래스에 유저 정보와 권한을 삽입하여 반환
     }
+
 }

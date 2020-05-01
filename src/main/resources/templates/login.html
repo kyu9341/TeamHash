@@ -22,7 +22,7 @@ test*/
   -webkit-font-smoothing: antialiased;
 }
 
-hgroup {   text-align:center;  margin-top: 3em;  opacity: 0.7;  padding: 30px;  background-image: url('/src/main/resources/static/images/12.png');}
+hgroup {   text-align:center;  margin-top: 3em; margin-bottom: 3em;  }
 h1, h3 { font-weight: 300; }
 h1 { color: #ff0000; }
 form {      padding: 30px;    padding-top: 60px;    background: #fff;}
@@ -131,35 +131,53 @@ html, body{   background-size:cover;    margin:0;padding:0;    height:100%;}
 <body>
   <div class="background"></div>
   <div class="background2"></div>
-    <div class="loginForm"> 
-    <hgroup>
-      <h1>
-        <br>
-      </h1>
 
-    </hgroup>
+  <div class="loginForm">
 
-    <form th:action="@{/login}" method="POST">
-      <h1 th:if="${param.error}">
-        Invalid username and password.
-      </h1>
+    <form action="#" class="needs-validation"
+            th:action="@{/login}" method="post" novalidate>
+        <hgroup>
+            <img src="/images/logo.png" alt="TeamHash" style="max-width: 100%; height: auto;" />
+        </hgroup>
+
       <div class="group">
-        <input type="username" class="used" name="email"><span class="highlight"></span><span class="bar"></span>
-        <label>Username</label>
-      </div>
-      <div class="group">
-        <input type="password" name="password"><span class="highlight"></span><span class="bar"></span>
-        <label>Password</label>
+        <input id="username" type="username" class="used" name="username" required>
+        <span class="highlight"></span><span class="bar"></span>
+        <label for="username">Username</label>
+        <small id="emailHelp" class="form-text text-muted">
+          가입할 때 사용한 이메일을 입력하세요.
+        </small>
+        <small class="invalid-feedback">이메일을 입력하세요.</small>
       </div>
 
-      <button type="submit" class="buttonui"> <span> login </span>
+      <div class="group">
+        <input id="password" type="password" name="password" class="used" required>
+        <span class="highlight"></span><span class="bar"></span>
+        <label for="password">Password</label>
+        <small id="passwordHelp" class="form-text text-muted">
+          패스워드를 잊어버렸다면, <a href="#" th:href="@{/email-login}">패스워드 없이 로그인하기</a>
+        </small>
+        <small class="invalid-feedback">패스워드를 입력하세요.</small>
+
+      </div>
+
+        <div class="alert alert-danger" th:if="${param.error}" role="alert">
+            <small>이메일과 패스워드가 일치하지 않습니다.</small>
+        </div>
+      <div class="form-group">
+
+      <button type="submit" class="buttonui"> <span>login</span>
             <div class="ripples buttonRipples"><span class="ripplesCircle"></span></div>
       </button>
+        <br>
+          <p>
 
-      <button type="button" class="buttonui" onclick="location.href='/sign-up'"> <span> sign up </span>
+          </p>
+      <button type="button" class="buttonui" onclick="location.href='/sign-up'"> <span>sign up</span>
         <div class="ripples buttonRipples"> <span class="ripplesCircle"></span></div>
       </button>
 
+      </div>
     </form>
     <div class="powered">
           Powered by <a href="http://www.team#.com"> TEAM# </a> 
@@ -201,7 +219,33 @@ html, body{   background-size:cover;    margin:0;padding:0;    height:100%;}
   });
 
 });
-
 </script>
+  <script type="application/javascript">
+    (function () {
+      'use strict';
+
+      window.addEventListener('load', function () {
+
+        var forms = document.getElementsByClassName('needs-validation');
+
+        Array.prototype.filter.call(forms, function (form) {
+          form.addEventListener('submit', function (event) {
+            if(form.checkValidity() === false){
+              event.preventDefault();
+              event.stopPropagation();
+            }
+
+            form.classList.add('was-validated');
+
+          }, false);
+
+        });
+
+      }, false);
+
+    }());
+  </script>
+
+
 </body>
 </html>

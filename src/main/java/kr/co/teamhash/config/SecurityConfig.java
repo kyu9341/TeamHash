@@ -24,8 +24,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor 
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final AccountRepository accountrepository; // userDetailsService에 사용될 repository
-
+    private final AccountService accountService;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -35,9 +35,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
         http.formLogin()// 로그인 폼 사용
-            .defaultSuccessUrl("/main") // 로그인 성공시 main 호출
-            .loginPage("/login")
-            .permitAll();
+                .loginPage("/login")
+                .defaultSuccessUrl("/main", true) // 로그인 성공시 main 호출
+                .permitAll();
 
         http.logout()
             .logoutSuccessUrl("/");
@@ -52,5 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // 스태틱 리소스들은 시큐리티 적용 x
     }
 
-
 }
+
+
+

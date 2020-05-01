@@ -52,5 +52,5 @@ class MainControllerTest {
         // teamhash 이란 이름으로 인증이 될 것이다. because UserAccount 에서 username 을 nickname 으로 리턴하였기 때문
 
     }
-    
+
 }

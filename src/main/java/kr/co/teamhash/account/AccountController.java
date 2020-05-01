@@ -46,9 +46,5 @@ public class AccountController {
         return "redirect:/";
     }
 
-    @RequestMapping(value="/main")//로그인 한 뒤 처음 보는 페이지
-    public String userMain() {
-        return "main";
-    }
 
 }
