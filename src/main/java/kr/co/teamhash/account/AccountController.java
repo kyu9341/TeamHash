@@ -8,12 +8,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @Controller
@@ -23,7 +21,15 @@ public class AccountController {
     private final SignUpValidator signUpValidator;
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder; // password 인코딩
-    
+    private final AccountService accountService;
+
+    @InitBinder("signUpForm") // signUpForm 이라는 데이터를 받을 때 바인더를 설정
+    public void initBinder(WebDataBinder webDataBinder){
+        // Validator 를 추가
+        // SignUpForm 의 타입과 매핑이되어 Validator 가 사용됨.
+        webDataBinder.addValidators(signUpValidator);
+    }
+
     @GetMapping("/login")//로그인 페이지
     public String loginForm(){
         return "account/login";
@@ -41,19 +47,7 @@ public class AccountController {
             return "account/sign-up";
         }
 
-        signUpValidator.validate(signUpForm, errors);
-        if(errors.hasErrors()){
-            return "account/sign-up";
-        }
-
-        // 회원 저장
-        Account account = Account.builder()
-                .email(signUpForm.getEmail())
-                .nickname(signUpForm.getNickname())
-                .password(passwordEncoder.encode(signUpForm.getPassword()))//password encode
-                .build();
-        Account newAccount = accountRepository.save(account);
-
+        accountService.processNewAccount(signUpForm);
 
         return "redirect:/";
     }
@@ -62,7 +56,5 @@ public class AccountController {
     public String userMain() {
         return "main";
     }
-    
-
 
 }
