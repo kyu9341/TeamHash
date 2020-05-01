@@ -26,10 +26,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final AccountRepository accountrepository; // userDetailsService에 사용될 repository
 
-    @Bean// 비밀번호 인코딩
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

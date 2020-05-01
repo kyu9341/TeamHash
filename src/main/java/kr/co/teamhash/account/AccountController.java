@@ -1,6 +1,5 @@
 package kr.co.teamhash.account;
 
-import kr.co.teamhash.domain.entity.Account;
 import kr.co.teamhash.domain.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -28,11 +27,6 @@ public class AccountController {
         // Validator 를 추가
         // SignUpForm 의 타입과 매핑이되어 Validator 가 사용됨.
         webDataBinder.addValidators(signUpValidator);
-    }
-
-    @GetMapping("/login")//로그인 페이지
-    public String loginForm(){
-        return "account/login";
     }
 
     @GetMapping("/sign-up")
