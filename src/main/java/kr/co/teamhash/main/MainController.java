@@ -1,5 +1,8 @@
 package kr.co.teamhash.main;
 
+import kr.co.teamhash.account.CurrentUser;
+import kr.co.teamhash.domain.entity.Account;
+import lombok.CustomLog;
 import lombok.RequiredArgsConstructor;
 import org.dom4j.rule.Mode;
 import org.springframework.stereotype.Controller;
@@ -19,9 +22,11 @@ public class MainController {
         return "login";
     }
 
-    @RequestMapping(value="/main")//로그인 한 뒤 처음 보는 페이지
-    public String main(Principal principal, Model model) {
-        model.addAttribute("name", principal.getName());
+    @GetMapping("/main")
+    public String main(@CurrentUser Account account, Model model){
+        if(account != null){
+            model.addAttribute(account);
+        }
         return "main";
     }
 }

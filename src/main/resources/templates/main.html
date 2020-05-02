@@ -4,6 +4,11 @@
 
 <head th:replace="fragments.html :: head"></head>
     <body>
+        <p th:text="${account.emailVerified}"></p>
+        <div class="alert alert-warning" role="alert" th:if="${account != null && !account.emailVerified}">
+            Team#에 가입을 완료하려면 <a href="#" th:href="@{/check-email}" class="alert-link">계정 인증 메일을 확인</a>하세요.
+        </div>
+
         <!-- 로그인 된 유저 정보 파악 및 로그아웃 기본 틀 -->
         <h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
         <span sec:authentication="name">Username</span>

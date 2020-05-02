@@ -1,10 +1,12 @@
 package kr.co.teamhash.account;
 
+import kr.co.teamhash.domain.entity.Account;
 import kr.co.teamhash.domain.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
@@ -46,5 +48,27 @@ public class AccountController {
         return "redirect:/";
     }
 
+    @Transactional
+    @GetMapping("/check-email-token")
+    public String checkEmailToken(String token, String email, Model model){
+        Account account = accountRepository.findByEmail(email);
+        String view = "account/checked-email";
+
+        if(account == null){
+            model.addAttribute("error", "wrong email");
+            return view;
+        }
+
+        if(!account.isValidToken(token)){
+            model.addAttribute("error", "wrong email");
+            return view;
+        }
+
+        account.completeSignUp();
+        model.addAttribute("nickname", account.getNickname());
+        return view;
+
+
+    }
 
 }

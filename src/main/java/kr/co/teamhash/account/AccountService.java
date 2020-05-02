@@ -3,6 +3,8 @@ package kr.co.teamhash.account;
 import kr.co.teamhash.domain.entity.Account;
 import kr.co.teamhash.domain.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,10 +25,15 @@ public class AccountService implements UserDetailsService {
 
     private final PasswordEncoder passwordEncoder;
     private final AccountRepository accountRepository;
+    private final JavaMailSender javaMailSender;
 
     @Transactional  // saveNewAccount 에서 트랜잭션이 종료되면 detached 상태가 되므로 persist 상태를 유지하기 위해
     public Account processNewAccount(SignUpForm signUpForm){
         Account newAccount = saveNewAccount(signUpForm);
+
+        // 이메일 확인 토큰 생성
+        newAccount.generateEmailCheckToken();
+        sendSignUpConfirmEmail(newAccount);
         return newAccount;
     }
 
@@ -40,6 +47,16 @@ public class AccountService implements UserDetailsService {
                 .build();
 
         return accountRepository.save(account);
+    }
+
+    // 회원 가입 인증 이메일을 전송하는 메소드
+    public void sendSignUpConfirmEmail(Account newAccount){
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setTo(newAccount.getEmail());
+        mailMessage.setSubject("Team# 회원가입 인증");
+        mailMessage.setText("/check-email-token?token="+newAccount.getEmailCheckToken() + "&email="+newAccount.getEmail());
+        // 이메일 전송
+        javaMailSender.send(mailMessage);
     }
 
 

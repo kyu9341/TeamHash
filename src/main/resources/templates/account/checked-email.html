@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments.html :: head"></head>
+<body>
+    <div class="py-5 text-center" th:if="${error}">
+        <p class="lead">Team# 이메일 확인</p>
+        <div class="alert alert-danger">
+            이메일 확인 링크가 정확하지 않습니다.
+        </div>
+    </div>
+
+    <div class="py-5 text-center" th:if="${error == null}">
+        <p class="lead">Team# 이메일 확인</p>
+        <h3>
+            이메일을 인증이 완료되었습니다. <span th:text="${nickname}">닉네임</span>님 가입을 축하합니다.
+        </h3>
+        <a href="#" th:href="@{/main}">메인으로 이동</a>
+    </div>
+
+</body>
+</html>
