@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Hello WebSocket</title>
     <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -50,7 +50,22 @@
                     <th>Chattings</th>
                 </tr>
                 </thead>
+
+                
                 <tbody id="chattings">
+                    <tr th:each="chat : ${chatList}">
+                        <td>
+                            <span th:text="${chat.sender}"></span>
+                        </td>
+                        <td>
+                            <span th:text="${chat.message}"></span>
+                        </td>
+                        <td>
+                            <span th:text="${#temporals.format(chat.sendDateTime, 'HH:mm')}"></span>
+                        </td>
+
+
+                    </tr>
                 </tbody>
             </table>
         </div>
