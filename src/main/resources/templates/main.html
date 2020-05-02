@@ -11,7 +11,6 @@
 
         <!-- 로그인 된 유저 정보 파악 및 로그아웃 기본 틀 -->
         <h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
-        <span sec:authentication="name">Username</span>
         <p th:text="${name}"></p>
         <form th:action="@{/logout}" method="post">
             <input type="submit" value="Sign Out"/>

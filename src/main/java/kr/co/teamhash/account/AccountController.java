@@ -43,9 +43,9 @@ public class AccountController {
             return "account/sign-up";
         }
 
-        accountService.processNewAccount(signUpForm);
-
-        return "redirect:/";
+        Account account = accountService.processNewAccount(signUpForm);
+        accountService.login(account); // 회원가입 시 자동 로그인
+        return "redirect:/main";
     }
 
     @Transactional
@@ -65,10 +65,9 @@ public class AccountController {
         }
 
         account.completeSignUp();
+        accountService.login(account); // 인증된 정보로 다시 로그인 처리
         model.addAttribute("nickname", account.getNickname());
         return view;
-
-
     }
 
 }
