@@ -31,6 +31,7 @@ public class BoardService {
 
     @Transactional
     public Long savePost(BoardDto boardDto){
+        
        return boardRepository.save(boardDto.toEntitiy()).getId();
     }
 
