@@ -119,7 +119,7 @@
 		<div class="form-group">
 			<label for="password">비밀번호</label>
 			<input id="password" type="password" th:field="*{password}"
-				   placeholder="password" class="form-control" required minlength="6" maxlength="50">
+				   placeholder="password" class="form-control" required minlength="6" maxlength="50" onchange="isSame()">
 			<small id="passwordHelp" class="form-text text-muted">
 				6자 이상 50자 이내로 입력하세요. 영문자, 숫자, 특수기호를 사용할 수 있으며 공백은 사용할 수 없습니다.
 			</small>
@@ -137,7 +137,7 @@
 		</div>
 
 		<div class="form-group">
-            <button type="submit" class="btn btn-primary btn-block btn-lg">
+            <button id="sign-up-btn" type="submit" class="btn btn-primary btn-block btn-lg">
 				회원가입</button>
 			<small id="submitHelp" class="form-text text-muted">
 				<a href="#">약관</a>에 동의하시면 가입하기 버튼을 클릭하세요.
@@ -175,21 +175,21 @@
 	}());
 
 	function isSame() {
+		var btn;
+		btn = document.getElementById('sign-up-btn');
+
 		if(document.getElementById("password").value !== '' && document.getElementById("check-password").value !== ''){
 			if(document.getElementById('password').value === document.getElementById('check-password').value){
 				document.getElementById('same').innerHTML='비밀번호가 일치합니다.';
 				document.getElementById('same').style.color='blue';
+				btn.disabled = false;
 			}
 			else{ // TODO 비밀번호 6자 이상일 때 비밀번호가 일치하지 않는 경우 빨간 테두리로 표시되도록 변경해야 함.
 				document.getElementById('same').innerHTML='비밀번호가 일치하지 않습니다.';
 				document.getElementById('same').style.color='red';
-				var form = document.getElementById('needs-validation');
-				form.addEventListener('submit', function (event) {
-					event.preventDefault();
-					event.stopPropagation();
-				});
-			}
+				btn.disabled = 'disabled';
 
+			}
 		}
 
 	}

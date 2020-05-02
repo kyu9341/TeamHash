@@ -21,7 +21,6 @@ public class AccountController {
 
     private final SignUpValidator signUpValidator;
     private final AccountRepository accountRepository;
-    private final PasswordEncoder passwordEncoder; // password 인코딩
     private final AccountService accountService;
 
     @InitBinder("signUpForm") // signUpForm 이라는 데이터를 받을 때 바인더를 설정
