@@ -5,7 +5,7 @@ header { overflow: hidden; background-color: #fff;}
 header .left { float: left; height: 40px; padding: 20px 0 0 100px;}
 header a { color:#000000;}
 header h1 { float: left; padding: 0px 80px 60px 0;}
-header h1 a { display: block; width: 250px; height: 100px; background: url("../../static/images/logo2.png") no-repeat ; overflow: hidden; color:transparent;}
+header h1 a { display: block; width: 250px; height: 100px; background: url("../images/logo2.png") no-repeat ; overflow: hidden; color:transparent;}
 header nav a { display: block; position: relative; height: 50px; line-height: 70px; font-size: 25px; font-weight: bold; padding-right: 50px;}
 header nav a:before { content: ""; position: absolute; left: 0; bottom: 13px; width: 0; height: 1px; background: #fff; transition: width 0.5s;}
 header nav a:hover{ color: coral;}

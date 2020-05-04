@@ -1,12 +1,12 @@
 @charset "utf-8";
 
-header h1 { float:none; position: absolute; left: 50%; top:0px; transform: translateX(-50%) scale(0.6); padding:0;}
-header .left { padding: 33px 0 0 14px;}
-header .all { display: block; position: relative; width:32px; height: 14px; border-top: 2px solid #000; border-bottom: 2px solid #000; color:transparent; transform: scale(0.8);}
+header h1 { float:none; position: absolute; left: 50%; top:15px; transform: translateX(-50%); padding:0;}
+header .left { padding: 49px 0 0 38px;}
+header .all { display: block; position: relative; width:32px; height: 14px; border-top: 2px solid #000; border-bottom: 2px solid #000; color:transparent;}
 header .all:before { content: ""; position: absolute; left: 0; top: 50%; width: 100%; height: 2px; background: #000; margin-top: -1px;}
 header .left > div { float:none; }
-header > ul { padding: 40px 20px 0 0;}
-header > ul li a {width: 70px; font-size: 13px; font-weight: 600;}
+header > ul { padding: 40px 40px 0 0;}
+header > ul li a {width: 70px;}
 
 /* 모바일메뉴 */
 header .close,
@@ -16,7 +16,7 @@ header h2 { display: block;}
 header .nav {  position: absolute; left:-120%; top: 0; z-index: 101; transition: left 0.7s; padding: 15px 24px 15px 22px; width:calc(100% - 32px); height: 100%; background: #fff; box-sizing: border-box;}
 header .nav.on { left: 0;}
 header .nav.on nav { padding: 0 0 24px; border-top: 1px solid #0091d0;}
-header .nav.on nav a { height: 40px; line-height: 40px; color:#111; font-size: 18px;}
+header .nav.on nav a { height: 40px; line-height: 40px; color:#111;font-size: 18px;}
 header .nav.on nav a:before { display: none;}
 header .nav.on nav li { float: none; border-bottom: 1px solid #eee;}
 header .nav.on div { display: flex; border:1px solid #eee;}
@@ -25,5 +25,5 @@ header .nav.on div a { flex:1; height: 38px; border-left: 1px solid #eee; line-h
 header .nav.on .close { position: absolute; right: 24px; top: 24px; width: 12px; height: 12px; color:transparent;}
 header .nav.on .close:before { content: ""; position: absolute; left:46%; top: 0; width: 1px; height: 100%; background: #5a5a5a; transform: rotate(45deg);}
 header .nav.on .close:after { content: ""; position: absolute; right:45%; top: 0; width: 1px; height: 100%; background: #5a5a5a; transform: rotate(-45deg);}
-header h2 {width: 200px; height: 90px; background: url("../../static/images/logo2.png") no-repeat; color: transparent;}
+header h2 {width: 200px; height: 90px; background: url("../images/logo2.png") no-repeat; color: transparent;}
 .dim { display: none;position: fixed; left: 0; top: 0; z-index: 100; width: 100%; height: 100%; background: rgba(0,0,0,0.5);}
