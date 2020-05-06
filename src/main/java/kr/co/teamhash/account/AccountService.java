@@ -22,6 +22,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@Transactional
 @Service
 @RequiredArgsConstructor
 public class AccountService implements UserDetailsService {
@@ -30,7 +31,6 @@ public class AccountService implements UserDetailsService {
     private final AccountRepository accountRepository;
     private final JavaMailSender javaMailSender;
 
-    @Transactional  // saveNewAccount 에서 트랜잭션이 종료되면 detached 상태가 되므로 persist 상태를 유지하기 위해
     public Account processNewAccount(SignUpForm signUpForm){
         Account newAccount = saveNewAccount(signUpForm);
 
@@ -71,6 +71,7 @@ public class AccountService implements UserDetailsService {
         SecurityContextHolder.getContext().setAuthentication(token);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Account account = accountRepository.findByEmail(email);//login.html form 에서 받은 email 로 회원 검색
@@ -80,4 +81,8 @@ public class AccountService implements UserDetailsService {
         return new UserAccount(account); // User 를 확장한 UserAccount 클래스에 유저 정보와 권한을 삽입하여 반환
     }
 
+    public void completeSignUp(Account account) {
+        account.completeSignUp();
+        login(account); // 인증된 정보로 다시 로그인 처리
+    }
 }

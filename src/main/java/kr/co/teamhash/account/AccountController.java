@@ -62,9 +62,7 @@ public class AccountController {
             model.addAttribute("error", "wrong email");
             return view;
         }
-
-        account.completeSignUp();
-        accountService.login(account); // 인증된 정보로 다시 로그인 처리
+        
         model.addAttribute("nickname", account.getNickname());
         return view;
     }
