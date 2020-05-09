@@ -20,5 +20,31 @@
         <form th:action="@{/build-project}" method="get">
             <input type="submit" value="Build Project"/>
         </form>
+
+
+        <table>
+            <thead>
+                <tr>
+                    <th>프로젝트 이름</th>
+                    <th>프로젝트 설명</th>
+                </tr>
+
+            </thead>
+            <tbody>
+                <tr th:each="project : ${projectList}">
+                    <td>
+                        <span th:text="${project.title}"></span>
+                    </td>
+                    <td>
+                        <span th:text="${project.subtitle}"></span>
+                    </td>
+
+
+                </tr>
+            </tbody>
+
+
+
+        </table>
     </body>
 </html>

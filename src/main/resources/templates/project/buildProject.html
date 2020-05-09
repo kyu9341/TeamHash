@@ -6,4 +6,15 @@
     <body>
         Build Project
     </body>
+
+    
+    <form action="#" th:action="@{/build-project}" th:method="post" th:object=${projectBuildForm} >
+        
+        <input id="title"  type="text" th:field="*{title}" placeholder="title">
+        <input id="subTitle" type="text" th:field="*{subTitle}" placeholder="subTitle">
+
+      
+        <button type="submit">done</button>
+    
+    </form>
 </html>

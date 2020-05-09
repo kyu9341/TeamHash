@@ -6,22 +6,20 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-// 프로젝트 관리 DB
+
 @Entity
 @Getter @Setter @EqualsAndHashCode(of = "id")
 @Builder @AllArgsConstructor @NoArgsConstructor
-public class Project {
-
+public class Member {
     @Id @GeneratedValue
     private Long id;
 
-    private String title;
+    // 참여한 프로젝트 id
+    private Long projectId;
 
-    private String subtitle;
+    // 해당 프로젝트에 참여한 유저 id
+    private Long userId;
 
-    //프로젝트를 생성한 유저의 id를 넣을 것
-    private Long builder;
+    private LocalDateTime joinDate;
 
-
-    private LocalDateTime buildDate;
 }
