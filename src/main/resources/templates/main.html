@@ -33,7 +33,12 @@
             <tbody>
                 <tr th:each="project : ${projectList}">
                     <td>
-                        <span th:text="${project.title}"></span>
+                        <!-- 프로젝트에 맞는 페이지 URL 생성 -->
+                        <!-- 깃허브처럼 바꾸고싶다. /project/projectBuilderName/projectTitle 요로코롬 -->
+                        <a th:href="@{'/project/' + ${project.id} + '/' + ${project.title}}">
+                            <span th:text="${project.title}"></span>
+                        </a>
+                        
                     </td>
                     <td>
                         <span th:text="${project.subtitle}"></span>

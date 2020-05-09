@@ -3,6 +3,7 @@ package kr.co.teamhash.project;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -75,5 +76,19 @@ public class ProjectService {
 
 
         return projectList;
+    }
+
+    @Transactional
+    public Optional<Project> getProject(Long projectId){
+        return projectRepository.findById(projectId);
+    }
+
+    @Transactional
+    public List<Member> getMemberList(Long projectId){
+
+        List<Member> memberList = memberRepository.findAllByProjectId(projectId);
+
+        return memberList;
+
     }
 }

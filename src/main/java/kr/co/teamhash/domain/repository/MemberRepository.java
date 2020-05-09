@@ -11,5 +11,7 @@ import kr.co.teamhash.domain.entity.Member;
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
     List<Member> findAllByUserId(Long userId);
+
     
+    List<Member> findAllByProjectId(Long projectId);
 }

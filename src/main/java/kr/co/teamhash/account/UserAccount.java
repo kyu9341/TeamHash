@@ -1,11 +1,9 @@
 package kr.co.teamhash.account;
 
-import java.util.Collection;
 import java.util.List;
 
 import kr.co.teamhash.domain.entity.Account;
 import lombok.Getter;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 

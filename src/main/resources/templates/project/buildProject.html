@@ -8,10 +8,10 @@
     </body>
 
     
-    <form action="#" th:action="@{/build-project}" th:method="post" th:object=${projectBuildForm} >
+    <form action="#" th:action="@{/build-project}" th:method="post" th:object=${projectBuildForm}>
         
-        <input id="title"  type="text" th:field="*{title}" placeholder="title">
-        <input id="subTitle" type="text" th:field="*{subTitle}" placeholder="subTitle">
+        <input id="title"  type="text" th:field="*{title}" placeholder="title" minlength="3">
+        <input id="subTitle" type="text" th:field="*{subTitle}" placeholder="subTitle" minlength="3">
 
       
         <button type="submit">done</button>
