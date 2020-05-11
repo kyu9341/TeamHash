@@ -23,6 +23,9 @@ public class MainController {
         return "login";
     }
 
+
+    // 유저 메인 페이지에서 프로젝트의 리스트를 받기 위해
+    // projectService에서 받은 뒤 템플릿으로 전송
     @GetMapping("/main")
     public String main(@CurrentUser Account account, Model model){
         if(account != null){

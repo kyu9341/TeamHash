@@ -24,6 +24,7 @@ public class ProjectController {
     private final ProjectService projectService;
 
 
+    // 프로젝트 생성 form
     @GetMapping("/build-project")
     public String buildProject(Model model){
         model.addAttribute("projectBuildForm", new ProjectBuildForm());

@@ -57,6 +57,8 @@ public class ProjectService {
         return project;
     }
 
+
+    //사용자의 프로젝트 리스트 찾기
     @Transactional
     public List<Project> getProjectList(Account account){
 
@@ -78,11 +80,15 @@ public class ProjectService {
         return projectList;
     }
 
+
+    // 프로젝트 아이디로 프로젝트 찾기
+    // 프로젝트 아이디로 페이지에 접근할 때 해당 url에서 projectId를 추출해서 사용
     @Transactional
     public Optional<Project> getProject(Long projectId){
         return projectRepository.findById(projectId);
     }
 
+    // 해당 프로젝트에 포함된 맴버리스트 반환
     @Transactional
     public List<Member> getMemberList(Long projectId){
 
