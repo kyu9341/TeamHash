@@ -32,7 +32,6 @@ public class Account {
 
     private String introduction;
 
-
     @Lob @Basic(fetch = FetchType.EAGER)
     private String profileImage;
 
