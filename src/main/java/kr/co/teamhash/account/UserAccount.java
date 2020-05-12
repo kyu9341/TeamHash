@@ -1,6 +1,5 @@
 package kr.co.teamhash.account;
 
-import java.util.Collection;
 import java.util.List;
 
 import kr.co.teamhash.domain.entity.Account;

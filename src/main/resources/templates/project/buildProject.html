@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="fragments.html :: head"></head>
+    <body>
+        Build Project
+    </body>
+
+    
+    <form action="#" th:action="@{/build-project}" th:method="post" th:object=${projectBuildForm}>
+        
+        <input id="title"  type="text" th:field="*{title}" placeholder="title" minlength="3">
+        <input id="subTitle" type="text" th:field="*{subTitle}" placeholder="subTitle" minlength="3">
+
+      
+        <button type="submit">done</button>
+    
+    </form>
+</html>
