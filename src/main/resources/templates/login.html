@@ -30,12 +30,14 @@ form {      padding: 30px;    padding-top: 60px;    background: #fff;}
 .powered a:hover {  font-style:italic;}
 .group {   position: relative;  margin-bottom: 45px; }
 
-input {  font-size: 18px;  padding: 10px 10px 10px 5px;  -webkit-appearance: none;  display: block;  background: transparent;  color: #03a9f4;  width: 100%;  border: none;  border-radius: 0;  border-bottom: 1px solid #ddd;}
+input {  font-size: 18px;  padding: 10px 10px 10px 5px;    display: block;  background: transparent;
+  color: #03a9f4;  width: 100%;  border: none;  border-radius: 0;  border-bottom: 1px solid #ddd;}
 
 input:focus { outline: none; }
 
 /* Label */
-label {  color: #999;   font-size: 18px;  font-weight: normal;  position: absolute;  pointer-events: none;  left: 5px;  top: 10px;  -webkit-transition:all 0.2s ease;  transition: all 0.2s ease;}
+label {  color: #999;   font-size: 18px;  font-weight: normal;  position: absolute;  pointer-events: none;
+  left: 5px;  top: 10px;  -webkit-transition:all 0.2s ease;  transition: all 0.2s ease;}
 
 /* active */
 
@@ -128,21 +130,21 @@ html, body{   background-size:cover;    margin:0;padding:0;    height:100%;}
 </head>
 
 <body>
-  <div class="background"></div>
-  <div class="background2"></div>
+        <div class="background"></div>
+        <div class="background2"></div>
 
-  <div class="loginForm">
+        <div class="loginForm">
 
-    <form action="#" class="needs-validation"
-            th:action="@{/login}" method="post" novalidate>
-        <hgroup>
-            <img src="/images/logo.png" alt="TeamHash" style="max-width: 100%; height: auto;" />
-        </hgroup>
+          <form action="#" class="needs-validation"
+                th:action="@{/login}" method="post" novalidate>
+            <hgroup>
+              <img src="/images/logo.png" alt="TeamHash" style="max-width: 100%; height: auto;" />
+            </hgroup>
 
-      <div class="group">
-        <input id="username" type="username" class="used" name="username" required>
-        <span class="highlight"></span><span class="bar"></span>
-        <label for="username">Username</label>
+            <div class="group">
+              <input id="username" type="username" class="used" name="username" required>
+              <span class="highlight"></span><span class="bar"></span>
+              <label for="username">Username</label>
         <small id="emailHelp" class="form-text text-muted">
           가입할 때 사용한 이메일을 입력하세요.
         </small>
@@ -158,31 +160,34 @@ html, body{   background-size:cover;    margin:0;padding:0;    height:100%;}
         </small>
         <small class="invalid-feedback">패스워드를 입력하세요.</small>
 
+        <div class="form-group form-check" >
+          <input type="checkbox" class="form-check-input" id="rememberMe" name="remember-me" checked>
+          <label class="form-check-label" for="rememberMe" aria-describedby="rememberMeHelp">
+            로그인 유지</label>
+        </div>
       </div>
 
-        <div class="alert alert-danger" th:if="${param.error}" role="alert">
+        <div class="row alert alert-danger" th:if="${param.error}" role="alert">
             <small>이메일과 패스워드가 일치하지 않습니다.</small>
         </div>
-      <div class="form-group">
 
+
+
+      <div class="form-group">
       <button type="submit" class="buttonui"> <span>login</span>
             <div class="ripples buttonRipples"><span class="ripplesCircle"></span></div>
       </button>
-        <br>
-          <p>
-
-          </p>
+        <p>  </p>
       <button type="button" class="buttonui" onclick="location.href='/sign-up'"> <span>sign up</span>
         <div class="ripples buttonRipples"> <span class="ripplesCircle"></span></div>
       </button>
-
       </div>
     </form>
+
     <div class="powered">
           Powered by <a href="http://www.team#.com"> TEAM# </a> 
       </div>
   </div>
-<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script>$(window, document, undefined).ready(function() {
 
   $('input').blur(function() {

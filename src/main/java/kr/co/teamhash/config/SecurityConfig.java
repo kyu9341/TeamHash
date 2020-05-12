@@ -10,14 +10,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
-import kr.co.teamhash.domain.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
-
+import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
@@ -25,7 +22,8 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final AccountService accountService;
-    private final PasswordEncoder passwordEncoder;
+    private final DataSource dataSource;
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -36,12 +34,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.formLogin()// 로그인 폼 사용
                 .loginPage("/login")
-                .defaultSuccessUrl("/main", true) // 로그인 성공시 main 호출
+                .defaultSuccessUrl("/main") // 로그인 성공시 main 호출
                 .permitAll();
 
         http.logout()
             .logoutSuccessUrl("/");
 
+        http.rememberMe()
+                .userDetailsService(accountService)
+                .tokenRepository(tokenRepository());
+
+    }
+
+    @Bean
+    public PersistentTokenRepository tokenRepository(){
+        // jdbc 기반의 tokenRepository 구현체
+        JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
+        jdbcTokenRepository.setDataSource(dataSource);
+        return jdbcTokenRepository;
     }
 
     @Override
@@ -51,6 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
         // 스태틱 리소스들은 시큐리티 적용 x
     }
+
 
 }
 

@@ -52,7 +52,7 @@ class AccountControllerTest {
                 .param("password", "123456")
                 .with(csrf()))
                 .andExpect(status().is3xxRedirection()) // 리다이렉션 응답
-                .andExpect(view().name("redirect:/"));
+                .andExpect(view().name("redirect:/main"));
                 // .andExpect(authenticated().withUsername("teamhash")); // teamhash 라는 username 으로 인증이 되었는지 확인
 
         // 패스워드가 정상적으로 인코딩되었는지 확인
