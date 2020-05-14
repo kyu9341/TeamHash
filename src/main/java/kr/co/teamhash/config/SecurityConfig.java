@@ -2,6 +2,7 @@ package kr.co.teamhash.config;
 
 import kr.co.teamhash.account.AccountService;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -43,7 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .tokenRepository(tokenRepository());
 
     }
-
+    
     @Bean
     public PersistentTokenRepository tokenRepository(){
         // jdbc 기반의 tokenRepository 구현체
