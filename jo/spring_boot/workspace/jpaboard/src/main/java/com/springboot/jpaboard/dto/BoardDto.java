@@ -30,12 +30,14 @@ public class BoardDto {
 
 
     public Board toEntitiy(){
+        
         Board build = Board.builder()
         .id(id)
         .writer(writer)
         .title(title)
         .content(content)
         .build();
+
 
         return build;
     }
