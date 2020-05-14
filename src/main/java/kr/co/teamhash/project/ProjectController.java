@@ -65,6 +65,8 @@ public class ProjectController {
             }
         }
         model.addAttribute("isMember", isMember);
+        model.addAttribute("projectId", projectId);
+        model.addAttribute("title", title);
 
         return "project/projectMain";
     }
