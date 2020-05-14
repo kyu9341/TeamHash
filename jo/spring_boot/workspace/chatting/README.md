@@ -47,3 +47,5 @@ STOMP 메세지는 @Controller 클래스에서 연결된다.
 WebScoket과 STOMP 메세지를 사용해서 본질적인 서비스를 생성해본다.  
 
 
+# Reference
+https://spring.io/guides/gs/messaging-stomp-websocket/
