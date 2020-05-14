@@ -1,15 +1,63 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
-      lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 
 <head th:replace="fragments.html :: head"></head>
+<style>
+    /* Remove the navbar's default margin-bottom and rounded borders */
+    .navbar {
+        margin-bottom: 0;
+        border-radius: 0;
+        background-color: #FFFFFF;
+    }
+
+    /* Add a gray background color and some padding to the footer */
+    footer {
+        padding-top: 10%;
+        background-color: #FFFFFF;
+        padding: 25px;
+    }
+
+    .main-profile {
+        margin: auto;
+        min-height:500px;
+        color: #FFFFFF;
+        background-color: #0f4c81;
+        display:flex;
+        align-items:center;
+        text-align:center;
+
+    }
+    .card-deck {
+        margin: auto;
+        padding-left: 10px;
+        padding-right: 10px;
+        padding-top: 10px;
+
+
+    }
+    .nav-profile{
+        margin-top: 0%;
+    }
+
+</style>
     <body>
-        <p th:text="${account.emailVerified}"></p>
-        <div class="alert alert-warning" role="alert" th:if="${account != null && !account.emailVerified}">
-            Team#에 가입을 완료하려면 <a href="#" th:href="@{/check-email}" class="alert-link">계정 인증 메일을 확인</a>하세요.
+
+    <nav th:replace="fragments.html :: main-nav"></nav>
+
+
+    <div class="main-profile">
+        <div class="container" th:if="${account != null && !account.emailVerified}">
+            <h1 class="display-4">이메일 인증</h1>
+            <p class="lead">Team#에 가입을 완료하려면 계정 인증 메일을 확인하세요.</p>
+            <button type="button" th:href="@{/check-email}" onclick="location.href='/check-email'" class="btn btn-info" >인증 메일 확인</button>
         </div>
 
-        <!-- 로그인 된 유저 정보 파악 및 로그아웃 기본 틀 -->
+
+    </div>
+
+    <!-- 로그인 된 유저 정보 파악 및 로그아웃 기본 틀 -->
         <h1 th:text="${account.nickname} + '!!'">nickname!</h1>
         <p th:text="${name}"></p>
         <form th:action="@{/logout}" method="post">
@@ -47,9 +95,41 @@
 
                 </tr>
             </tbody>
-
-
-
         </table>
+    <div class="card-deck">
+        <div class="card">
+            <img class="card-img-top m-1" src="imges/test.png" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+            </div>
+            <div class="card-footer">
+                <small class="text-muted">Last updated 3 mins ago</small>
+            </div>
+        </div>
+        <div class="card">
+            <img class="card-img-top " src="imges/test.png" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
+            </div>
+            <div class="card-footer">
+                <small class="text-muted">Last updated 3 mins ago</small>
+            </div>
+        </div>
+        <div class="card">
+            <img class="card-img-top " src="imges/test.png" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
+            </div>
+            <div class="card-footer">
+                <small class="text-muted">Last updated 3 mins ago</small>
+            </div>
+        </div>
+    </div>
+
+    <footer th:replace="fragments.html :: footer"></footer>
+
     </body>
 </html>

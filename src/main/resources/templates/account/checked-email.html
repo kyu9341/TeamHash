@@ -3,6 +3,8 @@
 
 <head th:replace="fragments.html :: head"></head>
 <body>
+<nav th:replace="fragments.html :: main-nav"></nav>
+
     <div class="py-5 text-center" th:if="${error}">
         <p class="lead">Team# 이메일 확인</p>
         <div class="alert alert-danger">

@@ -69,8 +69,11 @@ public class ProjectService {
 
         for(Member member : projects){
             // 참여한 프로젝트가 없다면
-            if(projectRepository.findById(member.getProjectId()).isEmpty())
+            if(!projectRepository.findById(member.getProjectId()).isPresent()){
                 break;
+            }
+
+
             Project project = projectRepository.findById(member.getProjectId()).get();
             
             projectList.add(project);

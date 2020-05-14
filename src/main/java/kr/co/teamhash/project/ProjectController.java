@@ -52,7 +52,7 @@ public class ProjectController {
     public String projectMain(@PathVariable("projectId") Long projectId, @PathVariable("title") String title, Model model, @CurrentUser Account account){
         
         //프로젝트 검색
-        if(projectService.getProject(projectId).isEmpty())
+        if(!projectService.getProject(projectId).isPresent())
             return "project/noProject";
 
         // 프로젝트의 맴버 리스트에 현재 유저의 아이디가 있다면 페이지 공개

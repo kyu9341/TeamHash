@@ -71,6 +71,7 @@ public class AccountController {
             return "account/check-email";
         }
         model.addAttribute("email", account.getEmail());
+        model.addAttribute(account);
         return "account/check-email";
     }
 

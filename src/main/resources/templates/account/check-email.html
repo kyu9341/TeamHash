@@ -3,6 +3,8 @@
 
 <head th:replace="fragments.html :: head"></head>
 <body>
+<nav th:replace="fragments.html :: main-nav"></nav>
+
 <!--에러 메세지가 있는 경우 보여주는 div-->
     <div class="py-5 text-center" th:if="${error != null}">
         <p class="lead">Team# 가입</p>
