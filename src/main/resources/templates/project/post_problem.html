@@ -1,0 +1,23 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="fragments.html :: head"></head>
+<body>
+
+    <div th:if="${!isMember}">
+        your not project member
+    </div>
+
+    <div th:if="${isMember}" >
+        <form action="#" th:action="@{'/project/'+${projectId}+'/'+${title}+'/problem_share/post'}" method="post">
+            제목 : <input type="text" name="title"> <br>
+            작성자 : <input type="text" name="writer"> <br>
+            <textarea name="content"></textarea><br>
+
+            <input type="submit" value="등록">
+        </form>
+    </div>
+</body>
+</html>

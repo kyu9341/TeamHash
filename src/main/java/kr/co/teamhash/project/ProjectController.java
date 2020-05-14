@@ -56,19 +56,48 @@ public class ProjectController {
             return "project/noProject";
 
         // 프로젝트의 맴버 리스트에 현재 유저의 아이디가 있다면 페이지 공개
-        List<Member> memberList = projectService.getMemberList(projectId);
-        boolean isMember = false;
-        for(Member member : memberList){
-            if(member.getUserId() == account.getId()){
-                isMember = true;
-                break;
-            }
-        }
+        boolean isMember = projectService.isMember(projectId,account);
+
+        // 프로젝트에 필요한 정보와
+        // 유저가 해당 프로젝트의 맴버인지 확인하는 정보
         model.addAttribute("isMember", isMember);
         model.addAttribute("projectId", projectId);
         model.addAttribute("title", title);
 
         return "project/projectMain";
+    }
+
+    // 문제 공유란 메인 페이지
+    @GetMapping("/project/{projectId}/{title}/problem_share")
+    public String problem_share_main(@PathVariable("projectId") Long projectId, @PathVariable("title") String title, Model model,  @CurrentUser Account account){
+
+        // 프로젝트의 맴버 리스트에 현재 유저의 아이디가 있다면 페이지 공개
+        boolean isMember = projectService.isMember(projectId,account);
+
+        // 프로젝트에 필요한 정보와
+        // 유저가 해당 프로젝트의 맴버인지 확인하는 정보
+        model.addAttribute("isMember", isMember);
+        model.addAttribute("projectId", projectId);
+        model.addAttribute("title", title);
+        
+
+        return "project/problem_share";
+    }
+
+
+    // 문제 공유란 글쓰기
+    @GetMapping("/project/{projectId}/{title}/problem_share/post")
+    public String write(@PathVariable("projectId") Long projectId, @PathVariable("title") String title, Model model,  @CurrentUser Account account) {
+        // 프로젝트의 맴버 리스트에 현재 유저의 아이디가 있다면 페이지 공개
+        boolean isMember = projectService.isMember(projectId,account);
+
+        // 프로젝트에 필요한 정보와
+        // 유저가 해당 프로젝트의 맴버인지 확인하는 정보
+        model.addAttribute("isMember", isMember);
+        model.addAttribute("projectId", projectId);
+        model.addAttribute("title", title);
+
+        return "project/post_problem";
     }
 
 }
