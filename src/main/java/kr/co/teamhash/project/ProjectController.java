@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import kr.co.teamhash.account.CurrentUser;
 import kr.co.teamhash.domain.entity.Account;
 import kr.co.teamhash.domain.entity.Member;
+import kr.co.teamhash.domain.entity.Problems;
 
 
 @Controller
@@ -22,7 +23,7 @@ import kr.co.teamhash.domain.entity.Member;
 public class ProjectController {
 
     private final ProjectService projectService;
-
+    private final ProblemShareService problemShareService;
 
     // 프로젝트 생성 form
     @GetMapping("/build-project")
@@ -98,6 +99,27 @@ public class ProjectController {
         model.addAttribute("title", title);
 
         return "project/post_problem";
+    }
+
+
+    // 문제 공유란 글 작성 완료
+    @PostMapping("/project/{projectId}/{title}/problem_share/post")
+    public String write(@PathVariable("projectId") Long projectId, @PathVariable("title") String title, Model model,  @CurrentUser Account account, Problems problem) {
+        // 프로젝트의 맴버 리스트에 현재 유저의 아이디가 있다면 페이지 공개
+        boolean isMember = projectService.isMember(projectId,account);
+
+        // 프로젝트에 필요한 정보와
+        // 유저가 해당 프로젝트의 맴버인지 확인하는 정보
+        model.addAttribute("isMember", isMember);
+        model.addAttribute("projectId", projectId);
+        model.addAttribute("title", title);
+
+        Long problemId = problemShareService.saveProblem(problem);
+
+
+
+
+        return "project/problem_share";
     }
 
 }
