@@ -44,7 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .tokenRepository(tokenRepository());
 
     }
-
+    
     @Bean
     public PersistentTokenRepository tokenRepository(){
         // jdbc 기반의 tokenRepository 구현체

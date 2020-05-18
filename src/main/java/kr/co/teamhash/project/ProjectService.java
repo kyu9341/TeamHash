@@ -100,4 +100,20 @@ public class ProjectService {
         return memberList;
 
     }
+
+    // 해당 유저의 프로젝트 소속 여부 확인
+    @Transactional
+    public boolean isMember(Long projectId, Account account){
+        
+        boolean im = false;
+        List<Member> memberList = memberRepository.findAllByProjectId(projectId);
+
+        for(Member member : memberList){
+            if(member.getUserId() == account.getId()){
+                im = true;
+                break;
+            }
+        }
+        return im;
+    }
 }
