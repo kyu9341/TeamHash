@@ -70,10 +70,13 @@ public class AccountService implements UserDetailsService {
 
     @Transactional(readOnly = true)
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Account account = accountRepository.findByEmail(email);//login.html form 에서 받은 email 로 회원 검색
-        if(account == null){
-            throw new UsernameNotFoundException("not found "+email);//해당 이메일이 없을 때 throw
+    public UserDetails loadUserByUsername(String emailOrNickname) throws UsernameNotFoundException {
+        Account account = accountRepository.findByEmail(emailOrNickname);//login.html form 에서 받은 email 로 회원 검색
+        if(account == null){ // 이메일로 찾지 못한 경우 닉네임으로 찾는다.
+            account = accountRepository.findByNickname(emailOrNickname);
+        }
+        if(account == null){ // 닉네임으로도 찾지 못한다면 에러를 던짐
+            throw new UsernameNotFoundException(emailOrNickname);
         }
         return new UserAccount(account); // User 를 확장한 UserAccount 클래스에 유저 정보와 권한을 삽입하여 반환
     }

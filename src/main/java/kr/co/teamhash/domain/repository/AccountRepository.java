@@ -13,4 +13,6 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
 
     // 로그인시 이메일로 유저 검사
     Account findByEmail(String email);
+    Account findByNickname(String nickname);
+
 }

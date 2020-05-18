@@ -14,7 +14,7 @@ public class UserAccount extends User {
     private Account account;
     // 스프링 시큐리티가 다루는 유저 정보를 우리가 가지고 있는 도메인의 유저 정보와 연동
     public UserAccount(Account account) {
-        super(account.getEmail(), account.getPassword(), List.of(new SimpleGrantedAuthority("ROLE_USER")));
+        super(account.getNickname(), account.getPassword(), List.of(new SimpleGrantedAuthority("ROLE_USER")));
         this.account = account;
     }
 

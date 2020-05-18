@@ -43,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .userDetailsService(accountService)
                 .tokenRepository(tokenRepository());
 
-    }
+}
 
     @Bean
     public PersistentTokenRepository tokenRepository(){

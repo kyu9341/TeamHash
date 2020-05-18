@@ -57,12 +57,6 @@
 
     </div>
 
-    <!-- 로그인 된 유저 정보 파악 및 로그아웃 기본 틀 -->
-        <h1 th:text="${account.nickname} + '!!'">nickname!</h1>
-        <p th:text="${name}"></p>
-        <form th:action="@{/logout}" method="post">
-            <input type="submit" value="Sign Out"/>
-        </form>
 
         <!-- Project Build button -->
         <form th:action="@{/build-project}" method="get">

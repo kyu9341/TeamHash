@@ -64,6 +64,7 @@ public class AccountController {
         return view;
     }
 
+
     @GetMapping("/check-email")
     public String checkEmail(@CurrentUser Account account, Model model){
         if(account == null){
