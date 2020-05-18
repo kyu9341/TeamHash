@@ -22,6 +22,8 @@ public class Problems {
     @Id @GeneratedValue
     private Long id;
 
+    private Long projectId;
+
     @Column(length = 10, nullable = false)
     private String writer;
 

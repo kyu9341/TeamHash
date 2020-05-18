@@ -2,7 +2,9 @@ package kr.co.teamhash;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.web.filter.HiddenHttpMethodFilter;
 
 
 
@@ -14,5 +16,12 @@ public class App {
 
         SpringApplication.run(App.class, args);
     }
+
+    //PutMapping, DeleteMapping을 실행시키기 위함
+    @Bean
+    public HiddenHttpMethodFilter hiddenHttpMethodFilter(){
+        return new HiddenHttpMethodFilter();
+    }
+
 
 }

@@ -19,7 +19,6 @@
         <table>
             <thead>
                 <tr>
-                    <th class="one wide">번호</th>
                     <th class="ten wide">글제목</th>
                     <th class="two wide">작성자</th>
                     <th class="three wide">작성일</th>
@@ -29,12 +28,20 @@
 
             
             <tbody>
-                <tr>
+                <tr th:each="problem : ${problemList}">
+                    <td>
+                        <a th:href="@{'/project/'+${projectId}+'/'+${title}+'/problem_share/' + ${problem.id}}">
+                            <span th:text="${problem.title}"></span>
+                        </a>
+                    </td>
+                    <td>
+                        <span th:text="${problem.writer}"></span>
+                    </td>
+                    <td>
+                        <span th:text="${#temporals.format(problem.createdDate, 'yyyy-MM-dd HH:mm')}"></span>
+                    </td>
 
                 </tr>
-
-
-
             </tbody>
         </table>
     </div>
