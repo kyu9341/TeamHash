@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -171,19 +172,35 @@ public class ProjectController {
 
     @PutMapping("/project/{projectId}/{title}/problem_share/{problemId}")
     public String problemUpdate(@PathVariable("projectId") Long projectId, @PathVariable("title") String title, Model model,  @CurrentUser Account account, Problems problem){
-            // 프로젝트의 맴버 리스트에 현재 유저의 아이디가 있다면 페이지 공개
-            boolean isMember = projectService.isMember(projectId,account);
+        // 프로젝트의 맴버 리스트에 현재 유저의 아이디가 있다면 페이지 공개
+        boolean isMember = projectService.isMember(projectId,account);
 
-            // 프로젝트에 필요한 정보와
-            // 유저가 해당 프로젝트의 맴버인지 확인하는 정보
-            model.addAttribute("isMember", isMember);
-            model.addAttribute("projectId", projectId);
-            model.addAttribute("title", title);
-    
-            Long problemId = problemShareService.saveProblem(problem,projectId);
+        // 프로젝트에 필요한 정보와
+        // 유저가 해당 프로젝트의 맴버인지 확인하는 정보
+        model.addAttribute("isMember", isMember);
+        model.addAttribute("projectId", projectId);
+        model.addAttribute("title", title);
+
+        Long problemId = problemShareService.saveProblem(problem,projectId);
     
     
     
         return "redirect:/project/"+projectId+"/"+title+"/problem_share/"+problemId;
+    }
+
+    @DeleteMapping("/project/{projectId}/{title}/problem_share/{problemId}")
+    public String problemDelete(@PathVariable("projectId") Long projectId, @PathVariable("title") String title,@PathVariable("problemId") Long problemId, @CurrentUser Account account, Model model){
+        // 프로젝트의 맴버 리스트에 현재 유저의 아이디가 있다면 페이지 공개
+        boolean isMember = projectService.isMember(projectId,account);
+
+        // 프로젝트에 필요한 정보와
+        // 유저가 해당 프로젝트의 맴버인지 확인하는 정보
+        model.addAttribute("isMember", isMember);
+        model.addAttribute("projectId", projectId);
+        model.addAttribute("title", title);
+
+        problemShareService.deleteProblem(problemId);
+
+        return "redirect:/project/"+projectId+"/"+title+"/problem_share";
     }
 }

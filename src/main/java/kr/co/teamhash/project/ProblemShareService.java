@@ -16,6 +16,7 @@ public class ProblemShareService {
     private final ProblemsRepository problemsRepository;
 
 
+    // 문제 공유 글 저장
     @Transactional
     public Long saveProblem(Problems problem, Long projectId){
 
@@ -23,6 +24,7 @@ public class ProblemShareService {
         return problemsRepository.save(problem).getId();
     }
 
+    // 문제 공유 글 리스트 얻기
     @Transactional
     public List<Problems> getProblemList(Long projectId){
 
@@ -31,10 +33,17 @@ public class ProblemShareService {
         return problemList;
     }
 
+    // 문제 공유 글 내용 얻기
     @Transactional
     public Problems getProblem(Long problemId){
         Problems problem = problemsRepository.findById(problemId).get();
 
         return problem;
+    }
+
+    // 문제 공유 글 삭제
+    @Transactional
+    public void deleteProblem(Long problemId){
+        problemsRepository.deleteById(problemId);
     }
 }

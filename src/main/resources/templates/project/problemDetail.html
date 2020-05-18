@@ -23,7 +23,7 @@
                 <button>수정</button>
             </a>
 
-            <form id="delete-form" th:action="@{'/post/' + ${problem.id}}" method="post">
+            <form id="delete-form" th:action="@{'/project/'+${projectId}+'/'+${title}+'/problem_share/' + ${problem.id}}" method="post">
                 <input type="hidden" name="_method" value="delete"/>
                 <button id="delete-btn">삭제</button>
             </form>
