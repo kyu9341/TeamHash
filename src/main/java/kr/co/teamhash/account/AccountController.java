@@ -88,5 +88,19 @@ public class AccountController {
         return "redirect:/main";
     }
 
+    @GetMapping("/profile/{nickname}")
+    public String viewProfile(@PathVariable String nickname, Model model, @CurrentUser Account account) {
+        Account byNickname = accountRepository.findByNickname(nickname);
+        if (nickname == null) {
+            throw new IllegalArgumentException(nickname + "에 해당하는 사용자가 없습니다.");
+        }
+
+        model.addAttribute(byNickname);
+        // 해당 get 파라미터로 넘어온 닉네임에 해당하는 Account 객체와 현재 인증된 객체를 비교
+        model.addAttribute("isOwner", byNickname.equals(account));
+
+        return "account/profile";
+    }
+
 
 }

@@ -10,11 +10,30 @@
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/node_modules/jdenticon/dist/jdenticon.min.js"></script>
+    <style>
+        /* Remove the navbar's default margin-bottom and rounded borders */
+        .navbar {
+            margin-bottom: 0;
+            border-radius: 0;
+            background-color: #FFFFFF;
+        }
+        /* Add a gray background color and some padding to the footer */
+        footer {
+            padding-top: 10%;
+            background-color: #FFFFFF;
+            padding: 25px;
+        }
+         .container{
+             max-width: 100%;
+         }
+    </style>
 </head>
 
 
 <nav th:fragment="main-nav" class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="/main" th:href="@{/}"><img src="images/logo2.png" ></a>
+    <a class="navbar-brand" href="/main" th:href="@{/main}">
+        <img src="/images/logo2.png">
+    </a>
 
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,8 +64,8 @@
                         <h6 class="dropdown-header">
                             <span sec:authentication="name">Username</span>
                         </h6>
-                        <a class="dropdown-item">프로필</a>
-
+                        <a class="dropdown-item" th:href="@{'/profile/' + ${#authentication.name}}">프로필</a>
+                        <a class="dropdown-item" href="#" th:href="@{'/settings/profile'}">설정</a>
                         <div class="dropdown-divider"></div>
                         <form class="form-inline my-2 my-lg-0" action="#" th:action="@{/logout}" method="post">
                             <button class="dropdown-item" type="submit">로그아웃</button>
@@ -59,6 +78,19 @@
 </nav>
 
 
+<!--(currentMenu) currentMenu가 어떤 값인지에 따라 선택된 모양으로 보여준다.-->
+<div th:fragment="settings-menu (currentMenu)" class="list-group">
+    <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'profile'}? active" href="#"
+       th:href="@{/settings/profile}">프로필</a>
+    <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'password'}? active" href="#"
+       th:href="@{/settings/password}">패스워드</a>
+    <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'notifications'}? active"
+       href="#" th:href="@{/settings/notifications}">알림</a>
+    <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'project'}? active"
+       href="#" th:href="@{/settings/project}">프로젝트</a>
+    <a class="list-group-item list-group-item-action list-group-item-danger"
+       th:classappend="${currentMenu == 'account'}? active" href="#" th:href="@{/settings/account}">계정</a>
+</div>
 
 <footer th:fragment="footer" class="container-fluid text-center">
     <p>Footer Text</p>
