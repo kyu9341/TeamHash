@@ -2,6 +2,7 @@ package kr.co.teamhash.account;
 
 import kr.co.teamhash.domain.entity.Account;
 import kr.co.teamhash.domain.repository.AccountRepository;
+import kr.co.teamhash.settings.Profile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -84,5 +85,14 @@ public class AccountService implements UserDetailsService {
     public void completeSignUp(Account account) {
         account.completeSignUp();
         login(account); // 인증된 정보로 다시 로그인 처리
+    }
+
+    public void updateProfile(Account account, Profile profile) {
+
+        account.setIntroduction(profile.getIntroduction());
+        account.setSchool(profile.getSchool());
+        account.setProfileImage(profile.getProfileImage());
+        accountRepository.save(account);
+
     }
 }

@@ -44,6 +44,12 @@
                             </span>
                         <span th:text="${account.location}" class="col-9"></span>
                     </p>
+                    <p th:if="${!#strings.isEmpty(account.school)}">
+                            <span style="font-size: 20px;">
+                                <i class="fa  fa-university col-1"></i>
+                            </span>
+                        <span th:text="${account.school}" class="col-9"></span>
+                    </p>
                     <p th:if="${isOwner}">
                             <span style="font-size: 20px;">
                                 <i class="fa fa-envelope-o col-1"></i>
