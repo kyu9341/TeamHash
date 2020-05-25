@@ -1,11 +1,13 @@
 package kr.co.teamhash.config;
 
 import kr.co.teamhash.account.AccountService;
+import kr.co.teamhash.account.RememberMeUserDetailsService;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -23,6 +25,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final AccountService accountService;
     private final DataSource dataSource;
+    private final RememberMeUserDetailsService rememberMeUserDetailsService;
 
 
     @Override
@@ -42,7 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .logoutSuccessUrl("/");
 
         http.rememberMe()
-                .userDetailsService(accountService)
+                .userDetailsService(rememberMeUserDetailsService)
                 .tokenRepository(tokenRepository());
 
 }
@@ -63,7 +66,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // 스태틱 리소스들은 시큐리티 적용 x
     }
 
-
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        // 스프링 시큐리티가 사용할 기본 AuthManager 에 이메일로만 로그인하는 UserDetailsService 를 설정하는 코드
+        auth.userDetailsService(accountService);
+    }
 }
 
 

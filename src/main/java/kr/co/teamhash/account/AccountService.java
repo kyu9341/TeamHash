@@ -73,9 +73,7 @@ public class AccountService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String emailOrNickname) throws UsernameNotFoundException {
         Account account = accountRepository.findByEmail(emailOrNickname);//login.html form 에서 받은 email 로 회원 검색
-        if(account == null){ // 이메일로 찾지 못한 경우 닉네임으로 찾는다.
-            account = accountRepository.findByNickname(emailOrNickname);
-        }
+
         if(account == null){ // 닉네임으로도 찾지 못한다면 에러를 던짐
             throw new UsernameNotFoundException(emailOrNickname);
         }
