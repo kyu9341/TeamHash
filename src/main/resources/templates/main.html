@@ -16,26 +16,27 @@
         text-align:center;
 
     }
-    @media (min-width: 750px) {
-        .card-columns {
+
+    .project_control{
         
-        padding-left: 30px;
-        padding-right: 30px;
-        padding-top: 10px;
-        column-count: 1;
-        max-width: 1020px;
-        min-width: 420px;
-        
+        margin: auto;
+        min-height:70px;
+        align-content: center;
+        display:flex;
+        border:1px;
+        padding: 20px;
     }
-    }
+
     .card-columns {
         margin: auto;
-        padding-left: 150px;
-        padding-right: 150px;
+        padding-left: 100px;
+        padding-right: 100px;
         padding-top: 10px;
+        padding-bottom: 30px;
         column-count: 2;
+        
         max-width: 1020px;
-        min-width: 420px;
+       
         
     }
     .nav-profile{
@@ -44,7 +45,9 @@
     .card{
         min-width: 200px;
         max-width: 500px;
+        margin: 20px;
     }
+    
 
 
     </style>
@@ -65,41 +68,22 @@
 
 
     <!-- Project Build button -->
-    <form th:action="@{/build-project}" method="get">
-        <input type="submit" value="Build Project"/>
-    </form>
+
+    <div class="project_control">
+        <form th:action="@{/build-project}" method="get">
+            <input type="submit" value="New Project"  />
+        </form>
+
+    </div>
 
 
-    <table>
-        <thead>
-            <tr>
-                <th>프로젝트 이름</th>
-                <th>프로젝트 설명</th>
-            </tr>
-
-        </thead>
-        <tbody>
-            <tr th:each="project : ${projectList}">
-                <td>
-                    <!-- 프로젝트에 맞는 페이지 URL 생성 -->
-                    <!-- 깃허브처럼 바꾸고싶다. /project/projectBuilderName/projectTitle 요로코롬 -->
-                    <a th:href="@{'/project/' + ${project.id} + '/' + ${project.title}}">
-                        <span th:text="${project.title}"></span>
-                    </a>
-                    
-                </td>
-                <td>
-                    <span th:text="${project.subtitle}"></span>
-                </td>
 
 
-            </tr>
-        </tbody>
-    </table>
 
+    <!-- project list -->
     <div class="card-columns">
         <div class="card" th:each="project : ${projectList}" >
-            <img class="card-img-top m-1" src="imges/test.png" alt="Card image cap">
+            
             <div class="card-body">
                 <a th:href="@{'/project/' + ${project.id} + '/' + ${project.title}}">
                     <h5 class="card-title"  th:text="${project.title}"></h5>
@@ -108,7 +92,7 @@
                 <p class="card-text" th:text="${project.subtitle}"></p>
             </div>
             <div class="card-footer">
-                <small class="text-muted">Last updated 3 mins ago</small>
+                <small class="text-muted" th:text="${project.buildDate}"></small>
             </div>
         </div>
     </div>
