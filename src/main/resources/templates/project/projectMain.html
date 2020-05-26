@@ -4,6 +4,8 @@
 
 <head th:replace="fragments.html :: head"></head>
 <body>
+    <nav th:replace="fragments.html :: main-nav"></nav>
+
     <!-- no project member -->
     <div th:if="${!isMember}">
         your not project member
