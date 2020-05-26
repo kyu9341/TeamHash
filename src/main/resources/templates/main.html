@@ -16,19 +16,38 @@
         text-align:center;
 
     }
-    .card-deck {
-        margin: auto;
-        padding-left: 10px;
-        padding-right: 10px;
+    @media (min-width: 750px) {
+        .card-columns {
+        
+        padding-left: 30px;
+        padding-right: 30px;
         padding-top: 10px;
-
-
+        column-count: 1;
+        max-width: 1020px;
+        min-width: 420px;
+        
+    }
+    }
+    .card-columns {
+        margin: auto;
+        padding-left: 150px;
+        padding-right: 150px;
+        padding-top: 10px;
+        column-count: 2;
+        max-width: 1020px;
+        min-width: 420px;
+        
     }
     .nav-profile{
         margin-top: 0%;
     }
+    .card{
+        min-width: 200px;
+        max-width: 500px;
+    }
 
-</style>
+
+    </style>
     <body>
 
     <nav th:replace="fragments.html :: main-nav"></nav>
@@ -78,7 +97,7 @@
         </tbody>
     </table>
 
-    <div class="card-deck">
+    <div class="card-columns">
         <div class="card" th:each="project : ${projectList}" >
             <img class="card-img-top m-1" src="imges/test.png" alt="Card image cap">
             <div class="card-body">
@@ -93,6 +112,7 @@
             </div>
         </div>
     </div>
+   
 
     <footer th:replace="fragments.html :: footer"></footer>
 
