@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,14 +29,15 @@ public class ProjectController {
     private final ProblemShareService problemShareService;
 
     // 프로젝트 생성 form
-    @GetMapping("/build-project")
-    public String buildProject(Model model){
+    @GetMapping("/build-project/{nickName}")
+    public String buildProject(@PathVariable("nickName") String nickName,Model model){
         model.addAttribute("projectBuildForm", new ProjectBuildForm());
+        model.addAttribute("nickName", nickName);
         return "project/buildProject";
     }
 
-    @PostMapping("/build-project")
-    public String buildProjectDone(@ModelAttribute ProjectBuildForm projectBuildForm, Model model , @CurrentUser Account account){
+    @PostMapping("/build-project/{nickName}")
+    public String buildProjectDone(@Valid @ModelAttribute ProjectBuildForm projectBuildForm, Model model , @CurrentUser Account account){
         
         projectService.saveNewProject(projectBuildForm,account);
         

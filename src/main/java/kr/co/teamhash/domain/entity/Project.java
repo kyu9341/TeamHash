@@ -19,6 +19,8 @@ public class Project {
 
     private String subtitle;
 
+    private String builderNick;
+
     //프로젝트를 생성한 유저의 id를 넣을 것
     private Long builder;
 

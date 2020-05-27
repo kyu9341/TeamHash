@@ -33,6 +33,7 @@ public class ProjectService {
                 .title(projectBuildForm.getTitle())
                 .subtitle(projectBuildForm.getSubTitle())
                 .builder(account.getId())
+                .builderNick(projectBuildForm.getBuilderNick())
                 .buildDate(LocalDateTime.now())
                 .build();
 
