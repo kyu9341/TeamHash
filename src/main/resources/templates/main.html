@@ -16,19 +16,47 @@
         text-align:center;
 
     }
-    .card-deck {
+
+    .project_control{
+        
         margin: auto;
-        padding-left: 10px;
-        padding-right: 10px;
-        padding-top: 10px;
-
-
+        min-height:70px;
+        align-content: center;
+        display:flex;
+        border:1px;
+        padding: 20px;
     }
+
+    .card-columns {
+        margin: auto;
+        padding-left: 100px;
+        padding-right: 100px;
+        padding-top: 10px;
+        padding-bottom: 30px;
+        column-count: 2;
+        
+        max-width: 1020px;
+       
+        
+    }
+    @media(max-width: 630px){
+        .card-columns{
+            column-count: 1;
+        }
+    }
+
     .nav-profile{
         margin-top: 0%;
     }
+    .card{
+        min-width: 200px;
+        max-width: 500px;
+        margin: 20px;
+    }
+    
 
-</style>
+
+    </style>
     <body>
 
     <nav th:replace="fragments.html :: main-nav"></nav>
@@ -45,70 +73,36 @@
     </div>
 
 
-        <!-- Project Build button -->
+    <!-- Project Build button -->
+
+    <div class="project_control">
         <form th:action="@{/build-project}" method="get">
-            <input type="submit" value="Build Project"/>
+            <input type="submit" value="New Project"  />
         </form>
 
-
-        <table>
-            <thead>
-                <tr>
-                    <th>프로젝트 이름</th>
-                    <th>프로젝트 설명</th>
-                </tr>
-
-            </thead>
-            <tbody>
-                <tr th:each="project : ${projectList}">
-                    <td>
-                        <!-- 프로젝트에 맞는 페이지 URL 생성 -->
-                        <!-- 깃허브처럼 바꾸고싶다. /project/projectBuilderName/projectTitle 요로코롬 -->
-                        <a th:href="@{'/project/' + ${project.id} + '/' + ${project.title}}">
-                            <span th:text="${project.title}"></span>
-                        </a>
-                        
-                    </td>
-                    <td>
-                        <span th:text="${project.subtitle}"></span>
-                    </td>
+    </div>
 
 
-                </tr>
-            </tbody>
-        </table>
-    <div class="card-deck">
-        <div class="card">
-            <img class="card-img-top m-1" src="imges/test.png" alt="Card image cap">
+
+
+
+    <!-- project list -->
+    <div class="card-columns">
+        <div class="card" th:each="project : ${projectList}" >
+            
             <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                <a th:href="@{'/project/' + ${project.id} + '/' + ${project.title}}">
+                    <h5 class="card-title"  th:text="${project.title}"></h5>
+                </a>
+                
+                <p class="card-text" th:text="${project.subtitle}"></p>
             </div>
             <div class="card-footer">
-                <small class="text-muted">Last updated 3 mins ago</small>
-            </div>
-        </div>
-        <div class="card">
-            <img class="card-img-top " src="imges/test.png" alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
-            </div>
-            <div class="card-footer">
-                <small class="text-muted">Last updated 3 mins ago</small>
-            </div>
-        </div>
-        <div class="card">
-            <img class="card-img-top " src="imges/test.png" alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
-            </div>
-            <div class="card-footer">
-                <small class="text-muted">Last updated 3 mins ago</small>
+                <small class="text-muted" th:text="${project.buildDate}"></small>
             </div>
         </div>
     </div>
+   
 
     <footer th:replace="fragments.html :: footer"></footer>
 
