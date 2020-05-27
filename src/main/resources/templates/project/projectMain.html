@@ -7,54 +7,7 @@
 </head>
 
 <body>
-
-    <nav th:fragment="main-nav" class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="/main" th:href="@{/main}">
-            <img src="/images/logo2.png">
-        </a>
-
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto ">
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
-                </li>
-            </ul>
-
-            <ul class="navbar-nav justify-content-end">
-                <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
-                    <div class="btn-group">
-                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <svg th:if="${#strings.isEmpty(account?.profileImage)}" data-jdenticon-value="user127" th:data-jdenticon-value="${#authentication.name}"
-                                 width="24" height="24" class="rounded border bg-light"></svg>
-                            <img th:if="${!#strings.isEmpty(account?.profileImage)}" th:src="${account.profileImage}"
-                                 width="24" height="24" class="rounded border">
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <h6 class="dropdown-header">
-                                <span sec:authentication="name">Username</span>
-                            </h6>
-                            <a class="dropdown-item" th:href="@{'/profile/' + ${#authentication.name}}">프로필</a>
-                            <a class="dropdown-item" href="#" th:href="@{'/settings/profile'}">설정</a>
-                            <div class="dropdown-divider"></div>
-                            <form class="form-inline my-2 my-lg-0" action="#" th:action="@{/logout}" method="post">
-                                <button class="dropdown-item" type="submit">로그아웃</button>
-                            </form>
-                        </div>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </nav>
-
+<nav th:replace="fragments.html :: main-nav"></nav>
 
 
 
