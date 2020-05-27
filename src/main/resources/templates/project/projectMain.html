@@ -14,8 +14,8 @@
     <!-- project member  -->
     <div th:if="${isMember}" >
         you project member
+        
 
-    
         <form action="#" th:action="@{'/project/'+${projectId}+'/'+${title}+'/problem_share'}" method="get">
             
             <button type="submit" >issue</button>

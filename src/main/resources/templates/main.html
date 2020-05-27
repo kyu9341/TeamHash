@@ -21,10 +21,10 @@
         
         margin: auto;
         min-height:70px;
-        align-content: center;
         display:flex;
         border:1px;
         padding: 20px;
+       
     }
 
     .card-columns {
@@ -77,7 +77,7 @@
 
     <div class="project_control">
         <form th:action="@{/build-project}" method="get">
-            <input type="submit" value="New Project"  />
+            <input class="btn btn-outline-primary" type="submit" value="New Project" />
         </form>
 
     </div>
