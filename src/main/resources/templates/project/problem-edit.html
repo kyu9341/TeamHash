@@ -14,7 +14,7 @@
 
     <div th:if="${isMember}" >
 
-        <form th:action="@{'/project/'+${projectId}+'/'+${title}+'/problem_share/' + ${problem.id}}" method="post">
+        <form th:action="@{'/project/'+${nickname}+'/'+${title}+'/problem-share/' + ${problem.id}}" method="post">
             <input type="hidden" name="_method" value="put"/>
             <input type="hidden" name="id" th:value="${problem.id}"/>
         

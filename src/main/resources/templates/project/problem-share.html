@@ -13,7 +13,7 @@
     <div th:if="${isMember}" >
         <h1>problem share</h1>
 
-        <a th:href="@{'/project/'+${projectId}+'/'+${title}+'/problem_share/post'}">글쓰기</a>
+        <a th:href="@{'/project/'+${nickname}+'/'+${title}+'/problem-share/post'}">글쓰기</a>
 
 
         <table>
@@ -30,7 +30,7 @@
             <tbody>
                 <tr th:each="problem : ${problemList}">
                     <td>
-                        <a th:href="@{'/project/'+${projectId}+'/'+${title}+'/problem_share/' + ${problem.id}}">
+                        <a th:href="@{'/project/'+${nickname}+'/'+${title}+'/problem-share/' + ${problem.id}}">
                             <span th:text="${problem.title}"></span>
                         </a>
                     </td>
