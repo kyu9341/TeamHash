@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -17,7 +18,7 @@ import kr.co.teamhash.domain.entity.Account;
 import kr.co.teamhash.domain.entity.Member;
 import kr.co.teamhash.domain.entity.Problems;
 
-
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class ProjectController {
@@ -26,7 +27,7 @@ public class ProjectController {
     private final ProblemShareService problemShareService;
     private final ProjectBuildValidator projectBuildValidator;
 
-    @InitBinder
+    @InitBinder("projectBuildForm")
     public void projectInitBinder(WebDataBinder webDataBinder) {
         webDataBinder.addValidators(projectBuildValidator);
     }
@@ -46,7 +47,8 @@ public class ProjectController {
         if (errors.hasErrors()) {
             return "project/buildProject";
         }
-        projectService.saveNewProject(projectBuildForm,account);
+        log.info("BuilderNick : " + projectBuildForm.getBuilderNick());
+        projectService.saveNewProject(projectBuildForm, account);
         
         return "redirect:/main";
     }

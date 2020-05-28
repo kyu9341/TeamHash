@@ -27,7 +27,7 @@ public class ProjectService {
     private final MemberRepository memberRepository;
 
     // 프로젝트 저장
-    public Project saveNewProject(@ModelAttribute @Valid ProjectBuildForm projectBuildForm,Account account){
+    public Project saveNewProject(ProjectBuildForm projectBuildForm, Account account){
         
         Project project = Project.builder()
                 .title(projectBuildForm.getTitle())

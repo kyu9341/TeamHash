@@ -9,12 +9,12 @@
 
     
     <form action="#" th:action="@{/project/build-project}" th:method="post" th:object="${projectBuildForm}">
-        
 
-        <input th:id="builderNick" type="text" th:builderNick="builderNick"
-               th:field="*{builderNick}" th:value="${#authentication.name}" hidden>
-        
-        
+
+        <input id="builderNick" type="text" th:name="builderNick"
+               th:value="${#authentication.name}" hidden>
+
+
         <input id="title"  type="text" th:field="*{title}"  placeholder="title" minlength="3" required>
         <input id="subTitle" type="text" th:field="*{subTitle}" placeholder="subTitle" minlength="3" required>
         <small class="form-text text-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title Error</small>
