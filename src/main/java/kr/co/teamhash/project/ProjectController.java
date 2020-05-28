@@ -26,7 +26,7 @@ public class ProjectController {
     private final ProblemShareService problemShareService;
     private final ProjectBuildValidator projectBuildValidator;
 
-    @InitBinder
+    @InitBinder("projectBuildForm")
     public void projectInitBinder(WebDataBinder webDataBinder) {
         webDataBinder.addValidators(projectBuildValidator);
     }
@@ -38,13 +38,13 @@ public class ProjectController {
         model.addAttribute("projectBuildForm", new ProjectBuildForm());
 
 //        model.addAttribute("nickName", nickName);
-        return "project/buildProject";
+        return "project/build-project";
     }
 
     @PostMapping("/project/build-project")
     public String buildProjectDone(@Valid @ModelAttribute ProjectBuildForm projectBuildForm, Errors errors, Model model , @CurrentUser Account account){
         if (errors.hasErrors()) {
-            return "project/buildProject";
+            return "project/build-project";
         }
         projectService.saveNewProject(projectBuildForm,account);
         
@@ -65,7 +65,7 @@ public class ProjectController {
         
         //프로젝트 검색
         if(!projectService.getProject(projectId).isPresent())
-            return "project/noProject";
+            return "project/no-project";
 
         // 프로젝트의 맴버 리스트에 현재 유저의 아이디가 있다면 페이지 공개
         boolean isMember = projectService.isMember(projectId,account);
@@ -76,12 +76,12 @@ public class ProjectController {
         model.addAttribute("projectId", projectId);
         model.addAttribute("title", title);
 
-        return "project/projectMain";
+        return "project/project-main";
     }
 
     // 문제 공유란 메인 페이지
-    @GetMapping("/project/{projectId}/{title}/problem_share")
-    public String problem_share_main(@PathVariable("projectId") Long projectId, @PathVariable("title") String title, Model model,  @CurrentUser Account account){
+    @GetMapping("/project/{projectId}/{title}/problem-share")
+    public String problemShareMain(@PathVariable("projectId") Long projectId, @PathVariable("title") String title, Model model,  @CurrentUser Account account){
 
         // 프로젝트의 맴버 리스트에 현재 유저의 아이디가 있다면 페이지 공개
         boolean isMember = projectService.isMember(projectId,account);
@@ -97,12 +97,12 @@ public class ProjectController {
         model.addAttribute("problemList", problemList);
 
 
-        return "project/problem_share";
+        return "project/problem-share";
     }
 
 
     // 문제 공유란 글쓰기
-    @GetMapping("/project/{projectId}/{title}/problem_share/post")
+    @GetMapping("/project/{projectId}/{title}/problem-share/post")
     public String write(@PathVariable("projectId") Long projectId, @PathVariable("title") String title, Model model,  @CurrentUser Account account) {
         // 프로젝트의 맴버 리스트에 현재 유저의 아이디가 있다면 페이지 공개
         boolean isMember = projectService.isMember(projectId,account);
@@ -113,12 +113,12 @@ public class ProjectController {
         model.addAttribute("projectId", projectId);
         model.addAttribute("title", title);
 
-        return "project/post_problem";
+        return "project/post-problem";
     }
 
 
     // 문제 공유란 글 작성 완료
-    @PostMapping("/project/{projectId}/{title}/problem_share/post")
+    @PostMapping("/project/{projectId}/{title}/problem-share/post")
     public String write(@PathVariable("projectId") Long projectId, @PathVariable("title") String title, Model model,  @CurrentUser Account account, Problems problem) {
         // 프로젝트의 맴버 리스트에 현재 유저의 아이디가 있다면 페이지 공개
         boolean isMember = projectService.isMember(projectId,account);
@@ -134,11 +134,11 @@ public class ProjectController {
 
 
 
-        return "redirect:/project/"+projectId+"/"+title+"/problem_share/"+problemId;
+        return "redirect:/project/"+projectId+"/"+title+"/problem-share/"+problemId;
     }
 
     // 문제 공유글 디테일
-    @GetMapping("/project/{projectId}/{title}/problem_share/{problemId}")
+    @GetMapping("/project/{projectId}/{title}/problem-share/{problemId}")
     public String problemDetail(@PathVariable("projectId") Long projectId, @PathVariable("title") String title, @PathVariable("problemId") Long problemId, Model model,  @CurrentUser Account account){
         
         // 프로젝트의 맴버 리스트에 현재 유저의 아이디가 있다면 페이지 공개
@@ -153,12 +153,12 @@ public class ProjectController {
         Problems problem = problemShareService.getProblem(problemId);
 
         model.addAttribute("problem", problem);
-        return "/project/problemDetail";
+        return "/project/problem-detail";
     }
     
 
     // 문제 공유글 수정란
-    @GetMapping("/project/{projectId}/{title}/problem_share/edit/{problemId}")
+    @GetMapping("/project/{projectId}/{title}/problem-share/edit/{problemId}")
     public String problemEdit(@PathVariable("projectId") Long projectId, @PathVariable("title") String title, @PathVariable("problemId") Long problemId, Model model,  @CurrentUser Account account){
 
 
@@ -177,10 +177,10 @@ public class ProjectController {
         model.addAttribute("problem", problem);
 
 
-        return "/project/problemEdit";
+        return "/project/problem-edit";
     }
 
-    @PutMapping("/project/{projectId}/{title}/problem_share/{problemId}")
+    @PutMapping("/project/{projectId}/{title}/problem-share/{problemId}")
     public String problemUpdate(@PathVariable("projectId") Long projectId, @PathVariable("title") String title, Model model,  @CurrentUser Account account, Problems problem){
         // 프로젝트의 맴버 리스트에 현재 유저의 아이디가 있다면 페이지 공개
         boolean isMember = projectService.isMember(projectId,account);
@@ -195,10 +195,10 @@ public class ProjectController {
     
     
     
-        return "redirect:/project/"+projectId+"/"+title+"/problem_share/"+problemId;
+        return "redirect:/project/"+projectId+"/"+title+"/problem-share/"+problemId;
     }
 
-    @DeleteMapping("/project/{projectId}/{title}/problem_share/{problemId}")
+    @DeleteMapping("/project/{projectId}/{title}/problem-share/{problemId}")
     public String problemDelete(@PathVariable("projectId") Long projectId, @PathVariable("title") String title,@PathVariable("problemId") Long problemId, @CurrentUser Account account, Model model){
         // 프로젝트의 맴버 리스트에 현재 유저의 아이디가 있다면 페이지 공개
         boolean isMember = projectService.isMember(projectId,account);
@@ -211,6 +211,6 @@ public class ProjectController {
 
         problemShareService.deleteProblem(problemId);
 
-        return "redirect:/project/"+projectId+"/"+title+"/problem_share";
+        return "redirect:/project/"+projectId+"/"+title+"/problem-share";
     }
 }
