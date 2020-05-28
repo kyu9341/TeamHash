@@ -129,7 +129,7 @@
         <div class="card" th:each="project : ${projectList}" >
             
             <div class="card-body">
-                <a th:href="@{'/project/' + ${project.id} + '/' + ${project.title}}">
+                <a th:href="@{'/project/' + ${account.nickname} + '/' + ${project.title}}">
                     <h5 class="card-title"  th:text="${project.title}"></h5>
                 </a>
                 

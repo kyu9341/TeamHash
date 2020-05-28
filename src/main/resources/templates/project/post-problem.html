@@ -11,7 +11,7 @@
     </div>
 
     <div th:if="${isMember}" >
-        <form action="#" th:action="@{'/project/'+${projectId}+'/'+${title}+'/problem-share/post'}" method="post">
+        <form action="#" th:action="@{'/project/'+${nickname}+'/'+${title}+'/problem-share/post'}" method="post">
             제목 : <input type="text" name="title"> <br>
             작성자 : <input type="text" name="writer"> <br>
             <textarea name="content"></textarea><br>

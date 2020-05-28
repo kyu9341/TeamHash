@@ -8,6 +8,8 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import com.fasterxml.jackson.databind.ser.std.StdArraySerializers.LongArraySerializer;
+
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
@@ -84,6 +86,19 @@ public class ProjectService {
         return projectList;
     }
 
+
+    // nickname과 projectTitle로 projectId 찾기
+    @Transactional
+    public Long getProjectId(String nickname, String title){
+        List<Project> projectList =  projectRepository.findAllByBuilderNick(nickname);
+
+        for (Project project : projectList) {
+            if(project.getTitle().equals(title))
+                return project.getId();
+        }
+
+        return null;
+    }
 
     // 프로젝트 아이디로 프로젝트 찾기
     // 프로젝트 아이디로 페이지에 접근할 때 해당 url에서 projectId를 추출해서 사용
