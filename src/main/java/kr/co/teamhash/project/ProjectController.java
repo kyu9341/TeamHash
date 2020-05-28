@@ -4,14 +4,13 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 
 import kr.co.teamhash.account.CurrentUser;
 import kr.co.teamhash.domain.entity.Account;
@@ -25,17 +24,28 @@ public class ProjectController {
 
     private final ProjectService projectService;
     private final ProblemShareService problemShareService;
+    private final ProjectBuildValidator projectBuildValidator;
+
+    @InitBinder
+    public void projectInitBinder(WebDataBinder webDataBinder) {
+        webDataBinder.addValidators(projectBuildValidator);
+    }
+
 
     // 프로젝트 생성 form
-    @GetMapping("/build-project")
+    @GetMapping("/project/build-project")
     public String buildProject(Model model){
         model.addAttribute("projectBuildForm", new ProjectBuildForm());
+
+//        model.addAttribute("nickName", nickName);
         return "project/buildProject";
     }
 
-    @PostMapping("/build-project")
-    public String buildProjectDone(@ModelAttribute ProjectBuildForm projectBuildForm, Model model , @CurrentUser Account account){
-        
+    @PostMapping("/project/build-project")
+    public String buildProjectDone(@Valid @ModelAttribute ProjectBuildForm projectBuildForm, Errors errors, Model model , @CurrentUser Account account){
+        if (errors.hasErrors()) {
+            return "project/buildProject";
+        }
         projectService.saveNewProject(projectBuildForm,account);
         
         return "redirect:/main";
