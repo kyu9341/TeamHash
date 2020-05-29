@@ -1,45 +1,13 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, target-densitydpi=medium-dpi">	
-        <meta name="format-detection" content="telephone=no">
-        <title>Team#</title>
-        <script src="/js/default.js"></script>
-        <link rel="stylesheet" href="/css/default.css">
-        <link rel="stylesheet" href="/css/index.css">
-        <link rel="stylesheet" media="( min-width:701px ) and ( max-width:1000px )" href="/css/tablet.css">
-        <link rel="stylesheet" media="( min-width:0px ) and ( max-width:700px )" href="/css/mobile.css">
-    </head>
-    
-    <body>
+<head th:replace="fragments.html :: head"></head>
 
-        <header>
-            <div class="left">
-                <h1><a href="#a">TeamHash</a></h1>
-                <a href="#a" class="all">all Menu</a>
-                <div class="nav">
-                    <h2>Menu</h2>
-                    <nav>
-                        <ul>
-                        <li><a href="#a">Products</a></li>
-                        <li><a href="#a">Pricing</a></li>
-                        <li><a href="#a">About us</a></li>
-                        </ul>
-                    </nav>
-                    <div>
-                        <a href="#a">White Paper</a>
-                        <a href="#a">FAQ</a>
-                    </div>
-                    <a href="#a" class="close">Close</a>
-                </div>
-            </div>
-            <ul>
-                <li class="join"><a th:href="@{/sign-up}" href="/sign-up">Sign up</a></li>
-                <li><a href="/login">login</a></li>
-            </ul>
-        </header>
-        <div class="dim"></div>
-    </body>
+<body>
+    <nav th:replace="fragments.html :: main-nav"></nav>
+
+
+
+
+</body>
 </html>
