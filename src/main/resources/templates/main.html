@@ -113,12 +113,53 @@
 
     <!-- Project Build button -->
 
-    <div class="project_control">
-        <form th:action="@{/project/build-project}" method="get">
-            <input class="btn btn-outline-primary" type="submit" value="New Project" />
-        </form>
+     <!-- 프로젝트생성 버튼 -->
+     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+        프로젝트 생성하기
+      </button>
+    <!-- 프로젝트생성 모달 -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">프로젝트생성</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                <!-- 프로젝트 이름 -->
+                  <div class="form-group">
+                    <label for="recipient-name" class="col-form-label">프로젝트 이름:</label>
+                    <input type="text" class="form-control" id="recipient-name">
+                  </div>
+                  <!-- 프로젝트 세부내용 -->
+                  <div class="form-group">
+                    <label for="recipient-name" class="col-form-label">프로젝트 이름:</label>
+                    <input type="text" class="form-control" id="recipient-name">
+                  </div>
+                  <!-- 멤버검색 -->
+                  <div class="form-group">
+                    <label for="recipient-name" class="col-form-label">멤버 추가:</label>
+                    <div class="input-group mb-3">
+                       
+                        <input type="text" class="form-control" placeholder="사용자 이름" aria-label="사용자 이름" aria-describedby="button-addon2">
+                        <div class="input-group-append">
+                          <button class="btn btn-outline-secondary" type="button" id="button-addon2">검색</button>
+                        </div>
+                      </div>
+                     </div>
+                </form>
+              </div>
 
-    </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
 
 
