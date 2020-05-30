@@ -33,19 +33,20 @@ public class ProjectController {
     }
 
 
-    // 프로젝트 생성 form
-    @GetMapping("/project/build-project")
-    public String buildProject(Model model){
-        model.addAttribute("projectBuildForm", new ProjectBuildForm());
+    //메인으로 이동
+//     // 프로젝트 생성 form
+//     @GetMapping("/project/build-project")
+//     public String buildProject(Model model){
+//         model.addAttribute("projectBuildForm", new ProjectBuildForm());
 
-//        model.addAttribute("nickName", nickName);
-        return "project/build-project";
-    }
+// //        model.addAttribute("nickName", nickName);
+//         return "project/build-project";
+//     }
 
     @PostMapping("/project/build-project")
     public String buildProjectDone(@Valid @ModelAttribute ProjectBuildForm projectBuildForm, Errors errors, Model model , @CurrentUser Account account){
         if (errors.hasErrors()) {
-            return "project/build-project";
+            return "redirect:/main";
         }
         log.info("BuilderNick : " + projectBuildForm.getBuilderNick());
         projectService.saveNewProject(projectBuildForm, account);
