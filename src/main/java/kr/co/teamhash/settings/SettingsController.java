@@ -88,7 +88,7 @@ public class SettingsController {
     @GetMapping(ROOT + SETTINGS + ACCOUNT)
     public String nicknameUpdateForm(@CurrentUser Account account, Model model) {
         model.addAttribute(account);
-        model.addAttribute(new NicknameForm());
+        model.addAttribute(new NicknameForm(account));
         return SETTINGS + ACCOUNT;
     }
 
