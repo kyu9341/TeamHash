@@ -83,6 +83,76 @@
     </div>
 </nav>
 
+<nav th:fragment="project-nav (currentProject)" >
+    <div class="top bg-light">
+        <br>
+        <!-- 페이지 네비게이션 -->
+        <div class="container">
+            <div class="row justify-content-center ">
+                <div class="col-sm-8 ">
+                    <nav aria-label="breadcrumb justify-content-center">
+                        <ol class="breadcrumb ">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Library</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+        <!-- 기능 블록 -->
+        <p class="text-center ">
+        <ul class="nav nav-tabs  justify-content-center">
+            <li class="nav-item">
+                <a class="nav-link" th:classappend="${currentProject == 'project'}? active" 
+                href="#" th:href="@{'/project/'+${nickname}+'/'+${title}}">프로젝트 현황</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" th:classappend="${currentProject == 'problem'}? active"  href="#" th:href="@{'/project/'+${nickname}+'/'+${title}+'/problem-share'}">
+                    <svg class="bi bi-question-octagon-fill" width="1em" height="1em" viewBox="0 0 16 16"
+                        fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353L11.46.146zM6.57 6.033H5.25C5.22 4.147 6.68 3.5 8.006 3.5c1.397 0 2.673.73 2.673 2.24 0 1.08-.635 1.594-1.244 2.057-.737.559-1.01.768-1.01 1.486v.355H7.117l-.007-.463c-.038-.927.495-1.498 1.168-1.987.59-.444.965-.736.965-1.371 0-.825-.628-1.168-1.314-1.168-.901 0-1.358.603-1.358 1.384zm1.251 6.443c-.584 0-1.009-.394-1.009-.927 0-.552.425-.94 1.01-.94.609 0 1.028.388 1.028.94 0 .533-.42.927-1.029.927z" />
+                    </svg>
+                    &nbsp;문제공유</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link"  th:classappend="${currentProject == 'chatting'}? active" href="#"><span class="glyphicon glyphicon-star" aria-hidden="true">
+                        <svg class="bi bi-chat-square-dots" width="1em" height="1em" viewBox="0 0 16 16"
+                            fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                d="M14 1H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h2.5a2 2 0 0 1 1.6.8L8 14.333 9.9 11.8a2 2 0 0 1 1.6-.8H14a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2.5a1 1 0 0 1 .8.4l1.9 2.533a1 1 0 0 0 1.6 0l1.9-2.533a1 1 0 0 1 .8-.4H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
+                            <path
+                                d="M5 6a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+                        </svg>
+                        &nbsp;채팅</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link"  th:classappend="${currentProject == 'document'}? active" href="#" tabindex="-1" aria-disabled="true">
+                    <svg class="bi bi-file-earmark" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M4 1h5v1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V6h1v7a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2z" />
+                        <path d="M9 4.5V1l5 5h-3.5A1.5 1.5 0 0 1 9 4.5z" />
+                    </svg>&nbsp; 문서</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link"  th:classappend="${currentProject == 'configuration'}? active" href="#" tabindex="-1" aria-disabled="true">
+                    <svg class="bi bi-gear-fill" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 0 0-5.86 2.929 2.929 0 0 0 0 5.858z" />
+                    </svg>
+                    &nbsp; 설정</a>
+            </li>
+        </ul>
+        </p>
+        <br>
+    </div>
+</nav>
 
 <!--(currentMenu) currentMenu가 어떤 값인지에 따라 선택된 모양으로 보여준다.-->
 <div th:fragment="settings-menu (currentMenu)" class="list-group">
@@ -97,6 +167,8 @@
     <a class="list-group-item list-group-item-action list-group-item-danger"
        th:classappend="${currentMenu == 'account'}? active" href="#" th:href="@{/settings/account}">계정</a>
 </div>
+
+
 
 <footer th:fragment="footer" class="container-fluid text-center">
     <p>Footer Text</p>

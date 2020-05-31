@@ -11,9 +11,18 @@
 
     <!-- project member  -->
     <div th:if="${isMember}" >
-        <h1>problem share</h1>
+        <nav th:replace="fragments.html :: main-nav"></nav>
+
+
+        <nav th:replace="fragments.html :: project-nav(currentProject='problem')"></nav>
+  
+
+
 
         <a th:href="@{'/project/'+${nickname}+'/'+${title}+'/problem-share/post'}">글쓰기</a>
+
+
+
 
 
         <table>
