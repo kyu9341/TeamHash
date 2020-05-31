@@ -170,7 +170,8 @@
                      </div>
 
                 <div class="form-group">
-                    <button type="submit" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button th:if="${error != null}"  onclick="location.href='/main'" type="submit" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button th:if="${error == null}" type="submit" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary" >Save changes</button>
                 </div>
                 </form>
@@ -209,6 +210,10 @@
         $(window).on('load', function () {
             $('#project-modal').modal('show');
         });
+
+        $('#project-modal').on('hide.bs.modal', function () {
+            location.href='/main';
+        })
     </script>
     </body>
 </html>
