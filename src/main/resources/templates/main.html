@@ -115,7 +115,7 @@
 
 
       <!-- 프로젝트생성 버튼 -->
-     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#project-modal">
         프로젝트 생성하기 test
       </button>
      <!-- <div th:object="${projectBuildForm}" >
@@ -124,7 +124,7 @@
 
 
     <!-- 프로젝트생성 모달 -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="project-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
 
@@ -138,31 +138,31 @@
             
 
             <div class="modal-body">
-                <form id="modal-form" action="#" th:action="@{/project/build-project}" th:method="post" th:object="${projectBuildForm}">
+                <form id="modal-form" action="#" th:action="@{/main}" th:method="post" th:object="${projectBuildForm}">
                   <!-- <form id="modal-form"> -->
                 <!-- 프로젝트 이름 -->
                   <div class="form-group">
-                    <label for="recipient-name" class="col-form-label">프로젝트 이름:</label> 
+                    <label for="recipient-name" class="col-form-label">프로젝트 이름:</label>
                     <input id="builderNick" type="text" th:name="builderNick"
                th:value="${#authentication.name}" hidden>
                     <input type="text" class="form-control" id="title" name="title"  placeholder="title" minlength="3" required  >
-                    <small class="form-text text-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title Error</small>
+                    <small id="title-error" class="form-text text-danger" th:if="${error}" th:text="${error}">Title Error</small>
 
                 </div>
                   <!-- 프로젝트 세부내용 -->
                   <div class="form-group">
                     <label for="recipient-name" class="col-form-label">프로젝트 설명:</label>
-                    
+
                     <input type="text" class="form-control" id="subTitle" name="subTitle" placeholder="subTitle" minlength="3" required>
-                    
+
                   </div>
-                  
+
                   <!-- 멤버검색 -->
                   <div class="form-group">
                     <label for="recipient-name" class="col-form-label">멤버 추가:</label>
                     <div class="input-group mb-3">
 
-                        <input type="text" class="form-control" placeholder="사용자 이름" aria-label="사용자 이름" aria-describedby="button-addon2">
+                        <input id="recipient-name" type="text" class="form-control" placeholder="사용자 이름" aria-label="사용자 이름" aria-describedby="button-addon2">
                         <div class="input-group-append">
                           <button class="btn btn-outline-secondary" type="button" id="button-addon2">검색</button>
                         </div>
@@ -175,7 +175,7 @@
                 </div>
                 </form>
 
-  
+
               </div>
 
             <!-- <div class="modal-footer">
@@ -205,6 +205,10 @@
         </div>
     </div>
     <footer th:replace="fragments.html :: footer"></footer>
-
+    <script th:if="${error}">
+        $(window).on('load', function () {
+            $('#project-modal').modal('show');
+        });
+    </script>
     </body>
 </html>

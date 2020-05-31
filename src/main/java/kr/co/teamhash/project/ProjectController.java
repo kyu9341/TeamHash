@@ -1,5 +1,6 @@
 package kr.co.teamhash.project;
 
+import kr.co.teamhash.domain.entity.Project;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -43,14 +44,20 @@ public class ProjectController {
 //         return "project/build-project";
 //     }
 
-    @PostMapping("/project/build-project")
-    public String buildProjectDone(@Valid @ModelAttribute ProjectBuildForm projectBuildForm, Errors errors, Model model , @CurrentUser Account account){
+    @PostMapping("/main")
+    public String buildProjectDone(@Valid @ModelAttribute ProjectBuildForm projectBuildForm, Errors errors,
+                                   Model model , @CurrentUser Account account){
         if (errors.hasErrors()) {
-            return "redirect:/main";
+            List<Project> projectList = projectService.getProjectList(account);
+            model.addAttribute("projectBuildForm", new ProjectBuildForm());
+            model.addAttribute("projectList", projectList);
+            model.addAttribute(new ProjectBuildForm());
+            model.addAttribute(account);
+            model.addAttribute("error", "이미 사용중인 프로젝트명 입니다.");
+            return "main";
         }
         log.info("BuilderNick : " + projectBuildForm.getBuilderNick());
         projectService.saveNewProject(projectBuildForm, account);
-        
         return "redirect:/main";
     }
 
