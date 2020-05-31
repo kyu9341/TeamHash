@@ -1,4 +1,4 @@
-package kr.co.teamhash.settings;
+package kr.co.teamhash.settings.validator;
 
 import kr.co.teamhash.settings.form.PasswordForm;
 import lombok.RequiredArgsConstructor;

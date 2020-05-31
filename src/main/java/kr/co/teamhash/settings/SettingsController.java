@@ -3,10 +3,12 @@ package kr.co.teamhash.settings;
 import kr.co.teamhash.account.AccountService;
 import kr.co.teamhash.account.CurrentUser;
 import kr.co.teamhash.domain.entity.Account;
+import kr.co.teamhash.domain.repository.AccountRepository;
+import kr.co.teamhash.settings.form.NicknameForm;
 import kr.co.teamhash.settings.form.PasswordForm;
+import kr.co.teamhash.settings.validator.NicknameFormValidator;
+import kr.co.teamhash.settings.validator.PasswordFormValidator;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -27,12 +29,19 @@ public class SettingsController {
     static final String SETTINGS = "settings";
     static final String PROFILE = "/profile";
     static final String PASSWORD = "/password";
+    static final String ACCOUNT = "/account";
 
     private final AccountService accountService;
+    private final NicknameFormValidator nicknameFormValidator;
 
     @InitBinder("passwordForm")
     public void passwordInitBinder(WebDataBinder webDataBinder) {
         webDataBinder.addValidators(new PasswordFormValidator());
+    }
+
+    @InitBinder("nicknameForm")
+    public void nicknameInitBinder(WebDataBinder webDataBinder) {
+        webDataBinder.addValidators(nicknameFormValidator);
     }
 
     @GetMapping(ROOT + SETTINGS + PROFILE)
@@ -74,6 +83,26 @@ public class SettingsController {
         accountService.updatePassword(account, passwordForm.getNewPassword());
         attributes.addFlashAttribute("message", "패스워드를 변경했습니다.");
         return "redirect:/" + SETTINGS + PASSWORD;
+    }
+
+    @GetMapping(ROOT + SETTINGS + ACCOUNT)
+    public String nicknameUpdateForm(@CurrentUser Account account, Model model) {
+        model.addAttribute(account);
+        model.addAttribute(new NicknameForm());
+        return SETTINGS + ACCOUNT;
+    }
+
+    @PostMapping(ROOT + SETTINGS + ACCOUNT)
+    public String nicknameUpdate(@CurrentUser Account account, @Valid @ModelAttribute NicknameForm nicknameForm,
+                                 Errors errors, Model model, RedirectAttributes attributes) {
+        if (errors.hasErrors()) {
+            model.addAttribute(account);
+            return SETTINGS + ACCOUNT;
+        }
+
+        accountService.updateNickname(account, nicknameForm);
+        attributes.addFlashAttribute("message", "닉네임이 변경되었습니다.");
+        return "redirect:/" + SETTINGS + ACCOUNT;
     }
 
 }
