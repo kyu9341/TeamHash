@@ -3,6 +3,7 @@ package kr.co.teamhash.main;
 import kr.co.teamhash.account.CurrentUser;
 import kr.co.teamhash.domain.entity.Account;
 import kr.co.teamhash.domain.entity.Project;
+import kr.co.teamhash.project.ProjectBuildForm;
 import kr.co.teamhash.project.ProjectService;
 import lombok.RequiredArgsConstructor;
 
@@ -30,6 +31,7 @@ public class MainController {
     public String main(@CurrentUser Account account, Model model){
         if(account != null){
             List<Project> projectList = projectService.getProjectList(account);
+            model.addAttribute("projectBuildForm", new ProjectBuildForm());
             model.addAttribute("projectList", projectList);
             model.addAttribute(account);
 
