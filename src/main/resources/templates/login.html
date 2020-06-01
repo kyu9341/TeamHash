@@ -1,214 +1,232 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 
 <head>
+  <head th:insert="fragments.html :: head"></head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
 
-  <head th:replace="fragments.html :: head"></head>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
-  <style type="text/css">
-    body {
-      color: #fff;
-      background: #0f4c81;
-      font-family: 'Roboto', sans-serif;
-    }
+<style class="cp-pen-styles">* { box-sizing:border-box; }
 
-    .form-control {
-      min-height: 41px;
-      box-shadow: none;
-      border-color: #e1e4e5;
-    }
+body {
+  font-family: 'PT Sans', sans-serif;
+/*font-family: 'Open Sans', sans-serif;
+font-family: 'Lato', sans-serif;
+font-family: 'PT Sans', sans-serif;
+font-family: 'Roboto Slab', serif;
+font-family: 'Titillium Web', sans-serif;
+test*/
+  background: #ebebeb;
+  -webkit-font-smoothing: antialiased;
+}
 
-    .form-control:focus {
-      border-color: #4181a1;
-    }
+hgroup {   text-align:center;  margin-top: 3em; margin-bottom: 3em;  }
+h1, h3 { font-weight: 300; }
+h1 { color: #ff0000; }
+form {      padding: 30px;    padding-top: 60px;    background: #fff;}
+.powered{    padding: 10px;    margin-top: -16px;    line-height: 25px;    background: #0f4c81;}
+.powered a {    color: #ddd;    text-decoration: none;}
+.powered a:hover {  font-style:italic;}
+.group {   position: relative;  margin-bottom: 45px; }
 
-    .form-control,
-    .btn {
-      border-radius: 3px;
-    }
+input {  font-size: 18px;  padding: 10px 10px 10px 5px;    display: block;  background: transparent;
+  color: #03a9f4;  width: 100%;  border: none;  border-radius: 0;  border-bottom: 1px solid #ddd;}
 
-    .signup-form {
-      width: 400px;
-      margin: 0 auto;
-      padding: 30px 0;
-    }
+input:focus { outline: none; }
 
-    .signup-form form {
-      color: #9ba5a8;
-      border-radius: 3px;
-      margin-bottom: 15px;
-      background: #fff;
-      box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-      padding: 30px;
-    }
+/* Label */
+label {  color: #999;   font-size: 18px;  font-weight: normal;  position: absolute;  pointer-events: none;
+  left: 5px;  top: 10px;  -webkit-transition:all 0.2s ease;  transition: all 0.2s ease;}
 
-    .signup-form h2 {
-      color: #333;
-      font-weight: bold;
-      margin-top: 0;
-    }
+/* active */
 
-    .signup-form h3 {
-      color: #333;
-      font-weight: normal;
-      margin-top: 0;
-    }
+input:focus ~ label, input.used ~ label {  top: -20px;  -webkit-transform: scale(.75);          transform: scale(.75); left: -2px;  color: #4a89dc;}
 
-    .signup-form hr {
-      margin: 0 -30px 20px;
-    }
+/* Underline */
+.bar {  position: relative;  display: block;  width: 100%;}
+.bar:before, .bar:after {  content: '';  height: 2px;   width: 0;  bottom: 1px;   position: absolute;  background: #4a89dc;   -webkit-transition:all 0.2s ease;   transition: all 0.2s ease;}
+.bar:before { left: 50%; }
+.bar:after { right: 50%; }
 
-    .signup-form .form-group {
-      margin-top: 20px;
-      margin-bottom: 20px;
-    }
+/* active */
+input:focus ~ .bar:before, input:focus ~ .bar:after { width: 50%; }
 
-    .signup-form label {
-      font-weight: normal;
-      font-size: 13px;
-    }
+/* Highlight */
+.highlight {  position: absolute;  height: 60%;   width: 100px;   top: 25%;   left: 0;  pointer-events: none;  opacity: 0.5;}
 
-    .signup-form .btn {
-      font-size: 16px;
-      font-weight: bold;
-      background: #4181a1;
-      border: none;
-      min-width: 140px;
-    }
+/* active */
+input:focus ~ .highlight {  -webkit-animation: inputHighlighter 0.3s ease;          animation: inputHighlighter 0.3s ease;}
 
-    .signup-form .btn:hover,
-    .signup-form .btn:focus {
-      background: #377391;
-      outline: none !important;
-    }
+/* Animations */
+@-webkit-keyframes inputHighlighter {
+  from { background: #4a89dc; }
+  to  { width: 0; background: transparent; }
+}
 
-    .signup-form a {
-      color: #fff;
-      text-decoration: underline;
-    }
+@keyframes inputHighlighter {
+  from { background: #4a89dc; }
+  to  { width: 0; background: transparent; }
+}
 
-    .signup-form a:hover {
-      text-decoration: none;
-    }
+div.background{  position: fixed;    width: 100%;    z-index: -1;    height: 100%;    right: -10%;}
+div.background2 {  position: fixed;    width: 100%;    z-index: -1;    height: 100%;    left: 6%;}
+div.background2:before {    content: '';    position: absolute;    bottom: 0;    left: 0;    width: 50%;    height: 100%;     background-color: #0f4c81;   border-right: 50px solid #1a2c5b;  -webkit-transform-origin: 100% 100%;    -ms-transform-origin: 100% 100%;    transform-origin: 100% 100%;    -webkit-transform: skewX(60deg);    -ms-transform: skewX(60deg);        transform: skewX(60deg);    -webkit-box-sizing: border-box;    -moz-box-sizing: border-box;    box-shadow: 0px 0px 20px #89898a;}
+html, body{   background-size:cover;    margin:0;padding:0;    height:100%;}
+.buttonui {   position: relative;    padding: 8px 45px;    line-height: 30px;    overflow: hidden;    border-width: 0;    outline: none;    border-radius: 2px;    box-shadow: 0 1px 4px rgba(0, 0, 0, .6);    background-color: #0f4c81;    color: #ecf0f1;    transition: background-color .3s;}
+.buttonui:before {    content: "";    position: absolute;    top: 50%;    left: 50%;    display: block;    width: 0;    padding-top: 0;    border-radius: 100%;    background-color: rgba(236, 240, 241, .3);    -webkit-transform: translate(-50%, -50%);    -moz-transform: translate(-50%, -50%);    -ms-transform: translate(-50%, -50%);    -o-transform: translate(-50%, -50%);    transform: translate(-50%, -50%);}
+.buttonui span  {    padding: 12px 24px;    font-size:16px;}
+.loginForm {   width: 420px;    margin: 0 auto;    z-index: 99;    display: block;    margin-top: 5%;    background: transparent;    border-radius: .25em .25em .4em .4em;    text-align: center;    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);    color: #fff;}
+/* Ripples container */
 
-    .signup-form form a {
-      color: #4181a1;
-      text-decoration: none;
-    }
+.ripples {  position: absolute;  top: 0;  left: 0;  width: 100%;  height: 100%;  overflow: hidden;  background: transparent;}
+.ripplesCircle {  position: absolute;  top: 50%;  left: 50%;  -webkit-transform: translate(-50%, -50%);          transform: translate(-50%, -50%);  opacity: 0;  width: 0;  height: 0;  border-radius: 50%;  background: rgba(255, 255, 255, 0.25);}
+.ripples.is-active .ripplesCircle {  -webkit-animation: ripples .4s ease-in;          animation: ripples .4s ease-in;}
 
-    .signup-form form a:hover {
-      text-decoration: underline;
-    }
-  </style>
+/* Ripples animation */
+
+@-webkit-keyframes ripples {
+  0% { opacity: 0; }
+
+  25% { opacity: 1; }
+
+  100% {
+    width: 200%;
+    padding-bottom: 200%;
+    opacity: 0;
+  }
+}
+
+@keyframes ripples {
+  0% { opacity: 0; }
+
+  25% { opacity: 1; }
+
+  100% {
+    width: 200%;
+    padding-bottom: 200%;
+    opacity: 0;
+  }
+}
+@media screen and (max-width: 860px){
+  div.background{ margin-top: -10%; }
+}
+@media screen and (max-width: 560px){
+  div.background{ margin-top: -50%; }
+}
+@media screen and (max-width: 460px){
+  .loginForm{ width: 100%; max-width: 420px; }
+  div.background{ margin-top: -60%; }
+  div.background2{ margin-top: -10%; }
+  div.background2:before{ width: 80%; }
+  form, .powered { opacity: 0.8; }
+}
+@media screen and (max-width: 380px){
+  div.background{ margin-top: -80%; }
+  div.background2{ margin-top: -10%; }
+  div.background2:before{ width: 100%; }
+}
+</style>
 </head>
 
 <body>
+        <div class="background"></div>
+        <div class="background2"></div>
 
-  <div class="signup-form">
-    <form id="needs-validation" class="needs-validation" action="#" th:action="@{/sign-up}" th:object="${signUpForm}"
-      method="post" novalidate>
+        <div class="loginForm">
 
-      <hgroup>
-        <img src="/images/logo.png" alt="TeamHash" style="max-width: 100%; height: auto;" />
-      </hgroup>
-      <h3>로그인</h3>
+          <form action="#" class="needs-validation"
+                th:action="@{/login}" method="post" novalidate>
+            <hgroup>
+              <img src="/images/logo.png" alt="TeamHash" style="max-width: 100%; height: auto;" />
+            </hgroup>
 
-      <hr>
-      
-      <form action="#" class="needs-validation" th:action="@{/login}" method="post" novalidate>
+            <div class="group">
+              <input id="username" type="username" class="used" name="username" required>
+              <span class="highlight"></span><span class="bar"></span>
+              <label for="username">Username</label>
+        <small id="emailHelp" class="form-text text-muted">
+          가입할 때 사용한 이메일을 입력하세요.
+        </small>
+        <small class="invalid-feedback">이메일을 입력하세요.</small>
+      </div>
 
+      <div class="group">
+        <input id="password" type="password" name="password" class="used" required>
+        <span class="highlight"></span><span class="bar"></span>
+        <label for="password">Password</label>
+        <small id="passwordHelp" class="form-text text-muted">
+          패스워드를 잊어버렸다면, <a href="#" th:href="@{/email-login}">패스워드 없이 로그인하기</a>
+        </small>
+        <small class="invalid-feedback">패스워드를 입력하세요.</small>
 
-        <div class="form-group">
-          <label for="nickname">사용자 이름</label>
-          <input id="username" type="username" name="username" class="form-control" required minlength="3" maxlength="20">
-          <small id="nicknameHelp" class="form-text text-muted">
-            가입할 때 사용한 이메일을 입력하세요.
-          </small>
-          <small class="invalid-feedback">이메일을 입력하세요.</small>
+        <div class="form-group form-check" >
+          <input type="checkbox" class="form-check-input" id="rememberMe" name="remember-me" checked>
+          <label class="form-check-label" for="rememberMe" aria-describedby="rememberMeHelp">
+            로그인 유지</label>
         </div>
-
-        <div class="form-group">
-          <label for="password">비밀번호</label>
-          <input id="password" type="password" name="password" class="form-control" required minlength="3" maxlength="20">
-          <span class="highlight"></span><span class="bar"></span>
-          
-          <small id="passwordHelp" class="form-text text-muted">
-            패스워드를 잊어버렸다면, <a href="#" th:href="@{/email-login}">패스워드 찾기</a>
-          </small>
-          <small class="invalid-feedback">패스워드를 입력하세요.</small>
-
-          <div class="form-group form-check">
-            <input type="checkbox" class="form-check-input" id="rememberMe" name="remember-me" checked>
-            <label class="form-check-label" for="rememberMe" aria-describedby="rememberMeHelp">
-              로그인 유지</label>
-          </div>
-        </div>
+      </div>
 
         <div class="row alert alert-danger" th:if="${param.error}" role="alert">
-          <small>이메일과 패스워드가 일치하지 않습니다.</small>
+            <small>이메일과 패스워드가 일치하지 않습니다.</small>
         </div>
 
 
 
-        <div class="form-group">
-          <button type="submit" class="btn btn-primary btn-block btn-lg"> <span>login</span>
+      <div class="form-group">
+      <button type="submit" class="buttonui"> <span>login</span>
             <div class="ripples buttonRipples"><span class="ripplesCircle"></span></div>
-          </button>
-          <p> </p>
-          <button type="button" class="btn btn-primary btn-block btn-lg" onclick="location.href='/sign-up'"> <span>sign up</span>
-            <div class="ripples buttonRipples"> <span class="ripplesCircle"></span></div>
-          </button>
-        </div>
-      </form>
+      </button>
+        <p>  </p>
+      <button type="button" class="buttonui" onclick="location.href='/sign-up'"> <span>sign up</span>
+        <div class="ripples buttonRipples"> <span class="ripplesCircle"></span></div>
+      </button>
+      </div>
+    </form>
 
-      <div class="powered">
-        Powered by <a href="http://www.team#.com"> TEAM# </a>
+    <div class="powered">
+          Powered by <a href="http://www.team#.com"> TEAM# </a> 
       </div>
   </div>
+<script>$(window, document, undefined).ready(function() {
 
+  $('input').blur(function() {
+    var $this = $(this);
+    if ($this.val())
+      $this.addClass('used');
+    else
+      $this.removeClass('used');
+  });
 
-  <script>$(window, document, undefined).ready(function () {
+  var $ripples = $('.ripples');
 
-      $('input').blur(function () {
-        var $this = $(this);
-        if ($this.val())
-          $this.addClass('used');
-        else
-          $this.removeClass('used');
-      });
+  $ripples.on('click.Ripples', function(e) {
 
-      var $ripples = $('.ripples');
+    var $this = $(this);
+    var $offset = $this.parent().offset();
+    var $circle = $this.find('.ripplesCircle');
 
-      $ripples.on('click.Ripples', function (e) {
+    var x = e.pageX - $offset.left;
+    var y = e.pageY - $offset.top;
 
-        var $this = $(this);
-        var $offset = $this.parent().offset();
-        var $circle = $this.find('.ripplesCircle');
-
-        var x = e.pageX - $offset.left;
-        var y = e.pageY - $offset.top;
-
-        $circle.css({
-          top: y + 'px',
-          left: x + 'px'
-        });
-
-        $this.addClass('is-active');
-
-      });
-
-      $ripples.on('animationend webkitAnimationEnd mozAnimationEnd oanimationend MSAnimationEnd', function (e) {
-        $(this).removeClass('is-active');
-      });
-
+    $circle.css({
+      top: y + 'px',
+      left: x + 'px'
     });
-  </script>
-  <script th:replace="fragments.html :: form-validation"></script>
+
+    $this.addClass('is-active');
+
+  });
+
+  $ripples.on('animationend webkitAnimationEnd mozAnimationEnd oanimationend MSAnimationEnd', function(e) {
+    $(this).removeClass('is-active');
+  });
+
+});
+</script>
+ <script th:replace="fragments.html :: form-validation"></script>
 
 
 
 </body>
-
 </html>
