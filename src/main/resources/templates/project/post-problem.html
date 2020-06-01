@@ -4,6 +4,13 @@
       lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:replace="fragments.html :: head"></head>
+<style>
+    .container{
+    padding-left: 50px;
+    padding-right: 50px;
+    max-width: 1100px;
+}
+</style>
 <body>
 
     <div th:if="${!isMember}">
@@ -11,13 +18,45 @@
     </div>
 
     <div th:if="${isMember}" >
-        <form action="#" th:action="@{'/project/'+${nickname}+'/'+${title}+'/problem-share/post'}" method="post">
-            제목 : <input type="text" name="title"> <br>
-            작성자 : <input type="text" name="writer"> <br>
-            <textarea name="content"></textarea><br>
 
-            <input type="submit" value="등록">
-        </form>
+        <nav th:replace="fragments.html :: main-nav"></nav>
+
+        <nav th:replace="fragments.html :: project-nav(currentProject='project')"></nav>
+      
+        <div class="container">
+            <form action="#" th:action="@{'/project/'+${nickname}+'/'+${title}+'/problem-share/post'}" method="post">
+                <div class="form-group">
+                    <label for="exampleFormControlInput1">제목</label>
+                    <input type="text" class="form-control"  name="title">
+                </div>
+    
+                <div class="form-group">
+                    <label for="exampleFormControlInput1">작성자</label>
+                    <input type="text" class="form-control"  name="writer" th:value="${#authentication.name}" readonly >
+                </div>
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1">테그</label>
+                    <select class="form-control" >
+                        <option>Good</option>
+                        <option>Bad</option>
+                        <option>Help</option>
+                    </select>
+                </div>
+    
+                <div class="form-group">
+                    <label for="exampleFormControlTextarea1">내용</label>
+                    <textarea class="form-control"  rows="10" name="content"></textarea>
+                  </div>
+               
+    
+                <input type="submit" value="등록">
+            </form>
+        </div>
+        
+        
+
+        
+        <footer th:replace="fragments.html :: footer"></footer>
     </div>
 </body>
 </html>

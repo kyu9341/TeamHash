@@ -163,7 +163,7 @@ public class ProjectController {
         model.addAttribute("isMember", isMember);
         model.addAttribute("projectId", projectId);
         model.addAttribute("title", title);
-
+    
         model.addAttribute("nickname", nickname);
         return "project/post-problem";
     }
