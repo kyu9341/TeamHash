@@ -6,6 +6,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
+import kr.co.teamhash.domain.entity.Account;
 import kr.co.teamhash.domain.entity.Problems;
 import kr.co.teamhash.domain.repository.ProblemsRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,9 +19,11 @@ public class ProblemShareService {
 
     // 문제 공유 글 저장
     @Transactional
-    public Long saveProblem(Problems problem, Long projectId){
+    public Long saveProblem(Problems problem, Long projectId,Account account){
 
         problem.setProjectId(projectId);
+        problem.setWriterId(account);
+    
         return problemsRepository.save(problem).getId();
     }
 

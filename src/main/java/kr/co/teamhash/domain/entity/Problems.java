@@ -9,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -24,8 +26,12 @@ public class Problems {
 
     private Long projectId;
 
-    @Column(length = 10, nullable = false)
-    private String writer;
+    // @Column(length = 10, nullable = false)
+    // private String writer;
+
+    @ManyToOne
+    @JoinColumn(name ="account_id")
+    private Account writerId;
 
     @Column(length = 100, nullable = false)
     private String title;
