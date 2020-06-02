@@ -277,7 +277,7 @@
                                     <!-- post writer name -->
                                     <div class="ml-2">
                                         <div class="h5 m-0" th:text="${problem.writer}"></div>
-                                        <div class="h7 text-muted">Miracles Lee Cross</div>
+                                        <!-- <div class="h7 text-muted">Miracles Lee Cross</div> -->
                                     </div>
                                 </div>
 
@@ -288,13 +288,10 @@
                         <div class="card-body">
                             <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i>10 min ago</div>
                             <a class="card-link" href="#">
-                                <h5 class="card-title">Lorem ipsum dolor sit amet, consectetur adip.</h5>
+                                <h5 class="card-title" th:text="${problem.title}"></h5>
                             </a>
     
-                            <p class="card-text">
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo recusandae nulla rem eos ipsa praesentium esse magnam nemo dolor
-                                sequi fuga quia quaerat cum, obcaecati hic, molestias minima iste voluptates.
-                            </p>
+                            <p class="card-text" th:text="${problem.content}"></p>
                         </div>
                         <div class="card-footer">
                             
