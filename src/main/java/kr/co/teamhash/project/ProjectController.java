@@ -56,7 +56,6 @@ public class ProjectController {
             model.addAttribute("error", "이미 사용중인 프로젝트명 입니다.");
             return "main";
         }
-        log.info("BuilderNick : " + projectBuildForm.getBuilderNick());
         projectService.saveNewProject(projectBuildForm, account);
         return "redirect:/main";
     }
