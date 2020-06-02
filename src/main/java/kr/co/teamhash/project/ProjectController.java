@@ -137,7 +137,7 @@ public class ProjectController {
         List<Problems> problemList = problemShareService.getProblemList(projectId);
 
         model.addAttribute("problemList", problemList);
-
+        model.addAttribute("account", account);
 
         return "project/problem-share";
     }
@@ -195,7 +195,7 @@ public class ProjectController {
 
 
 
-        return "redirect:/project/"+nickname+"/"+title+"/problem-share/"+problemId;
+        return "redirect:/project/"+nickname+"/"+title+"/problem-share/";
     }
 
     // 문제 공유글 디테일

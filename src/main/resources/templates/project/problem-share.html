@@ -3,167 +3,72 @@
     xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:replace="fragments.html :: head"></head>
-<script>
-    $(document).ready(function () {
 
-        $('.btn-filter').on('click', function () {
-            var $target = $(this).data('target');
-            if ($target != 'all') {
-                $('.table tr').css('display', 'none');
-                $('.table tr[data-status="' + $target + '"]').fadeIn('slow');
-            } else {
-                $('.table tr').css('display', 'none').fadeIn('slow');
-            }
-        });
-
-    });
-</script>
+<!-- social card -->
 <style>
+    .h7 {
+            font-size: 0.8rem;
+    }
 
-    /*    --------------------------------------------------
-	:: General
-	-------------------------------------------------- */
-body {
-	font-family: 'Open Sans', sans-serif;
-	color: #353535;
-}
+    .gedf-wrapper {
+        margin-top: 0.97rem;
+    }
 
-.content .content-footer p {
-	color: #6d6d6d;
-    font-size: 12px;
-    text-align: center;
-}
-.content .content-footer p a {
-	color: inherit;
-	font-weight: bold;
-}
+    @media (min-width: 992px) {
+        .gedf-main {
+            padding-left: 4rem;
+            padding-right: 4rem;
+        }
+        .gedf-card {
+            margin-bottom: 2.77rem;
+        }
+    }
 
-.board-container{
-    padding-left: 50px;
-    padding-right: 50px;
-    max-width: 1100px;
-}
-
-/*	--------------------------------------------------
-	:: Table Filter
-	-------------------------------------------------- */
-.panel {
-	border: 1px solid #ddd;
-	background-color: #fcfcfc;
-}
-.panel .btn-group {
-	margin: 15px 0 30px;
-}
-.panel .btn-group .btn {
-	transition: background-color .3s ease;
-}
-.table-filter {
-	background-color: #fff;
-	border-bottom: 1px solid #eee;
-}
-.table-filter tbody tr:hover {
-	cursor: pointer;
-	background-color: #eee;
-}
-.table-filter tbody tr td {
-	padding: 10px;
-	vertical-align: middle;
-	border-top-color: #eee;
-}
-.table-filter tbody tr.selected td {
-	background-color: #eee;
-}
-.table-filter tr td:first-child {
-	width: 38px;
-}
-.table-filter tr td:nth-child(2) {
-	width: 35px;
-}
-.ckbox {
-	position: relative;
-}
-.ckbox input[type="checkbox"] {
-	opacity: 0;
-}
-.ckbox label {
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-}
-.ckbox label:before {
-	content: '';
-	top: 1px;
-	left: 0;
-	width: 18px;
-	height: 18px;
-	display: block;
-	position: absolute;
-	border-radius: 2px;
-	border: 1px solid #bbb;
-	background-color: #fff;
-}
-.ckbox input[type="checkbox"]:checked + label:before {
-	border-color: #2BBCDE;
-	background-color: #2BBCDE;
-}
-.ckbox input[type="checkbox"]:checked + label:after {
-	top: 3px;
-	left: 3.5px;
-	content: '\e013';
-	color: #fff;
-	font-size: 11px;
-	font-family: 'Glyphicons Halflings';
-	position: absolute;
-}
-.table-filter .star {
-	color: #ccc;
-	text-align: center;
-	display: block;
-}
-.table-filter .star.star-checked {
-	color: #F0AD4E;
-}
-.table-filter .star:hover {
-	color: #ccc;
-}
-.table-filter .star.star-checked:hover {
-	color: #F0AD4E;
-}
-.table-filter .media-photo {
-	width: 35px;
-}
-.table-filter .media-body {
+    /**Reset Bootstrap*/
+    .dropdown-toggle::after {
+        content: none;
+        display: none;
+    }
+    .comments-list {
+    padding: 0;
+    margin-top: 20px;
+    list-style-type: none;
+    }
+    .comments-list .comment {
     display: block;
-    /* Had to use this style to force the div to expand (wasn't necessary with my bootstrap version 3.3.6) */
-}
-.table-filter .media-meta {
-	font-size: 11px;
-	color: #999;
-}
-.table-filter .media .title {
-	color: #2BBCDE;
-	font-size: 14px;
-	font-weight: bold;
-	line-height: normal;
-	margin: 0;
-}
-.table-filter .media .title span {
-	font-size: .8em;
-	margin-right: 20px;
-}
-.table-filter .media .title span.good {
-	color: #5cb85c;
-}
-.table-filter .media .title span.help {
-	color: #f0ad4e;
-}
-.table-filter .media .title span.bad {
-	color: #d9534f;
-}
-.table-filter .media .summary {
-	font-size: 14px;
-}
+    width: 100%;
+    margin: 20px 0;
+    }
+    .comments-list .comment .avatar {
+    width: 35px;
+    height: 35px;
+    }
+    .comments-list .comment .comment-heading {
+    display: block;
+    width: 100%;
+    }
+    .comments-list .comment .comment-heading .user {
+    font-size: 14px;
+    font-weight: bold;
+    display: inline;
+    margin-top: 0;
+    margin-right: 10px;
+    }
+    .comments-list .comment .comment-heading .time {
+    font-size: 12px;
+    color: #aaa;
+    margin-top: 0;
+    display: inline;
+    }
+    .comments-list .comment .comment-body {
+    margin-left: 50px;
+    }
+    .comments-list .comment > .comments-list {
+    margin-left: 50px;
+    }
+
+
+
 </style>
 
 
@@ -183,118 +88,242 @@ body {
 
 
 
+        <!-- https://bootsnipp.com/snippets/yNa0V -->
 
+        <div class="container-fluid gedf-wrapper">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="card gedf-card">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                                card's content.</p>
+                            <a href="#" class="card-link">Card link</a>
+                            <a href="#" class="card-link">Another link</a>
+                        </div>
+                    </div>
+                    <div class="card gedf-card">
+                            <div class="card-body">
+                                <h5 class="card-title">Card title</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                                    card's content.</p>
+                                <a href="#" class="card-link">Card link</a>
+                                <a href="#" class="card-link">Another link</a>
+                            </div>
+                        </div>
+                </div>
+                
+                <!-- Card Post main -->
+                <div class="col-md-6 gedf-main">
+    
+                    <!--- \\\\\\\Make Post-->
+                    <form action="#" th:action="@{'/project/'+${nickname}+'/'+${title}+'/problem-share/post'}" method="post">
+                        <div class="card gedf-card">
 
-
-
-
-        <!-- https://bootsnipp.com/snippets/KB2bD -->
-
-
-        <div class="board-container container">
-            
+                            <!-- Make post header -->
+                            <div class="card-header">
+                                <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="posts-tab" data-toggle="tab" href="#posts" role="tab" aria-controls="posts" aria-selected="true">Make
+                                            a publication</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="images-tab" data-toggle="tab" role="tab" aria-controls="images" aria-selected="false" href="#images">Images</a>
+                                    </li>
+                                </ul>
+                            </div>
+    
+                            <!-- Make post body -->
+                            <div class="card-body">
+                                <div class="tab-content" id="myTabContent">
+                                    <div class="tab-pane fade show active" id="posts" role="tabpanel" aria-labelledby="posts-tab">
+                                        <div class="form-group">
+                                            <input type="hidden" class="form-control"  name="writer" th:value="${#authentication.name}" >
+                                            <input type="text" class="form-control"  name="title" placeholder="Title">
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            
+                                            <textarea class="form-control"  rows="3" name="content" placeholder="What are you thinking?"></textarea>
+                                        </div>
+               
         
-                <!-- <section class="content"> -->
-            
-                    <div class="col-md-8 col-md-offset-2 container">
-                        <div class="panel panel-default">
-                            <div class="panel-body">
-                                <div class="pull-right">
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-success btn-filter" data-target="good">Good</button>
-                                        <button type="button" class="btn btn-warning btn-filter" data-target="help">Help</button>
-                                        <button type="button" class="btn btn-danger btn-filter" data-target="bad">Bad</button>
-                                        <button type="button" class="btn btn-default btn-filter" data-target="all">All Tag</button>
+                                    </div>
+                                    <div class="tab-pane fade" id="images" role="tabpanel" aria-labelledby="images-tab">
+                                        <div class="form-group">
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" id="customFile">
+                                                <label class="custom-file-label" for="customFile">Upload image</label>
+                                            </div>
+                                        </div>
+                                        <div class="py-4"></div>
                                     </div>
                                 </div>
-
-                                <div class="table-container">
-                                    <table class="table table-filter">
-                                        <tbody>
-                                           
-                                           
-                                            <tr data-status="bad">
-                                                <td>
-                                         
-                                                </td>
-                                                <td>
-                                                    <img src="https://s3.amazonaws.com/uifaces/faces/twitter/fffabs/128.jpg" class="media-photo">
-                                                </td>
-                                                <td>
-                                                    <div class="media">
-                                                        <a href="#" class="pull-left">
-                                                            
-                                                        </a>
-                                                        <div class="media-body">
-                                                            <span class="media-meta pull-right">Febrero 13, 2016</span>
-                                                            <h4 class="title">
-                                                                Lorem Impsum
-                                                                <span class="pull-right bad">(Bad)</span>
-                                                            </h4>
-                                                            <p class="summary">Not good news...</p>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr data-status="good">
-                                                <td>
-                                                    
-                                                </td>
-                                                <td>
-                                                    <img src="https://s3.amazonaws.com/uifaces/faces/twitter/fffabs/128.jpg" class="media-photo">
-                                                </td>
-                                                <td>
-                                                    <div class="media">
-                                                        <a href="#" class="pull-left">
-                                                            
-                                                        </a>
-                                                        <div class="media-body">
-                                                            <span class="media-meta pull-right">Febrero 13, 2016</span>
-                                                            <h4 class="title">
-                                                                Lorem Impsum
-                                                                <span class="pull-right good">(Good)</span>
-                                                            </h4>
-                                                            <p class="summary">Good news!</p>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr data-status="help">
-                                                <td>
-                                                    
-                                                </td>
-                                                <td>
-                                                    <img src="https://s3.amazonaws.com/uifaces/faces/twitter/fffabs/128.jpg" class="media-photo">
-                                                </td>
-                                                <td>
-                                                    <div class="media">
-                                                        <a href="#" class="pull-left">
-                                                           
-                                                        </a>
-                                                        <div class="media-body">
-                                                            <span class="media-meta pull-right">Febrero 13, 2016</span>
-                                                            <h4 class="title">
-                                                                도와주세요!!
-                                                                <span class="pull-right help">(Help)</span>
-                                                            </h4>
-                                                            <p class="summary">I need help</p>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+    
+                                <div class="btn-toolbar justify-content-between">
+                                    <div class="btn-group">
+                                        <button type="submit" class="btn btn-primary">Post</button>
+                                    </div>
+    
+                                    <!-- use later to tag -->
+                                    <!-- <div class="btn-group">
+                                        <button id="btnGroupDrop1" type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false">
+                                            <i class="fa fa-globe"></i>
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1">
+                                            <a class="dropdown-item" href="#"><i class="fa fa-globe"></i> Public</a>
+                                            <a class="dropdown-item" href="#"><i class="fa fa-users"></i> Friends</a>
+                                            <a class="dropdown-item" href="#"><i class="fa fa-user"></i> Just me</a>
+                                        </div>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>
+                    </form>
+                    <!--- Make Post\\\\\\\-->
 
+    
+                    <!--- \\\\\\\Post-->
+                    <div class="card gedf-card">
+                        <div class="card-header">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="mr-2">
+                                        <!-- <img class="rounded-circle" width="45" src="https://picsum.photos/50/50" alt=""> -->
+                                        
+                                        <svg th:if="${#strings.isEmpty(account?.profileImage)}" data-jdenticon-value="user127" th:data-jdenticon-value="${#authentication.name}"
+                                        width="45" class="rounded-circle"></svg>
+                                        <img th:if="${!#strings.isEmpty(account?.profileImage)}" th:src="${account.profileImage}"
+                                             class="rounded-circle"  width="45">
+                                    </div>
+                                    <div class="ml-2">
+                                        <div class="h5 m-0">@LeeCross</div>
+                                        <div class="h7 text-muted">Miracles Lee Cross</div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="dropdown">
+                                        <button class="btn btn-link dropdown-toggle" type="button" id="gedf-drop1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fa fa-ellipsis-h"></i>
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="gedf-drop1">
+                                            <div class="h6 dropdown-header">Configuration</div>
+                                            <a class="dropdown-item" href="#">Save</a>
+                                            <a class="dropdown-item" href="#">Hide</a>
+                                            <a class="dropdown-item" href="#">Report</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+    
+                        </div>
+                        <div class="card-body">
+                            <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i>10 min ago</div>
+                            <a class="card-link" href="#">
+                                <h5 class="card-title">Lorem ipsum dolor sit amet, consectetur adip.</h5>
+                            </a>
+    
+                            <p class="card-text">
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo recusandae nulla rem eos ipsa praesentium esse magnam nemo dolor
+                                sequi fuga quia quaerat cum, obcaecati hic, molestias minima iste voluptates.
+                            </p>
+                        </div>
+                        <div class="card-footer">
+                            
+                            <div class="input-group"> 
+                                <input class="form-control" placeholder="Add a comment" type="text">
+                                <span class="input-group-addon">
+                                    <a href="#"><i class="fa fa-edit"></i></a>  
+                                </span>
+                            </div>
+   
+                        </div>
+                        <div class="card-body">
+                            <ul class="comments-list">
+                                <li class="comment">
+                                    <a class="pull-left" href="#">
+                                        <img class="avatar" src="http://bootdey.com/img/Content/user_1.jpg" alt="avatar">
+                                    </a>
+                                    <div class="comment-body">
+                                        <div class="comment-heading">
+                                            <h4 class="user">Gavino Free</h4>
+                                            <h5 class="time">5 minutes ago</h5>
+                                        </div>
+                                        <p>Sure, oooooooooooooooohhhhhhhhhhhhhhhh</p>
+                                    </div>
+                            </ul>
+                        </div>
                     </div>
-                <!-- </section> -->
-                
-            
-        </div>
-        
+                    <!-- Post /////-->
+    
+                <!--- \\\\\\\Post-->
+                    <div class="card gedf-card" th:each="problem : ${problemList}">
+                        <div class="card-header">
+                            
+                            <!-- post header -->
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <!-- post writer icon -->
+                                    <div class="mr-2">
+                                        <svg th:if="${#strings.isEmpty(account?.profileImage)}" data-jdenticon-value="user127" th:data-jdenticon-value="${#authentication.name}"
+                                        width="45" class="rounded-circle"></svg>
+                                        <img th:if="${!#strings.isEmpty(account?.profileImage)}" th:src="${account.profileImage}"
+                                             class="rounded-circle"  width="45">
+                                    </div>
 
+                                    <!-- post writer name -->
+                                    <div class="ml-2">
+                                        <div class="h5 m-0" th:text="${problem.writer}"></div>
+                                        <div class="h7 text-muted">Miracles Lee Cross</div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+    
+                        </div>
+                        <div class="card-body">
+                            <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i>10 min ago</div>
+                            <a class="card-link" href="#">
+                                <h5 class="card-title">Lorem ipsum dolor sit amet, consectetur adip.</h5>
+                            </a>
+    
+                            <p class="card-text">
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo recusandae nulla rem eos ipsa praesentium esse magnam nemo dolor
+                                sequi fuga quia quaerat cum, obcaecati hic, molestias minima iste voluptates.
+                            </p>
+                        </div>
+                        <div class="card-footer">
+                            
+                            <div class="input-group"> 
+                                <input class="form-control" placeholder="Add a comment" type="text">
+                                <span class="input-group-addon">
+                                    <a href="#"><i class="fa fa-edit"></i></a>  
+                                </span>
+                            </div>
+   
+                        </div>
+                        <div class="card-body">
+                            <ul class="comments-list">
+                                <li class="comment">
+                                    <a class="pull-left" href="#">
+                                        <img class="avatar" src="http://bootdey.com/img/Content/user_1.jpg" alt="avatar">
+                                    </a>
+                                    <div class="comment-body">
+                                        <div class="comment-heading">
+                                            <h4 class="user">Gavino Free</h4>
+                                            <h5 class="time">5 minutes ago</h5>
+                                        </div>
+                                        <p>Sure, oooooooooooooooohhhhhhhhhhhhhhhh</p>
+                                    </div>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Post /////-->
+                   
 
         <a th:href="@{'/project/'+${nickname}+'/'+${title}+'/problem-share/post'}">글쓰기</a>
 
