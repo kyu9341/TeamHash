@@ -195,7 +195,7 @@
                                 <div class="d-flex justify-content-between align-items-center">
                                     <!-- post writer icon -->
                                     <div class="mr-2">
-                                        <svg th:if="${#strings.isEmpty(problem.writerId?.profileImage)}" data-jdenticon-value="user127" th:data-jdenticon-value="${problem.writerId.name}"
+                                        <svg th:if="${#strings.isEmpty(problem.writerId?.profileImage)}" data-jdenticon-value="user127" th:data-jdenticon-value="${problem.writerId.nickname}"
                                         width="45" class="rounded-circle"></svg>
                                         <img th:if="${!#strings.isEmpty(problem.writerId?.profileImage)}" th:src="${problem.writerId.profileImage}"
                                              class="rounded-circle"  width="45">
@@ -270,7 +270,7 @@
                                         <!-- <img class="avatar" src="http://bootdey.com/img/Content/user_1.jpg" alt="avatar"> -->
 
 
-                                        <svg th:if="${#strings.isEmpty(comment.writerId?.profileImage)}" data-jdenticon-value="user127" th:data-jdenticon-value="${comment.writerId.name}"
+                                        <svg th:if="${#strings.isEmpty(comment.writerId?.profileImage)}" data-jdenticon-value="user127" th:data-jdenticon-value="${comment.writerId.nickname}"
                                          class="avatar"></svg>
                                         <img th:if="${!#strings.isEmpty(comment.writerId?.profileImage)}" th:src="${comment.writerId.profileImage}"
                                              class="avatar"  >
