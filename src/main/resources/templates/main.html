@@ -116,7 +116,7 @@
 
       <!-- 프로젝트생성 버튼 -->
      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#project-modal">
-        프로젝트 생성하기 test
+        프로젝트 생성하기
       </button>
      <!-- <div th:object="${projectBuildForm}" >
       <small class="form-text text-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title Error</small>
@@ -185,7 +185,6 @@
       </div>
 
 
-
     <!-- project list -->
     <div class="card-columns">
         <div class="card" th:each="project : ${projectList}" >
@@ -198,7 +197,8 @@
                 <p class="card-text" th:text="${project.subtitle}"></p>
             </div>
             <div class="card-footer">
-                <small class="text-muted" th:text="${project.buildDate}"></small>
+                
+                <small class="text-muted" th:text="${#strings.arraySplit(project.buildDate,'T')[0]}"></small>
             </div>
         </div>
     </div>

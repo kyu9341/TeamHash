@@ -1,8 +1,78 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
-      lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" lang="en"
+    xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:replace="fragments.html :: head"></head>
+
+<!-- social card -->
+<style>
+    .h7 {
+            font-size: 0.8rem;
+    }
+
+    .gedf-wrapper {
+        margin-top: 0.97rem;
+    }
+
+    @media (min-width: 992px) {
+        .gedf-main {
+            padding-left: 4rem;
+            padding-right: 4rem;
+        }
+        .gedf-card {
+            margin-bottom: 2.77rem;
+        }
+    }
+
+    /**Reset Bootstrap*/
+    .dropdown-toggle::after {
+        content: none;
+        display: none;
+    }
+    .comments-list {
+    padding: 0;
+    margin-top: 20px;
+    list-style-type: none;
+    }
+    .comments-list .comment {
+    display: block;
+    width: 100%;
+    margin: 20px 0;
+    }
+    .comments-list .comment .avatar {
+    width: 35px;
+    height: 35px;
+    }
+    .comments-list .comment .comment-heading {
+    display: block;
+    width: 100%;
+    }
+    .comments-list .comment .comment-heading .user {
+    font-size: 14px;
+    font-weight: bold;
+    display: inline;
+    margin-top: 0;
+    margin-right: 10px;
+    }
+    .comments-list .comment .comment-heading .time {
+    font-size: 12px;
+    color: #aaa;
+    margin-top: 0;
+    display: inline;
+    }
+    .comments-list .comment .comment-body {
+    margin-left: 50px;
+    }
+    .comments-list .comment > .comments-list {
+    margin-left: 50px;
+    }
+
+
+
+</style>
+
+
+
 <body>
     <!-- no project member -->
     <div th:if="${!isMember}">
@@ -10,32 +80,229 @@
     </div>
 
     <!-- project member  -->
-    <div th:if="${isMember}" >
+    <div th:if="${isMember}">
         <nav th:replace="fragments.html :: main-nav"></nav>
 
 
         <nav th:replace="fragments.html :: project-nav(currentProject='problem')"></nav>
-  
 
 
 
-        <a th:href="@{'/project/'+${nickname}+'/'+${title}+'/problem-share/post'}">글쓰기</a>
+        <!-- https://bootsnipp.com/snippets/yNa0V -->
+
+        <div class="container-fluid gedf-wrapper">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="card gedf-card">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                                card's content.</p>
+                            <a href="#" class="card-link">Card link</a>
+                            <a href="#" class="card-link">Another link</a>
+                        </div>
+                    </div>
+                    <div class="card gedf-card">
+                            <div class="card-body">
+                                <h5 class="card-title">Card title</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                                    card's content.</p>
+                                <a href="#" class="card-link">Card link</a>
+                                <a href="#" class="card-link">Another link</a>
+                            </div>
+                        </div>
+                </div>
+                
+                <!-- Card Post main -->
+                <div class="col-md-6 gedf-main">
+    
+                    <!--- \\\\\\\Make Post-->
+                    <form action="#" th:action="@{'/project/'+${nickname}+'/'+${title}+'/problem-share/post'}" method="post">
+                        <div class="card gedf-card">
+
+                            <!-- Make post header -->
+                            <div class="card-header">
+                                <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="posts-tab" data-toggle="tab" href="#posts" role="tab" aria-controls="posts" aria-selected="true">Make
+                                            a publication</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="images-tab" data-toggle="tab" role="tab" aria-controls="images" aria-selected="false" href="#images">Images</a>
+                                    </li>
+                                </ul>
+                            </div>
+    
+                            <!-- Make post body -->
+                            <div class="card-body">
+                                <div class="tab-content" id="myTabContent">
+                                    <div class="tab-pane fade show active" id="posts" role="tabpanel" aria-labelledby="posts-tab">
+                                        <div class="form-group">
+                                            <input type="hidden" class="form-control"  name="writer" th:value="${#authentication.name}" >
+                                            <input type="text" class="form-control"  name="title" placeholder="Title">
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            
+                                            <textarea class="form-control"  rows="3" name="content" placeholder="What are you thinking?"></textarea>
+                                        </div>
+               
+        
+                                    </div>
+                                    <div class="tab-pane fade" id="images" role="tabpanel" aria-labelledby="images-tab">
+                                        <div class="form-group">
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" id="customFile">
+                                                <label class="custom-file-label" for="customFile">Upload image</label>
+                                            </div>
+                                        </div>
+                                        <div class="py-4"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="btn-toolbar justify-content-between">
+                                    <div class="btn-group">
+                                        <button type="submit" class="btn btn-primary">Post</button>
+                                    </div>
+ 
+                                    <!-- use later to tag -->
+                                    <!-- <div class="btn-group">
+                                        <button id="btnGroupDrop1" type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false">
+                                            <i class="fa fa-globe"></i>
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1">
+                                            <a class="dropdown-item" href="#"><i class="fa fa-globe"></i> Public</a>
+                                            <a class="dropdown-item" href="#"><i class="fa fa-users"></i> Friends</a>
+                                            <a class="dropdown-item" href="#"><i class="fa fa-user"></i> Just me</a>
+                                        </div>
+                                    </div> -->
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <!--- Make Post\\\\\\\-->
+
+    
+                <!--- \\\\\\\Post-->
+                    <div class="card gedf-card" th:each="problem : ${problemList}">
+                        <div class="card-header">
+                            
+                            <!-- post header -->
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <!-- post writer icon -->
+                                    <div class="mr-2">
+                                        <svg th:if="${#strings.isEmpty(problem.writerId?.profileImage)}" data-jdenticon-value="user127" th:data-jdenticon-value="${problem.writerId.name}"
+                                        width="45" class="rounded-circle"></svg>
+                                        <img th:if="${!#strings.isEmpty(problem.writerId?.profileImage)}" th:src="${problem.writerId.profileImage}"
+                                             class="rounded-circle"  width="45">
+                                    </div>
+
+                                    <!-- post writer name -->
+                                    <div class="ml-2">
+                                        
+                                        <div class="h5 m-0" th:text="${problem.writerId.nickname}"></div>
+                                        <!-- <div class="h7 text-muted">Miracles Lee Cross</div> -->
+                                    </div>
+
+                                    <!-- 수정/삭제 -->
+                                    <div>
+                                        <!-- <a th:href="@{'edit/'+ ${problem.id}}">
+                                            <button>수정</button>
+                                        </a> -->
+
+                                        <form id="delete-form" th:action="@{'/project/'+${nickname}+'/'+${title}+'/problem-share/' + ${problem.id}}" method="post">
+                                            <input type="hidden" name="_method" value="delete"/>
+                                            <button id="delete-btn">삭제</button>
+                                        </form>
+                                    </div>
+                                </div>
 
 
+                            </div>
+    
+                        </div>
+
+                        <!-- post main -->
+                        <div class="card-body">
+                            <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i>10 min ago</div>
+                            <a class="card-link" href="#">
+                                <h5 class="card-title" th:text="${problem.title}"></h5>
+                            </a>
+    
+                            <p class="card-text" th:text="${problem.content}"></p>
+                        </div>
+
+                        <!-- post footer with comment -->
+                        <div class="card-footer">
+                            
+                            <div class="input-group"> 
+                                <form action="#" th:action="@{'/project/'+${nickname}+'/'+${title}+'/problem-share/comment'}" method="post">
+                                    <input  type="hidden" name="pId" th:value="${problem.id}" >
+                                    <input class="form-control" placeholder="Add a comment" type="text" name="content">
+                                    
+                                    <span class="input-group-addon">
+                                        <button type="submit">
+                                            <a href="#"><i class="fa fa-edit"></i></a>  
+                                        </button>
+                                        
+                                    </span>
+                                </form>
+                                
+                                
+                            </div>
+   
+                        </div>
+                        <div class="card-body">
+                            <ul class="comments-list" th:each="comment : ${problem.comments}">
+                                <li class="comment">
 
 
+                                    <div class="mr-2">
 
-        <table>
+                                    </div>
+
+
+                                    <a class="pull-left" href="#">
+                                        <!-- <img class="avatar" src="http://bootdey.com/img/Content/user_1.jpg" alt="avatar"> -->
+
+
+                                        <svg th:if="${#strings.isEmpty(comment.writerId?.profileImage)}" data-jdenticon-value="user127" th:data-jdenticon-value="${comment.writerId.name}"
+                                         class="avatar"></svg>
+                                        <img th:if="${!#strings.isEmpty(comment.writerId?.profileImage)}" th:src="${comment.writerId.profileImage}"
+                                             class="avatar"  >
+
+                                    </a>
+                                    <div class="comment-body">
+                                        <div class="comment-heading">
+                                            <h4 class="user" th:text="${comment.writerId.nickname}"></h4>
+                                            <h5 class="time">5 minutes ago</h5>
+                                        </div>
+                                        <p th:text="${comment.content}"></p>
+                                    </div>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Post /////-->
+                   
+
+        <!-- <a th:href="@{'/project/'+${nickname}+'/'+${title}+'/problem-share/post'}">글쓰기</a>
+
+
+        <table class="table table-striped">
             <thead>
                 <tr>
-                    <th class="ten wide">글제목</th>
-                    <th class="two wide">작성자</th>
-                    <th class="three wide">작성일</th>
+                    <th scope="col">글제목</th>
+                    <th scope="col">작성자</th>
+                    <th scope="col">작성일</th>
                 </tr>
 
             </thead>
 
-            
+
             <tbody>
                 <tr th:each="problem : ${problemList}">
                     <td>
@@ -48,11 +315,14 @@
                     </td>
                     <td>
                         <span th:text="${#temporals.format(problem.createdDate, 'yyyy-MM-dd HH:mm')}"></span>
-                    </td>
+                        </td>
+    
+                    </tr>
+                </tbody>
+            </table> -->
+ 
 
-                </tr>
-            </tbody>
-        </table>
     </div>
+    <footer th:replace="fragments.html :: footer"></footer>
 </body>
 </html>
