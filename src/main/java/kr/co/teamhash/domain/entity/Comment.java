@@ -26,7 +26,7 @@ public class Comment {
 
     @ManyToOne
     @JoinColumn(name ="problems_id")
-    private Account problemId;
+    private Problems problemId;
 
     @ManyToOne
     @JoinColumn(name ="account_id")

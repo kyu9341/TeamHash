@@ -42,7 +42,8 @@ public class Problems {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
-    @OneToMany(mappedBy="Comment")
+    //Comment의 ProblemId와 연결을 의미함
+    @OneToMany(mappedBy="problemId")
     private List<Comment> comments = new ArrayList<Comment>();
 	
 

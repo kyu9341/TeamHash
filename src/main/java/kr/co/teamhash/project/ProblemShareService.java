@@ -7,7 +7,9 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import kr.co.teamhash.domain.entity.Account;
+import kr.co.teamhash.domain.entity.Comment;
 import kr.co.teamhash.domain.entity.Problems;
+import kr.co.teamhash.domain.repository.CommentRepository;
 import kr.co.teamhash.domain.repository.ProblemsRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -15,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ProblemShareService {
     private final ProblemsRepository problemsRepository;
-
+    private final CommentRepository commentRepository;
 
     // 문제 공유 글 저장
     @Transactional
@@ -48,5 +50,23 @@ public class ProblemShareService {
     @Transactional
     public void deleteProblem(Long problemId){
         problemsRepository.deleteById(problemId);
+    }
+
+
+    //코멘트 작성
+    @Transactional
+    public void saveComment(Comment comment, Long problemId, Account account){
+
+        //외래키 객체 주입
+
+        Problems problem = getProblem(problemId);
+
+        comment.setProblemId(problem);
+        comment.getProblemId().getComments().add(comment);
+        comment.setWriterId(account);
+        
+
+        
+        commentRepository.save(comment);
     }
 }

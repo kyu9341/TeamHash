@@ -240,25 +240,48 @@
                         <div class="card-footer">
                             
                             <div class="input-group"> 
-                                <input class="form-control" placeholder="Add a comment" type="text">
-                                <span class="input-group-addon">
-                                    <a href="#"><i class="fa fa-edit"></i></a>  
-                                </span>
+                                <form action="#" th:action="@{'/project/'+${nickname}+'/'+${title}+'/problem-share/comment'}" method="post">
+                                    <input  type="hidden" name="pId" th:value="${problem.id}" >
+                                    <input class="form-control" placeholder="Add a comment" type="text" name="content">
+                                    
+                                    <span class="input-group-addon">
+                                        <button type="submit">
+                                            <a href="#"><i class="fa fa-edit"></i></a>  
+                                        </button>
+                                        
+                                    </span>
+                                </form>
+                                
+                                
                             </div>
    
                         </div>
                         <div class="card-body">
-                            <ul class="comments-list">
+                            <ul class="comments-list" th:each="comment : ${problem.comments}">
                                 <li class="comment">
+
+
+                                    <div class="mr-2">
+
+                                    </div>
+
+
                                     <a class="pull-left" href="#">
-                                        <img class="avatar" src="http://bootdey.com/img/Content/user_1.jpg" alt="avatar">
+                                        <!-- <img class="avatar" src="http://bootdey.com/img/Content/user_1.jpg" alt="avatar"> -->
+
+
+                                        <svg th:if="${#strings.isEmpty(comment.writerId?.profileImage)}" data-jdenticon-value="user127" th:data-jdenticon-value="${comment.writerId.name}"
+                                         class="avatar"></svg>
+                                        <img th:if="${!#strings.isEmpty(comment.writerId?.profileImage)}" th:src="${comment.writerId.profileImage}"
+                                             class="avatar"  >
+
                                     </a>
                                     <div class="comment-body">
                                         <div class="comment-heading">
-                                            <h4 class="user">Gavino Free</h4>
+                                            <h4 class="user" th:text="${comment.writerId.nickname}"></h4>
                                             <h5 class="time">5 minutes ago</h5>
                                         </div>
-                                        <p>Sure, oooooooooooooooohhhhhhhhhhhhhhhh</p>
+                                        <p th:text="${comment.content}"></p>
                                     </div>
                             </ul>
                         </div>

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import kr.co.teamhash.account.CurrentUser;
 import kr.co.teamhash.domain.entity.Account;
+import kr.co.teamhash.domain.entity.Comment;
 import kr.co.teamhash.domain.entity.Member;
 import kr.co.teamhash.domain.entity.Problems;
 
@@ -143,29 +144,6 @@ public class ProjectController {
     }
 
 
-    // 문제 공유란 글쓰기
-    @GetMapping("/project/{nickname}/{title}/problem-share/post")
-    public String write(@PathVariable("nickname") String nickname, @PathVariable("title") String title, Model model,  @CurrentUser Account account) {
-        
-        // nickname과 projectTitle로 projectId 찾기
-        Long projectId=projectService.getProjectId(nickname, title);
-
-        // nickname과 projectTitle에 맞는 프로젝트가 없을 때
-        if(projectId == null)
-            return "project/no-project";
-        
-        // 프로젝트의 맴버 리스트에 현재 유저의 아이디가 있다면 페이지 공개
-        boolean isMember = projectService.isMember(projectId,account);
-
-        // 프로젝트에 필요한 정보와
-        // 유저가 해당 프로젝트의 맴버인지 확인하는 정보
-        model.addAttribute("isMember", isMember);
-        model.addAttribute("projectId", projectId);
-        model.addAttribute("title", title);
-    
-        model.addAttribute("nickname", nickname);
-        return "project/post-problem";
-    }
 
 
     // 문제 공유란 글 작성 완료
@@ -188,8 +166,8 @@ public class ProjectController {
         model.addAttribute("isMember", isMember);
         model.addAttribute("projectId", projectId);
         model.addAttribute("title", title);
-
         model.addAttribute("nickname", nickname);
+
         Long problemId = problemShareService.saveProblem(problem,projectId,account);
 
 
@@ -198,12 +176,10 @@ public class ProjectController {
         return "redirect:/project/"+nickname+"/"+title+"/problem-share/";
     }
 
-    // 문제 공유글 디테일
-    @GetMapping("/project/{nickname}/{title}/problem-share/{problemId}")
-    public String problemDetail(@PathVariable("nickname") String nickname, @PathVariable("title") String title, @PathVariable("problemId") Long problemId, Model model,  @CurrentUser Account account){
+    // 코멘트 작성
+    @PostMapping("/project/{nickname}/{title}/problem-share/comment")
+    public String write(@PathVariable("nickname") String nickname, @PathVariable("title") String title, Model model,  @CurrentUser Account account, Comment comment, Long pId) {
         
-
-
         // nickname과 projectTitle로 projectId 찾기
         Long projectId=projectService.getProjectId(nickname, title);
 
@@ -211,6 +187,7 @@ public class ProjectController {
         if(projectId == null)
             return "project/no-project";
 
+        
         // 프로젝트의 맴버 리스트에 현재 유저의 아이디가 있다면 페이지 공개
         boolean isMember = projectService.isMember(projectId,account);
 
@@ -218,44 +195,17 @@ public class ProjectController {
         // 유저가 해당 프로젝트의 맴버인지 확인하는 정보
         model.addAttribute("isMember", isMember);
         model.addAttribute("projectId", projectId);
+        
+        
         model.addAttribute("title", title);
-      
-        model.addAttribute("nickname", nickname);  
-        Problems problem = problemShareService.getProblem(problemId);
-
-        model.addAttribute("problem", problem);
-        return "/project/problem-detail";
-    }
-    
-
-    // 문제 공유글 수정란
-    @GetMapping("/project/{nickname}/{title}/problem-share/edit/{problemId}")
-    public String problemEdit(@PathVariable("nickname") String nickname, @PathVariable("title") String title, @PathVariable("problemId") Long problemId, Model model,  @CurrentUser Account account){
-
-        // nickname과 projectTitle로 projectId 찾기
-        Long projectId=projectService.getProjectId(nickname, title);
-
-        // nickname과 projectTitle에 맞는 프로젝트가 없을 때
-        if(projectId == null)
-            return "project/no-project";
-                
-        // 프로젝트의 맴버 리스트에 현재 유저의 아이디가 있다면 페이지 공개
-        boolean isMember = projectService.isMember(projectId,account);
-
-        // 프로젝트에 필요한 정보와
-        // 유저가 해당 프로젝트의 맴버인지 확인하는 정보
-        model.addAttribute("isMember", isMember);
-        model.addAttribute("projectId", projectId);
-        model.addAttribute("title", title);
-
         model.addAttribute("nickname", nickname);
-        Problems problem = problemShareService.getProblem(problemId);
+        
+        // 입력받은 comment 내용, 커멘트가 달린 문제공유글 id, 해당 코멘트를 작성한 유저 
+        problemShareService.saveComment(comment,pId,account);
 
-        model.addAttribute("problem", problem);
-
-
-        return "/project/problem-edit";
+        return "redirect:/project/"+nickname+"/"+title+"/problem-share/";
     }
+
 
     // //문제 공유글 수정
     // @PutMapping("/project/{nickname}/{title}/problem-share/{problemId}")
