@@ -161,12 +161,12 @@
                                         <div class="py-4"></div>
                                     </div>
                                 </div>
-    
+                                
                                 <div class="btn-toolbar justify-content-between">
                                     <div class="btn-group">
                                         <button type="submit" class="btn btn-primary">Post</button>
                                     </div>
-    
+ 
                                     <!-- use later to tag -->
                                     <!-- <div class="btn-group">
                                         <button id="btnGroupDrop1" type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
@@ -186,79 +186,6 @@
                     <!--- Make Post\\\\\\\-->
 
     
-                    <!--- \\\\\\\Post-->
-                    <div class="card gedf-card">
-                        <div class="card-header">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="mr-2">
-                                        <!-- <img class="rounded-circle" width="45" src="https://picsum.photos/50/50" alt=""> -->
-                                        
-                                        <svg th:if="${#strings.isEmpty(account?.profileImage)}" data-jdenticon-value="user127" th:data-jdenticon-value="${#authentication.name}"
-                                        width="45" class="rounded-circle"></svg>
-                                        <img th:if="${!#strings.isEmpty(account?.profileImage)}" th:src="${account.profileImage}"
-                                             class="rounded-circle"  width="45">
-                                    </div>
-                                    <div class="ml-2">
-                                        <div class="h5 m-0">@LeeCross</div>
-                                        <div class="h7 text-muted">Miracles Lee Cross</div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="dropdown">
-                                        <button class="btn btn-link dropdown-toggle" type="button" id="gedf-drop1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fa fa-ellipsis-h"></i>
-                                        </button>
-                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="gedf-drop1">
-                                            <div class="h6 dropdown-header">Configuration</div>
-                                            <a class="dropdown-item" href="#">Save</a>
-                                            <a class="dropdown-item" href="#">Hide</a>
-                                            <a class="dropdown-item" href="#">Report</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-    
-                        </div>
-                        <div class="card-body">
-                            <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i>10 min ago</div>
-                            <a class="card-link" href="#">
-                                <h5 class="card-title">Lorem ipsum dolor sit amet, consectetur adip.</h5>
-                            </a>
-    
-                            <p class="card-text">
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo recusandae nulla rem eos ipsa praesentium esse magnam nemo dolor
-                                sequi fuga quia quaerat cum, obcaecati hic, molestias minima iste voluptates.
-                            </p>
-                        </div>
-                        <div class="card-footer">
-                            
-                            <div class="input-group"> 
-                                <input class="form-control" placeholder="Add a comment" type="text">
-                                <span class="input-group-addon">
-                                    <a href="#"><i class="fa fa-edit"></i></a>  
-                                </span>
-                            </div>
-   
-                        </div>
-                        <div class="card-body">
-                            <ul class="comments-list">
-                                <li class="comment">
-                                    <a class="pull-left" href="#">
-                                        <img class="avatar" src="http://bootdey.com/img/Content/user_1.jpg" alt="avatar">
-                                    </a>
-                                    <div class="comment-body">
-                                        <div class="comment-heading">
-                                            <h4 class="user">Gavino Free</h4>
-                                            <h5 class="time">5 minutes ago</h5>
-                                        </div>
-                                        <p>Sure, oooooooooooooooohhhhhhhhhhhhhhhh</p>
-                                    </div>
-                            </ul>
-                        </div>
-                    </div>
-                    <!-- Post /////-->
-    
                 <!--- \\\\\\\Post-->
                     <div class="card gedf-card" th:each="problem : ${problemList}">
                         <div class="card-header">
@@ -268,16 +195,29 @@
                                 <div class="d-flex justify-content-between align-items-center">
                                     <!-- post writer icon -->
                                     <div class="mr-2">
-                                        <svg th:if="${#strings.isEmpty(account?.profileImage)}" data-jdenticon-value="user127" th:data-jdenticon-value="${#authentication.name}"
+                                        <svg th:if="${#strings.isEmpty(problem.writerId?.profileImage)}" data-jdenticon-value="user127" th:data-jdenticon-value="${problem.writerId.name}"
                                         width="45" class="rounded-circle"></svg>
-                                        <img th:if="${!#strings.isEmpty(account?.profileImage)}" th:src="${account.profileImage}"
+                                        <img th:if="${!#strings.isEmpty(problem.writerId?.profileImage)}" th:src="${problem.writerId.profileImage}"
                                              class="rounded-circle"  width="45">
                                     </div>
 
                                     <!-- post writer name -->
                                     <div class="ml-2">
-                                        <div class="h5 m-0" th:text="${problem.writer}"></div>
+                                        
+                                        <div class="h5 m-0" th:text="${problem.writerId.nickname}"></div>
                                         <!-- <div class="h7 text-muted">Miracles Lee Cross</div> -->
+                                    </div>
+
+                                    <!-- 수정/삭제 -->
+                                    <div>
+                                        <a th:href="@{'edit/'+ ${problem.id}}">
+                                            <button>수정</button>
+                                        </a>
+
+                                        <form id="delete-form" th:action="@{'/project/'+${nickname}+'/'+${title}+'/problem-share/' + ${problem.id}}" method="post">
+                                            <input type="hidden" name="_method" value="delete"/>
+                                            <button id="delete-btn">삭제</button>
+                                        </form>
                                     </div>
                                 </div>
 
@@ -285,6 +225,8 @@
                             </div>
     
                         </div>
+
+                        <!-- post main -->
                         <div class="card-body">
                             <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i>10 min ago</div>
                             <a class="card-link" href="#">
@@ -293,6 +235,8 @@
     
                             <p class="card-text" th:text="${problem.content}"></p>
                         </div>
+
+                        <!-- post footer with comment -->
                         <div class="card-footer">
                             
                             <div class="input-group"> 

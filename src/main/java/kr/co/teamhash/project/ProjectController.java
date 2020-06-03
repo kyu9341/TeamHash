@@ -257,6 +257,7 @@ public class ProjectController {
         return "/project/problem-edit";
     }
 
+    //문제 공유글 수정
     @PutMapping("/project/{nickname}/{title}/problem-share/{problemId}")
     public String problemUpdate(@PathVariable("nickname") String nickname, @PathVariable("title") String title, Model model,  @CurrentUser Account account, Problems problem){
         
@@ -285,6 +286,7 @@ public class ProjectController {
         return "redirect:/project/"+projectId+"/"+title+"/problem-share/"+problemId;
     }
 
+    //문제 공유글 삭제
     @DeleteMapping("/project/{nickname}/{title}/problem-share/{problemId}")
     public String problemDelete(@PathVariable("nickname") String nickname, @PathVariable("title") String title,@PathVariable("problemId") Long problemId, @CurrentUser Account account, Model model){
         
