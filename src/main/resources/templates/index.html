@@ -2,12 +2,40 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="fragments.html :: head"></head>
+<style>
+    .main-profile {
+        margin: auto;
+        min-height: 500px;
+        color: #FFFFFF;
+        background-color: #0f4c81;
+        display: flex;
+        align-items: center;
+        text-align: center;
 
+
+    }
+</style>
 <body>
     <nav th:replace="fragments.html :: main-nav"></nav>
 
 
+    <div class="main-profile">
+        <div class="container">
+            <div class="row">
+                <div class="col-6"><br><br><br><br><br><br>
+                    <h1>협업 쉽게 해보세요</h1>
+                    <p class="lead">Team#을 이용해 협업을 손쉽게 해보세요</p>
 
+                </div>
+                <div class="col">
+                    <a><img src="/images/teamhash.png"></a>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer th:replace="fragments.html ::footer"></footer>
 
 </body>
 </html>
