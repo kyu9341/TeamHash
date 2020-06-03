@@ -257,34 +257,34 @@ public class ProjectController {
         return "/project/problem-edit";
     }
 
-    //문제 공유글 수정
-    @PutMapping("/project/{nickname}/{title}/problem-share/{problemId}")
-    public String problemUpdate(@PathVariable("nickname") String nickname, @PathVariable("title") String title, Model model,  @CurrentUser Account account, Problems problem){
+    // //문제 공유글 수정
+    // @PutMapping("/project/{nickname}/{title}/problem-share/{problemId}")
+    // public String problemUpdate(@PathVariable("nickname") String nickname, @PathVariable("title") String title, Model model,  @CurrentUser Account account, Problems problem){
         
-        // nickname과 projectTitle로 projectId 찾기
-        Long projectId=projectService.getProjectId(nickname, title);
+    //     // nickname과 projectTitle로 projectId 찾기
+    //     Long projectId=projectService.getProjectId(nickname, title);
 
-        // nickname과 projectTitle에 맞는 프로젝트가 없을 때
-        if(projectId == null)
-            return "project/no-project";
+    //     // nickname과 projectTitle에 맞는 프로젝트가 없을 때
+    //     if(projectId == null)
+    //         return "project/no-project";
         
         
-        // 프로젝트의 맴버 리스트에 현재 유저의 아이디가 있다면 페이지 공개
-        boolean isMember = projectService.isMember(projectId,account);
+    //     // 프로젝트의 맴버 리스트에 현재 유저의 아이디가 있다면 페이지 공개
+    //     boolean isMember = projectService.isMember(projectId,account);
 
-        // 프로젝트에 필요한 정보와
-        // 유저가 해당 프로젝트의 맴버인지 확인하는 정보
-        model.addAttribute("isMember", isMember);
-        model.addAttribute("projectId", projectId);
-        model.addAttribute("title", title);
+    //     // 프로젝트에 필요한 정보와
+    //     // 유저가 해당 프로젝트의 맴버인지 확인하는 정보
+    //     model.addAttribute("isMember", isMember);
+    //     model.addAttribute("projectId", projectId);
+    //     model.addAttribute("title", title);
 
-        model.addAttribute("nickname", nickname);
-        Long problemId = problemShareService.saveProblem(problem,projectId,account);
+    //     model.addAttribute("nickname", nickname);
+    //     Long problemId = problemShareService.saveProblem(problem,projectId,account);
     
     
     
-        return "redirect:/project/"+projectId+"/"+title+"/problem-share/"+problemId;
-    }
+    //     return "redirect:/project/"+projectId+"/"+title+"/problem-share/"+problemId;
+    // }
 
     //문제 공유글 삭제
     @DeleteMapping("/project/{nickname}/{title}/problem-share/{problemId}")
@@ -310,6 +310,6 @@ public class ProjectController {
         model.addAttribute("nickname", nickname);
         problemShareService.deleteProblem(problemId);
 
-        return "redirect:/project/"+projectId+"/"+title+"/problem-share";
+        return "redirect:/project/"+nickname+"/"+title+"/problem-share";
     }
 }
