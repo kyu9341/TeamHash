@@ -264,7 +264,7 @@ public class ProjectController {
     }
 
 
-    // 문제 공유란 메인 페이지
+    // 캘린더
     @GetMapping("/project/{nickname}/{title}/calendar")
     public String calendar(@PathVariable("nickname") String nickname, @PathVariable("title") String title, Model model,  @CurrentUser Account account){
 
