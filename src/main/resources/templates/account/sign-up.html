@@ -1,109 +1,127 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
+
 	<head th:replace="fragments.html :: head"></head>
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
-<style type="text/css">
-	body {
-								color: #fff;
-								background: #0f4c81;
-								font-family: 'Roboto', sans-serif;
-							}
-	.form-control {
-		min-height: 41px;
-		box-shadow: none;
-		border-color: #e1e4e5;
-	}
-	.form-control:focus {
-		border-color: #4181a1;
-	}
-	.form-control, .btn {
-		border-radius: 3px;
-	}
-	.signup-form {
-		width: 400px;
-		margin: 0 auto;
-		padding: 30px 0;
-	}
-	.signup-form form {
-		color: #9ba5a8;
-		border-radius: 3px;
-		margin-bottom: 15px;
-		background: #fff;
-		box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-		padding: 30px;
-	}
-	.signup-form h2 {
-		color: #333;
-		font-weight: bold;
-		margin-top: 0;
-	}
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+	<style type="text/css">
+		body {
+			color: #fff;
+			background: #0f4c81;
+			font-family: 'Roboto', sans-serif;
+		}
 
-	.signup-form h3 {
-		color: #333;
-		font-weight: normal;
-		margin-top: 0;
-	}
+		.form-control {
+			min-height: 41px;
+			box-shadow: none;
+			border-color: #e1e4e5;
+		}
 
-	.signup-form hr {
-		margin: 0 -30px 20px;
-	}
-	.signup-form .form-group {
-		margin-top: 20px;
-		margin-bottom: 20px;
-	}
-	.signup-form label {
-		font-weight: normal;
-		font-size: 13px;
-	}
-	.signup-form .btn {        
-        font-size: 16px;
-        font-weight: bold;
-		background: #4181a1;
-		border: none;
-		min-width: 140px;
-    }
-	.signup-form .btn:hover, .signup-form .btn:focus {
-		background: #377391;
-        outline: none !important;
-	}
-	.signup-form a {
-		color: #fff;
-		text-decoration: underline;
-	}
-	.signup-form a:hover {
-		text-decoration: none;
-	}
-	.signup-form form a {
-		color: #4181a1;
-		text-decoration: none;
-	}	
-	.signup-form form a:hover {
-		text-decoration: underline;
-	}
-</style>
+		.form-control:focus {
+			border-color: #4181a1;
+		}
+
+		.form-control,
+		.btn {
+			border-radius: 3px;
+		}
+
+		.signup-form {
+			width: 400px;
+			margin: 0 auto;
+			padding: 30px 0;
+		}
+
+		.signup-form form {
+			color: #9ba5a8;
+			border-radius: 3px;
+			margin-bottom: 15px;
+			background: #fff;
+			box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+			padding: 30px;
+		}
+
+		.signup-form h2 {
+			color: #333;
+			font-weight: bold;
+			margin-top: 0;
+		}
+
+		.signup-form h3 {
+			color: #333;
+			font-weight: normal;
+			margin-top: 0;
+		}
+
+		.signup-form hr {
+			margin: 0 -30px 20px;
+		}
+
+		.signup-form .form-group {
+			margin-top: 20px;
+			margin-bottom: 20px;
+		}
+
+		.signup-form label {
+			font-weight: normal;
+			font-size: 13px;
+		}
+
+		.signup-form .btn {
+			font-size: 16px;
+			font-weight: bold;
+			background: #4181a1;
+			border: none;
+			min-width: 140px;
+		}
+
+		.signup-form .btn:hover,
+		.signup-form .btn:focus {
+			background: #377391;
+			outline: none !important;
+		}
+
+		.signup-form a {
+			color: #fff;
+			text-decoration: underline;
+		}
+
+		.signup-form a:hover {
+			text-decoration: none;
+		}
+
+		.signup-form form a {
+			color: #4181a1;
+			text-decoration: none;
+		}
+
+		.signup-form form a:hover {
+			text-decoration: underline;
+		}
+	</style>
 </head>
 
 <body>
-<div class="signup-form">
-    <form id="needs-validation" class="needs-validation" action="#"
-		  th:action="@{/sign-up}" th:object="${signUpForm}" method="post" novalidate>
+	<div class="signup-form">
+		<form id="needs-validation" class="needs-validation" action="#" th:action="@{/sign-up}"
+			th:object="${signUpForm}" method="post" novalidate>
 
-		<h2>TEAM#</h2>
-		<h3>회원가입</h3>
-		
-		<hr>
-        <div class="form-group">
-			<label for="nickname">닉네임</label>
-			<input id="nickname" type="text" th:field="*{nickname}" class="form-control"
-				   placeholder="nickname" required minlength="3" maxlength="20">
-			<small id="nicknameHelp" class="form-text text-muted">
-				공백없이 문자와 숫자로만 3자 이상 20자 이내로 입력하세요. 가입 후에 변경할 수 있습니다.
-			</small>
-			<small class="invalid-feedback">닉네임을 입력하세요.</small>
-			<small class="form-text text-danger" th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}">Nickname
+			<h2>TEAM#</h2>
+			<h3>회원가입</h3>
+
+			<hr>
+			<div class="form-group">
+				<label for="nickname">닉네임</label>
+				<input id="nickname" type="text" th:field="*{nickname}" class="form-control" placeholder="nickname"
+					required minlength="3" maxlength="20">
+				<small id="nicknameHelp" class="form-text text-muted">
+					공백없이 문자와 숫자로만 3자 이상 20자 이내로 입력하세요. 가입 후에 변경할 수 있습니다.
+				</small>
+				<small class="invalid-feedback">닉네임을 입력하세요.</small>
+				<small class="form-text text-danger" th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}">Nickname
 				Error</small>
         </div>
 
@@ -155,15 +173,15 @@
 		var btn;
 		btn = document.getElementById('sign-up-btn');
 
-		if(document.getElementById("password").value !== '' && document.getElementById("check-password").value !== ''){
-			if(document.getElementById('password').value === document.getElementById('check-password').value){
-				document.getElementById('same').innerHTML='비밀번호가 일치합니다.';
-				document.getElementById('same').style.color='blue';
+		if (document.getElementById("password").value !== '' && document.getElementById("check-password").value !== '') {
+			if (document.getElementById('password').value === document.getElementById('check-password').value) {
+				document.getElementById('same').innerHTML = '비밀번호가 일치합니다.';
+				document.getElementById('same').style.color = 'blue';
 				btn.disabled = false;
 			}
-			else{ // TODO 비밀번호 6자 이상일 때 비밀번호가 일치하지 않는 경우 빨간 테두리로 표시되도록 변경해야 함.
-				document.getElementById('same').innerHTML='비밀번호가 일치하지 않습니다.';
-				document.getElementById('same').style.color='red';
+			else { // TODO 비밀번호 6자 이상일 때 비밀번호가 일치하지 않는 경우 빨간 테두리로 표시되도록 변경해야 함.
+				document.getElementById('same').innerHTML = '비밀번호가 일치하지 않습니다.';
+				document.getElementById('same').style.color = 'red';
 				btn.disabled = 'disabled';
 
 			}
