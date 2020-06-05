@@ -168,7 +168,7 @@ public class ProjectController {
         model.addAttribute("title", title);
         model.addAttribute("nickname", nickname);
 
-        Long problemId = problemShareService.saveProblem(problem,projectId,account);
+        problemShareService.saveProblem(problem,projectId,account);
 
 
 
