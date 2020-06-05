@@ -141,12 +141,12 @@
                                     <div class="tab-pane fade show active" id="posts" role="tabpanel" aria-labelledby="posts-tab">
                                         <div class="form-group">
                                             <input type="hidden" class="form-control"  name="writer" th:value="${#authentication.name}" >
-                                            <input type="text" class="form-control"  name="title" placeholder="Title">
+                                            <input type="text" class="form-control"  name="title" placeholder="Title" required minlength="3">
                                         </div>
                                         
                                         <div class="form-group">
                                             
-                                            <textarea class="form-control"  rows="3" name="content" placeholder="What are you thinking?"></textarea>
+                                            <textarea class="form-control"  rows="3" name="content" placeholder="What are you thinking?" required minlength="10"></textarea>
                                         </div>
                
         
@@ -242,7 +242,7 @@
                             <div class="input-group"> 
                                 <form action="#" th:action="@{'/project/'+${nickname}+'/'+${title}+'/problem-share/comment'}" method="post">
                                     <input  type="hidden" name="pId" th:value="${problem.id}" >
-                                    <input class="form-control" placeholder="Add a comment" type="text" name="content">
+                                    <input class="form-control" placeholder="Add a comment" type="text" name="content" required minlength="5">
                                     
                                     <span class="input-group-addon">
                                         <button type="submit">

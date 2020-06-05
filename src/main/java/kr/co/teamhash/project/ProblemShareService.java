@@ -23,6 +23,13 @@ public class ProblemShareService {
     @Transactional
     public Long saveProblem(Problems problem, Long projectId,Account account){
 
+
+        //공백 값 검출
+        if(problem.getTitle().length()<3)
+            return null;
+        else if(problem.getContent().length()<9)
+            return null;
+
         problem.setProjectId(projectId);
         problem.setWriterId(account);
     
@@ -60,7 +67,11 @@ public class ProblemShareService {
         //외래키 객체 주입
 
         Problems problem = getProblem(problemId);
-
+        
+        //공백값 검출
+        if(comment.getContent().length()<5)
+            return;
+        
         comment.setProblemId(problem);
         comment.getProblemId().getComments().add(comment);
         comment.setWriterId(account);
