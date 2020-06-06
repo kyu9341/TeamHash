@@ -4,6 +4,7 @@
 
 
 <head th:replace="fragments.html :: head"></head>
+
 <style>
     /* Remove the navbar's default margin-bottom and rounded borders */
     .main-profile {
@@ -142,16 +143,16 @@
                   <!-- <form id="modal-form"> -->
                 <!-- 프로젝트 이름 -->
                   <div class="form-group">
-                    <label for="recipient-name" class="col-form-label">프로젝트 이름:</label>
+                    <label for="title" class="col-form-label">프로젝트 이름:</label>
                     <input id="builderNick" type="text" th:name="builderNick"
-               th:value="${#authentication.name}" hidden>
+                           th:value="${#authentication.name}" hidden>
                     <input type="text" class="form-control" id="title" name="title"  placeholder="title" minlength="3" required  >
                     <small id="title-error" class="form-text text-danger" th:if="${error}" th:text="${error}">Title Error</small>
 
                 </div>
                   <!-- 프로젝트 세부내용 -->
                   <div class="form-group">
-                    <label for="recipient-name" class="col-form-label">프로젝트 설명:</label>
+                    <label for="subTitle" class="col-form-label">프로젝트 설명:</label>
 
                     <input type="text" class="form-control" id="subTitle" name="subTitle" placeholder="subTitle" minlength="3" required>
 
@@ -159,15 +160,13 @@
 
                   <!-- 멤버검색 -->
                   <div class="form-group">
-                    <label for="recipient-name" class="col-form-label">멤버 추가:</label>
-                    <div class="input-group mb-3">
+                    <label for="members" class="col-form-label">멤버 추가:</label>
 
-                        <input id="recipient-name" type="text" class="form-control" placeholder="사용자 이름" aria-label="사용자 이름" aria-describedby="button-addon2">
-                        <div class="input-group-append">
-                          <button class="btn btn-outline-secondary" type="button" id="button-addon2">검색</button>
-                        </div>
-                      </div>
-                     </div>
+<!--                        <div id="whitelist" th:text="${whitelist}" hidden></div>-->
+                        <!--members 라는 리스트에 들어있는 각각의 데이터를 데이터가 콤마로 나누어진 문자열로 변환이 된다. -->
+                        <input id="members" type="text" name="members"
+                               class="tagify--outside" aria-describedby="membersHelp"/>
+                  </div>
 
                 <div class="form-group">
                     <button th:if="${error != null}"  onclick="location.href='/main'" type="submit" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -202,7 +201,9 @@
             </div>
         </div>
     </div>
+
     <footer th:replace="fragments.html :: footer"></footer>
+    <script src="/node_modules/@yaireo/tagify/dist/tagify.min.js"></script>
     <script th:if="${error}">
         $(window).on('load', function () {
             $('#project-modal').modal('show');
@@ -211,6 +212,25 @@
         $('#project-modal').on('hide.bs.modal', function () {
             location.href='/main';
         })
+    </script>
+
+    <script type="application/javascript">
+        $(function () {
+
+
+
+            var memberInput = document.querySelector("#members");
+            var tagify = new Tagify(memberInput, {
+                pattern: /^.{0,20}$/,
+                dropdown: {
+                    enabled: 1, // suggest members after a single character input
+                } // map members
+            });
+            // add a class to Tagify's input element
+            tagify.DOM.input.classList.add('form-control');
+            // re-place Tagify's input element outside of the  element (tagify.DOM.scope), just before it
+            tagify.DOM.scope.parentNode.insertBefore(tagify.DOM.input, tagify.DOM.scope);
+        });
     </script>
     </body>
 </html>
