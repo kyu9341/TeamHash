@@ -82,16 +82,12 @@ public class ProjectController {
     public String projectMain(@PathVariable("nickname") String nickname, @PathVariable("title") String title, Model model, @CurrentUser Account account){
         
 
-
-
         // nickname과 projectTitle로 projectId 찾기
         Long projectId=projectService.getProjectId(nickname, title);
 
         // nickname과 projectTitle에 맞는 프로젝트가 없을 때
         if(projectId == null)
             return "project/no-project";
-
-
 
         //프로젝트 검색
         if(!projectService.getProject(projectId).isPresent())
@@ -115,7 +111,6 @@ public class ProjectController {
     public String problemShareMain(@PathVariable("nickname") String nickname, @PathVariable("title") String title, Model model,  @CurrentUser Account account){
 
 
-        
         // nickname과 projectTitle로 projectId 찾기
         Long projectId=projectService.getProjectId(nickname, title);
 
@@ -238,7 +233,8 @@ public class ProjectController {
 
     //문제 공유글 삭제
     @DeleteMapping("/project/{nickname}/{title}/problem-share/{problemId}")
-    public String problemDelete(@PathVariable("nickname") String nickname, @PathVariable("title") String title,@PathVariable("problemId") Long problemId, @CurrentUser Account account, Model model){
+    public String problemDelete(@PathVariable("nickname") String nickname, @PathVariable("title")
+            String title,@PathVariable("problemId") Long problemId, @CurrentUser Account account, Model model){
         
         // nickname과 projectTitle로 projectId 찾기
         Long projectId=projectService.getProjectId(nickname, title);
@@ -266,9 +262,8 @@ public class ProjectController {
 
     // 캘린더
     @GetMapping("/project/{nickname}/{title}/calendar")
-    public String calendar(@PathVariable("nickname") String nickname, @PathVariable("title") String title, Model model,  @CurrentUser Account account){
-
-
+    public String calendar(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
+                           Model model,  @CurrentUser Account account){
         
         // nickname과 projectTitle로 projectId 찾기
         Long projectId=projectService.getProjectId(nickname, title);
@@ -276,7 +271,6 @@ public class ProjectController {
         // nickname과 projectTitle에 맞는 프로젝트가 없을 때
         if(projectId == null)
             return "project/no-project";
-
 
         // 프로젝트의 맴버 리스트에 현재 유저의 아이디가 있다면 페이지 공개
         boolean isMember = projectService.isMember(projectId,account);
@@ -290,6 +284,15 @@ public class ProjectController {
         model.addAttribute("account", account);
 
         return "project/calendar";
+    }
+
+    // 캘린더
+    @GetMapping("/project/{nickname}/{title}/settings")
+    public String settings(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
+                           Model model,  @CurrentUser Account account){
+
+        model.addAttribute(account);
+        return "project/settings";
     }
 
 }

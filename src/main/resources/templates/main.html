@@ -54,20 +54,12 @@
         max-width: 500px;
         margin: 20px;
     }
-    
-
 
     </style>
-
-
 
     <body>
 
     <nav th:replace="fragments.html :: main-nav"></nav>
-
-
-
-
 
     <div class="main-profile">
         <div class="container" th:if="${account != null && !account.emailVerified}">
@@ -158,15 +150,6 @@
 
                   </div>
 
-                  <!-- 멤버검색 -->
-                  <div class="form-group">
-                    <label for="members" class="col-form-label">멤버 추가:</label>
-
-<!--                        <div id="whitelist" th:text="${whitelist}" hidden></div>-->
-                        <!--members 라는 리스트에 들어있는 각각의 데이터를 데이터가 콤마로 나누어진 문자열로 변환이 된다. -->
-                        <input id="members" type="text" name="members"
-                               class="tagify--outside" aria-describedby="membersHelp"/>
-                  </div>
 
                 <div class="form-group">
                     <button th:if="${error != null}"  onclick="location.href='/main'" type="submit" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -203,7 +186,6 @@
     </div>
 
     <footer th:replace="fragments.html :: footer"></footer>
-    <script src="/node_modules/@yaireo/tagify/dist/tagify.min.js"></script>
     <script th:if="${error}">
         $(window).on('load', function () {
             $('#project-modal').modal('show');
@@ -214,23 +196,6 @@
         })
     </script>
 
-    <script type="application/javascript">
-        $(function () {
 
-
-
-            var memberInput = document.querySelector("#members");
-            var tagify = new Tagify(memberInput, {
-                pattern: /^.{0,20}$/,
-                dropdown: {
-                    enabled: 1, // suggest members after a single character input
-                } // map members
-            });
-            // add a class to Tagify's input element
-            tagify.DOM.input.classList.add('form-control');
-            // re-place Tagify's input element outside of the  element (tagify.DOM.scope), just before it
-            tagify.DOM.scope.parentNode.insertBefore(tagify.DOM.input, tagify.DOM.scope);
-        });
-    </script>
     </body>
 </html>

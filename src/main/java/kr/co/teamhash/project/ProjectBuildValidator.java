@@ -35,9 +35,6 @@ public class ProjectBuildValidator implements Validator{
                 errors.rejectValue("title", "invalid.title",
                         new Object[]{projectBuildForm.getTitle()}, "이미 사용중인 프로젝트명 입니다.");
             }
-
-
-
         }
     }
 }

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+
+<head th:replace="fragments.html :: head"></head>
+
+<body>
+<nav th:replace="fragments.html :: main-nav"></nav>
+<nav th:replace="fragments.html :: project-nav(currentProject = 'settings')"></nav>
+
+<div class="container">
+    <div class="row mt-5 justify-content-center">
+        <div class="col-2">
+
+        </div>
+
+        <div class="col-8">
+
+        </div>
+    </div>
+    <div class="row mt-3 justify-content-center">
+        <div class="col-2">
+            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <a class="nav-link active" id="v-pills-intro-tab" data-toggle="pill" href="#v-pills-profile"
+                   role="tab" aria-controls="v-pills-home" aria-selected="true">프로젝트 정보</a>
+                <a class="nav-link" id="v-pills-project-tab" data-toggle="pill" href="#v-pills-project"
+                   role="tab" aria-controls="v-pills-project" aria-selected="false">멤버 초대</a>
+            </div>
+        </div>
+        <div class="col-8">
+            <div class="tab-content" id="v-pills-tabContent">
+                <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-home-tab">
+
+                </div>
+                <div class="tab-pane fade" id="v-pills-project" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                    <!-- 멤버검색 -->
+                    <div>
+                        <label for="members" class="col-form-label">멤버 추가:</label>
+
+                        <!--                        <div id="whitelist" th:text="${whitelist}" hidden></div>-->
+                        <!--members 라는 리스트에 들어있는 각각의 데이터를 데이터가 콤마로 나누어진 문자열로 변환이 된다. -->
+                        <input id="members" type="text" name="members"
+                               class="tagify--outside" aria-describedby="membersHelp">
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<footer th:replace="fragments.html :: footer"></footer>
+<script src="/node_modules/@yaireo/tagify/dist/tagify.min.js"></script>
+
+<script type="application/javascript">
+    $(function () {
+        var memberInput = document.querySelector("#members");
+        var tagify = new Tagify(memberInput, {
+            pattern: /^.{0,20}$/,
+            dropdown: {
+                enabled: 1, // suggest members after a single character input
+            } // map members
+        });
+        // add a class to Tagify's input element
+        tagify.DOM.input.classList.add('form-control');
+        // re-place Tagify's input element outside of the  element (tagify.DOM.scope), just before it
+        tagify.DOM.scope.parentNode.insertBefore(tagify.DOM.input, tagify.DOM.scope);
+    });
+</script>
+</body>
+
+</html>
