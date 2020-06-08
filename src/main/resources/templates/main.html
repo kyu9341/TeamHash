@@ -169,18 +169,18 @@
 
     <!-- project list -->
     <div class="card-columns">
-        <div class="card" th:each="project : ${projectList}" >
+        <div class="card" th:each="project_member : ${projectList}" >
             
             <div class="card-body">
-                <a th:href="@{'/project/' + ${account.nickname} + '/' + ${project.title}}">
-                    <h5 class="card-title"  th:text="${project.title}"></h5>
+                <a th:href="@{'/project/' + ${account.nickname} + '/' + ${project_member.project.title}}">
+                    <h5 class="card-title"  th:text="${project_member.project.title}"></h5>
                 </a>
                 
-                <p class="card-text" th:text="${project.subtitle}"></p>
+                <p class="card-text" th:text="${project_member.project.title}"></p>
             </div>
             <div class="card-footer">
                 
-                <small class="text-muted" th:text="${#strings.arraySplit(project.buildDate,'T')[0]}"></small>
+                <small class="text-muted" th:text="${#strings.arraySplit(project_member.project.buildDate,'T')[0]}"></small>
             </div>
         </div>
     </div>

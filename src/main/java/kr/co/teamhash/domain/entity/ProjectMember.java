@@ -10,15 +10,17 @@ import java.time.LocalDateTime;
 @Entity
 @Getter @Setter @EqualsAndHashCode(of = "id")
 @Builder @AllArgsConstructor @NoArgsConstructor
-public class Member {
+public class ProjectMember {
     @Id @GeneratedValue
     private Long id;
 
-    // 참여한 프로젝트 id
-    private Long projectId;
+    @ManyToOne
+    @JoinColumn(name = "project_id")
+    private Project project;
 
-    // 해당 프로젝트에 참여한 유저 id
-    private Long userId;
+    @ManyToOne
+    @JoinColumn(name = "account_id")
+    private Account account;
 
     private LocalDateTime joinDate;
 

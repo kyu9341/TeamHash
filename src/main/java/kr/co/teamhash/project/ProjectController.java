@@ -1,6 +1,7 @@
 package kr.co.teamhash.project;
 
-import kr.co.teamhash.domain.entity.Project;
+import kr.co.teamhash.domain.entity.*;
+import kr.co.teamhash.domain.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -15,10 +16,6 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import kr.co.teamhash.account.CurrentUser;
-import kr.co.teamhash.domain.entity.Account;
-import kr.co.teamhash.domain.entity.Comment;
-import kr.co.teamhash.domain.entity.Member;
-import kr.co.teamhash.domain.entity.Problems;
 
 @Slf4j
 @Controller
@@ -28,6 +25,7 @@ public class ProjectController {
     private final ProjectService projectService;
     private final ProblemShareService problemShareService;
     private final ProjectBuildValidator projectBuildValidator;
+    private final AccountRepository accountRepository;
 
     @InitBinder("projectBuildForm")
     public void projectInitBinder(WebDataBinder webDataBinder) {
@@ -49,7 +47,9 @@ public class ProjectController {
     public String buildProjectDone(@Valid @ModelAttribute ProjectBuildForm projectBuildForm, Errors errors,
                                    Model model , @CurrentUser Account account){
         if (errors.hasErrors()) {
-            List<Project> projectList = projectService.getProjectList(account);
+//            List<Project> projectList = projectService.getProjectList(account);
+            Account byNickname = accountRepository.findByNickname(account.getNickname());
+            List<ProjectMember> projectList = byNickname.getProjects();
             model.addAttribute("projectBuildForm", new ProjectBuildForm());
             model.addAttribute("projectList", projectList);
             model.addAttribute(new ProjectBuildForm());

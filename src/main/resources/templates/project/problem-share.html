@@ -74,12 +74,12 @@
 
 
 <body>
-    <!-- no project member -->
+    <!-- no project projectMember -->
     <div th:if="${!isMember}">
-        your not project member
+        your not project projectMember
     </div>
 
-    <!-- project member  -->
+    <!-- project projectMember  -->
     <div th:if="${isMember}">
         <nav th:replace="fragments.html :: main-nav"></nav>
 

@@ -5,6 +5,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 // 프로젝트 관리 DB
 @Entity
@@ -24,6 +26,8 @@ public class Project {
     //프로젝트를 생성한 유저의 id를 넣을 것
     private Long builder;
 
+    @OneToMany(mappedBy = "project")
+    private List<ProjectMember> members = new ArrayList<>();
 
     private LocalDateTime buildDate;
 }

@@ -4,14 +4,14 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import kr.co.teamhash.domain.entity.Member;
+import kr.co.teamhash.domain.entity.ProjectMember;
 
 
 
-public interface MemberRepository extends JpaRepository<Member, Long> {
+public interface MemberRepository extends JpaRepository<ProjectMember, Long> {
 
-    List<Member> findAllByUserId(Long userId);
+    List<ProjectMember> findAllByAccountId(Long accountId);
 
     
-    List<Member> findAllByProjectId(Long projectId);
+    List<ProjectMember> findAllByProjectId(Long projectId);
 }

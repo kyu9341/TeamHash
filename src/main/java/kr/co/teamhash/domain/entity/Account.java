@@ -4,6 +4,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -39,6 +41,8 @@ public class Account {
 
     private LocalDateTime emailCheckTokenGeneratedAt;
 
+    @OneToMany(mappedBy = "account")
+    private List<ProjectMember> projects = new ArrayList<>();
 
     public void generateEmailCheckToken(){
         // 이메일 확인 토큰 생성
