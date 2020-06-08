@@ -1,4 +1,4 @@
-package kr.co.teamhash.project;
+package kr.co.teamhash.project.form;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;

@@ -57,9 +57,44 @@
 
 <footer th:replace="fragments.html :: footer"></footer>
 <script src="/node_modules/@yaireo/tagify/dist/tagify.min.js"></script>
-
+<script type="application/javascript" th:inline="javascript">
+    $(function () { // csrf 토큰 추가하여 요청
+        var csrfToken = /*[[${_csrf.token}]]*/ null;
+        var csrfHeader = /*[[${_csrf.headerName}]]*/ null;
+        $(document).ajaxSend(function (e, xhr, options) {
+            xhr.setRequestHeader(csrfHeader, csrfToken);
+        });
+    });
+</script>
 <script type="application/javascript">
     $(function () {
+
+        let pathname = window.location.pathname; // 현재 경로 읽어오기
+
+        function tagRequest(url, memberNickname) {
+            $.ajax({
+                dataType: "json",
+                autocomplete: {
+                    enabled: true,
+                    rightKey: true,
+                },
+                contentType: "application/json; charset=utf-8",
+                method: "POST",
+                url: pathname + url,
+                data: JSON.stringify({'memberNickname': memberNickname})
+            }).done(function (data, status) {
+                console.log("${data} and status is ${status}");
+            });
+        }
+
+        function onAdd(e) {
+            tagRequest("/add", e.detail.data.value);
+        }
+
+        function onRemove(e) {
+            tagRequest("/remove", e.detail.data.value);
+        }
+
         var memberInput = document.querySelector("#members");
         var tagify = new Tagify(memberInput, {
             pattern: /^.{0,20}$/,
@@ -67,6 +102,10 @@
                 enabled: 1, // suggest members after a single character input
             } // map members
         });
+
+        tagify.on("add", onAdd);
+        tagify.on("remove", onRemove);
+
         // add a class to Tagify's input element
         tagify.DOM.input.classList.add('form-control');
         // re-place Tagify's input element outside of the  element (tagify.DOM.scope), just before it

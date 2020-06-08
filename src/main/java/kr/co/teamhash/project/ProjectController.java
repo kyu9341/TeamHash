@@ -2,6 +2,10 @@ package kr.co.teamhash.project;
 
 import kr.co.teamhash.domain.entity.*;
 import kr.co.teamhash.domain.repository.AccountRepository;
+import kr.co.teamhash.domain.repository.MemberRepository;
+import kr.co.teamhash.domain.repository.ProjectRepository;
+import kr.co.teamhash.project.form.MemberForm;
+import kr.co.teamhash.project.form.ProjectBuildForm;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -9,6 +13,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -26,6 +31,8 @@ public class ProjectController {
     private final ProblemShareService problemShareService;
     private final ProjectBuildValidator projectBuildValidator;
     private final AccountRepository accountRepository;
+    private final MemberRepository memberRepository;
+    private final ProjectRepository projectRepository;
 
     @InitBinder("projectBuildForm")
     public void projectInitBinder(WebDataBinder webDataBinder) {
@@ -293,6 +300,17 @@ public class ProjectController {
 
         model.addAttribute(account);
         return "project/settings";
+    }
+
+    @PostMapping("/project/{nickname}/{title}/settings/add")
+    @ResponseBody
+    public ResponseEntity addMember(@CurrentUser Account account, @RequestBody MemberForm memberForm,
+                                    @PathVariable("title") String title, Model model) {
+        String memberNickname = memberForm.getMemberNickname();
+        projectService.saveProjectMember(memberNickname, title);
+
+        
+        return ResponseEntity.ok().build();
     }
 
 }
