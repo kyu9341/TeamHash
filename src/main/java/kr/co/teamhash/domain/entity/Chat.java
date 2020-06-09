@@ -15,12 +15,10 @@ public class Chat {
     @Id @GeneratedValue
     private Long id;
     
-    @Column(nullable = false)
     private Long projectId;
 
     @ManyToOne
     @JoinColumn(name ="account_id")
-    @Column(nullable = false)
 	private Account sender;
 	
     @Column(columnDefinition = "TEXT", nullable = false)
