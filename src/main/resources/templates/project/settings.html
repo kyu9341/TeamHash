@@ -44,7 +44,12 @@
                                class="tagify--outside" aria-describedby="membersHelp">
 
                     </div>
+
+
+<!--                    <small id="title-error" class="form-text text-danger" th:if="${error}" th:text="${error}">Title Error</small>-->
+
                 </div>
+
             </div>
 
         </div>
@@ -71,7 +76,7 @@
 
         let pathname = window.location.pathname; // 현재 경로 읽어오기
 
-        function tagRequest(url, memberNickname) {
+        function memberRequest(url, memberNickname) {
             $.ajax({
                 dataType: "json",
                 autocomplete: {
@@ -84,15 +89,16 @@
                 data: JSON.stringify({'memberNickname': memberNickname})
             }).done(function (data, status) {
                 console.log("${data} and status is ${status}");
+
             });
         }
 
         function onAdd(e) {
-            tagRequest("/add", e.detail.data.value);
+            memberRequest("/add", e.detail.data.value);
         }
 
         function onRemove(e) {
-            tagRequest("/remove", e.detail.data.value);
+            memberRequest("/remove", e.detail.data.value);
         }
 
         var memberInput = document.querySelector("#members");

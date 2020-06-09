@@ -6,6 +6,8 @@ import kr.co.teamhash.domain.repository.MemberRepository;
 import kr.co.teamhash.domain.repository.ProjectRepository;
 import kr.co.teamhash.project.form.MemberForm;
 import kr.co.teamhash.project.form.ProjectBuildForm;
+import kr.co.teamhash.project.validator.MemberValidator;
+import kr.co.teamhash.project.validator.ProjectBuildValidator;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -33,12 +35,17 @@ public class ProjectController {
     private final AccountRepository accountRepository;
     private final MemberRepository memberRepository;
     private final ProjectRepository projectRepository;
+    private final MemberValidator memberValidator;
 
     @InitBinder("projectBuildForm")
     public void projectInitBinder(WebDataBinder webDataBinder) {
         webDataBinder.addValidators(projectBuildValidator);
     }
 
+    @InitBinder("memberForm")
+    public void memberInitBinder(WebDataBinder webDataBinder) {
+        webDataBinder.addValidators(memberValidator);
+    }
 
     //메인으로 이동
 //     // 프로젝트 생성 form
@@ -86,11 +93,12 @@ public class ProjectController {
     //          - 기존 서비스를 모두 수정하지 않고 userNickName에서
     //            해당 projectTitle의 id를 추출해 보내주는 것으로 수정하자.
     @GetMapping("/project/{nickname}/{title}")
-    public String projectMain(@PathVariable("nickname") String nickname, @PathVariable("title") String title, Model model, @CurrentUser Account account){
+    public String projectMain(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
+                              Model model, @CurrentUser Account account){
         
 
         // nickname과 projectTitle로 projectId 찾기
-        Long projectId=projectService.getProjectId(nickname, title);
+        Long projectId = projectService.getProjectId(nickname, title);
 
         // nickname과 projectTitle에 맞는 프로젝트가 없을 때
         if(projectId == null)
@@ -101,7 +109,7 @@ public class ProjectController {
             return "project/no-project";
 
         // 프로젝트의 맴버 리스트에 현재 유저의 아이디가 있다면 페이지 공개
-        boolean isMember = projectService.isMember(projectId,account);
+        boolean isMember = projectService.isMember(projectId, account);
 
         // 프로젝트에 필요한 정보와
         // 유저가 해당 프로젝트의 맴버인지 확인하는 정보
@@ -119,7 +127,7 @@ public class ProjectController {
 
 
         // nickname과 projectTitle로 projectId 찾기
-        Long projectId=projectService.getProjectId(nickname, title);
+        Long projectId = projectService.getProjectId(nickname, title);
 
         // nickname과 projectTitle에 맞는 프로젝트가 없을 때
         if(projectId == null)
@@ -150,10 +158,11 @@ public class ProjectController {
 
     // 문제 공유란 글 작성 완료
     @PostMapping("/project/{nickname}/{title}/problem-share/post")
-    public String write(@PathVariable("nickname") String nickname, @PathVariable("title") String title, Model model,  @CurrentUser Account account, Problems problem) {
+    public String write(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
+                        Model model,  @CurrentUser Account account, Problems problem) {
         
         // nickname과 projectTitle로 projectId 찾기
-        Long projectId=projectService.getProjectId(nickname, title);
+        Long projectId = projectService.getProjectId(nickname, title);
 
         // nickname과 projectTitle에 맞는 프로젝트가 없을 때
         if(projectId == null)
@@ -180,10 +189,11 @@ public class ProjectController {
 
     // 코멘트 작성
     @PostMapping("/project/{nickname}/{title}/problem-share/comment")
-    public String write(@PathVariable("nickname") String nickname, @PathVariable("title") String title, Model model,  @CurrentUser Account account, Comment comment, Long pId) {
+    public String write(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
+                        Model model,  @CurrentUser Account account, Comment comment, Long pId) {
         
         // nickname과 projectTitle로 projectId 찾기
-        Long projectId=projectService.getProjectId(nickname, title);
+        Long projectId = projectService.getProjectId(nickname, title);
 
         // nickname과 projectTitle에 맞는 프로젝트가 없을 때
         if(projectId == null)
@@ -191,52 +201,21 @@ public class ProjectController {
 
         
         // 프로젝트의 맴버 리스트에 현재 유저의 아이디가 있다면 페이지 공개
-        boolean isMember = projectService.isMember(projectId,account);
+        boolean isMember = projectService.isMember(projectId, account);
 
         // 프로젝트에 필요한 정보와
         // 유저가 해당 프로젝트의 맴버인지 확인하는 정보
         model.addAttribute("isMember", isMember);
         model.addAttribute("projectId", projectId);
-        
-        
+
         model.addAttribute("title", title);
         model.addAttribute("nickname", nickname);
         
         // 입력받은 comment 내용, 커멘트가 달린 문제공유글 id, 해당 코멘트를 작성한 유저 
-        problemShareService.saveComment(comment,pId,account);
+        problemShareService.saveComment(comment, pId, account);
 
         return "redirect:/project/"+nickname+"/"+title+"/problem-share/";
     }
-
-
-    // //문제 공유글 수정
-    // @PutMapping("/project/{nickname}/{title}/problem-share/{problemId}")
-    // public String problemUpdate(@PathVariable("nickname") String nickname, @PathVariable("title") String title, Model model,  @CurrentUser Account account, Problems problem){
-        
-    //     // nickname과 projectTitle로 projectId 찾기
-    //     Long projectId=projectService.getProjectId(nickname, title);
-
-    //     // nickname과 projectTitle에 맞는 프로젝트가 없을 때
-    //     if(projectId == null)
-    //         return "project/no-project";
-        
-        
-    //     // 프로젝트의 맴버 리스트에 현재 유저의 아이디가 있다면 페이지 공개
-    //     boolean isMember = projectService.isMember(projectId,account);
-
-    //     // 프로젝트에 필요한 정보와
-    //     // 유저가 해당 프로젝트의 맴버인지 확인하는 정보
-    //     model.addAttribute("isMember", isMember);
-    //     model.addAttribute("projectId", projectId);
-    //     model.addAttribute("title", title);
-
-    //     model.addAttribute("nickname", nickname);
-    //     Long problemId = problemShareService.saveProblem(problem,projectId,account);
-    
-    
-    
-    //     return "redirect:/project/"+projectId+"/"+title+"/problem-share/"+problemId;
-    // }
 
     //문제 공유글 삭제
     @DeleteMapping("/project/{nickname}/{title}/problem-share/{problemId}")
@@ -244,7 +223,7 @@ public class ProjectController {
             String title,@PathVariable("problemId") Long problemId, @CurrentUser Account account, Model model){
         
         // nickname과 projectTitle로 projectId 찾기
-        Long projectId=projectService.getProjectId(nickname, title);
+        Long projectId = projectService.getProjectId(nickname, title);
 
         // nickname과 projectTitle에 맞는 프로젝트가 없을 때
         if(projectId == null)
@@ -273,7 +252,7 @@ public class ProjectController {
                            Model model,  @CurrentUser Account account){
         
         // nickname과 projectTitle로 projectId 찾기
-        Long projectId=projectService.getProjectId(nickname, title);
+        Long projectId = projectService.getProjectId(nickname, title);
 
         // nickname과 projectTitle에 맞는 프로젝트가 없을 때
         if(projectId == null)
@@ -293,7 +272,6 @@ public class ProjectController {
         return "project/calendar";
     }
 
-    // 캘린더
     @GetMapping("/project/{nickname}/{title}/settings")
     public String settings(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
                            Model model,  @CurrentUser Account account){
@@ -304,12 +282,17 @@ public class ProjectController {
 
     @PostMapping("/project/{nickname}/{title}/settings/add")
     @ResponseBody
-    public ResponseEntity addMember(@CurrentUser Account account, @RequestBody MemberForm memberForm,
-                                    @PathVariable("title") String title, Model model) {
+    public ResponseEntity addMember(@CurrentUser Account account, @RequestBody @Valid MemberForm memberForm,
+                                    Errors errors, @PathVariable("title") String title, Model model) {
+        if (errors.hasErrors()) {
+            model.addAttribute("error", "존재하지 않는 닉네임입니다.");
+            return ResponseEntity.badRequest().build();
+        }
         String memberNickname = memberForm.getMemberNickname();
         projectService.saveProjectMember(memberNickname, title);
 
-        
+        log.info("title: " + title);
+
         return ResponseEntity.ok().build();
     }
 

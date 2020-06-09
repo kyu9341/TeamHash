@@ -1,4 +1,4 @@
-package kr.co.teamhash.project;
+package kr.co.teamhash.project.validator;
 
 import kr.co.teamhash.project.form.ProjectBuildForm;
 import lombok.RequiredArgsConstructor;

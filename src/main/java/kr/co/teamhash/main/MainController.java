@@ -32,7 +32,6 @@ public class MainController {
     @GetMapping("/main")
     public String main(@CurrentUser Account account, Model model){
         if(account != null){
-//            List<Project> projectList = projectService.getProjectList(account);
             Account byNickname = accountRepository.findByNickname(account.getNickname());
             List<ProjectMember> projectList = byNickname.getProjects();
             model.addAttribute("projectBuildForm", new ProjectBuildForm());

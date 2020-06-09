@@ -35,7 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .mvcMatchers(HttpMethod.GET, "/profile/**").permitAll() // `/profile/*`은 get만 허가
                 .anyRequest().authenticated();
 
-
+        
         http.formLogin()// 로그인 폼 사용
                 .loginPage("/login")
                 .defaultSuccessUrl("/main") // 로그인 성공시 main 호출
