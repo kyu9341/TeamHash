@@ -55,7 +55,7 @@
                         <div class="mt-5">
                             <li class="list-group-item">프로젝트 멤버</li>
                             <ul class="list-group" th:each="member : ${members}">
-                                <a href="#" class="list-group-item list-group-item-action"
+                                <a id="member-list" href="#" class="member-list list-group-item list-group-item-action"
                                    th:text="${member.account.nickname}">Dapibus ac facilisis in</a>
                             </ul>
                         </div>
@@ -86,6 +86,8 @@
     });
 </script>
 <script type="application/javascript">
+    $(function () {
+    });
 
     $(function () {
 
@@ -104,22 +106,25 @@
                 data: JSON.stringify({'memberNickname': memberNickname})
             }).done(function (data, status) {
                 console.log("${data} and status is ${status}");
-
-            }).fail(function (data, status) {
-                console.log("${data} and status is ${status}");
-            }).always(function (data, status) {
-                console.log("${data} and status is ${status}");
             });
 
         }
 
         function onAdd(e) {
-            const member = e.detail.data.value;
+            let member;
+            member = e.detail.data.value;
             const whitelist = JSON.parse(document.querySelector("#whitelist").textContent);
+            let memberList = []; // 현재 프로젝트의 멤버 리스트
+            $(".member-list").each(function(){
+                memberList.push($(this).text());
+            });
+
+            console.log(memberList);
             console.log("member : " + member + " whitelist : " + whitelist);
-            if (whitelist.indexOf(member) !== -1) { // 가입된 사용자가 입력된 경우
+
+            if (whitelist.indexOf(member) !== -1 && memberList.indexOf(member) === -1) { // 가입된 사용자가 입력된 경우, 중복이 아닌경우
                 memberRequest("/add", member);
-            } else { // 존재하지 않는 사용자인 경우
+            } else { // 존재하지 않는 사용자인 경우, 중복인 경우
                 tagify.removeTags(member);
             }
 
@@ -141,12 +146,10 @@
         tagify.on("add", onAdd);
         // tagify.on("remove", onRemove);
 
-
         // add a class to Tagify's input element
         tagify.DOM.input.classList.add('form-control');
         // re-place Tagify's input element outside of the  element (tagify.DOM.scope), just before it
         tagify.DOM.scope.parentNode.insertBefore(tagify.DOM.input, tagify.DOM.scope);
-
     });
 </script>
 </body>
