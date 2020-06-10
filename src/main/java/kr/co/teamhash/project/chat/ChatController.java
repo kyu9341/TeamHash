@@ -47,7 +47,7 @@ public class ChatController {
 
 
   @MessageMapping("/chat/{projectId}")// 메세지가 목적지(/chat)로 전송되면 chat()메서드를 호출한다.
-  @SendTo("/recive/chat/{projectId}")// 결과를 리턴시키는 목적지
+  @SendTo("/receive/chat/{projectId}")// 결과를 리턴시키는 목적지
   public Chat chat(@DestinationVariable Long projectId, Chat chat) throws Exception{
   
 

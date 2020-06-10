@@ -88,7 +88,7 @@
             console.log('Connected: ' + frame);
 
                  
-            stompClient.subscribe('/recive/chat/'+projectId, function(chat){ // 구독 기능을 통해 해당 주소에 메세지가 오면 showChat 함수 호출
+            stompClient.subscribe('/receive/chat/'+projectId, function(chat){ // 구독 기능을 통해 해당 주소에 메세지가 오면 showChat 함수 호출
                 showChat(JSON.parse(chat.body));
             })
         });
