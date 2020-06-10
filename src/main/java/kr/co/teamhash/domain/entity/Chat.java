@@ -17,10 +17,13 @@ public class Chat {
     
     private Long projectId;
 
-    @ManyToOne
-    @JoinColumn(name ="account_id")
-	private Account sender;
-	
+    // @ManyToOne
+    // @JoinColumn(name ="account_id")
+	// private Account sender;
+    
+    @Column(columnDefinition = "TEXT", nullable = false)
+    private String sender;
+
     @Column(columnDefinition = "TEXT", nullable = false)
 	private String message;
 

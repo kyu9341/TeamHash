@@ -15,13 +15,13 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class ChatService {
-    private ChatRepository chatRepository;
+    private final ChatRepository chatRepository;
 
 
     //채팅 저장
     @Transactional
-    public void saveChat(Chat chat, Account account){
-        chat.setSender(account);
+    public void saveChat(Chat chat){
+        
         chatRepository.save(chat);
     }
 
