@@ -59,7 +59,7 @@ public class ProjectController {
 
     @PostMapping("/main")
     public String buildProjectDone(@Valid @ModelAttribute ProjectBuildForm projectBuildForm, Errors errors,
-                                   Model model , @CurrentUser Account account){
+                                   Model model , @CurrentUser Account account ,String members ){
         if (errors.hasErrors()) {
 //            List<Project> projectList = projectService.getProjectList(account);
             Account byNickname = accountRepository.findByNickname(account.getNickname());
@@ -71,7 +71,9 @@ public class ProjectController {
             model.addAttribute("error", "이미 사용중인 프로젝트명 입니다.");
             return "main";
         }
+
         projectService.saveNewProject(projectBuildForm, account);
+        System.out.println(members);
         return "redirect:/main";
     }
 
@@ -179,7 +181,7 @@ public class ProjectController {
         model.addAttribute("title", title);
         model.addAttribute("nickname", nickname);
 
-        Long problemId = problemShareService.saveProblem(problem,projectId,account);
+        problemShareService.saveProblem(problem,projectId,account);
 
 
 

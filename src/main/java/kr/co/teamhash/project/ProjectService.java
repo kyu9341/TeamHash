@@ -58,6 +58,11 @@ public class ProjectService {
     }
 
     // nickname과 projectTitle로 projectId 찾기
+<<<<<<< HEAD
+=======
+    // 다른 유저와 projectTitle은 겹칠 수 있기 때문
+    @Transactional
+>>>>>>> e493fdc8cab90483967dcb5bf20f375ce5526bc6
     public Long getProjectId(String nickname, String title){
         List<Project> projectList =  projectRepository.findAllByBuilderNick(nickname);
 
