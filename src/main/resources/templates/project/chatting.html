@@ -78,7 +78,7 @@
     var projectId = /*[[${projectId}]]*/ 'default';
     /*]]>*/
 
-    console.log('project info : '+projectId); 
+    console.log('project info : ' + projectId); 
 
     function connect() { // 생성된 소켓과 연결
         var socket = new SockJS('/teamhash-websocket');
@@ -90,7 +90,7 @@
                  
             stompClient.subscribe('/receive/chat/'+projectId, function(chat){ // 구독 기능을 통해 해당 주소에 메세지가 오면 showChat 함수 호출
                 showChat(JSON.parse(chat.body));
-            })
+            });
         });
     }
     function disconnect() { // 연결 종료
@@ -102,7 +102,9 @@
 
 
     function sendChat(){ // 메세지 전송 index.html의 text box에 입력된 값을 읽어온다.
-        stompClient.send("/send/chat/"+projectId,{},JSON.stringify({'sender':$("#sender").val(), 'message': $("#chatMessage").val() }))
+        stompClient.send("/send/chat/"+projectId, {}, 
+                        JSON.stringify({'sender':$("#sender").val(), 
+                                        'message': $("#chatMessage").val()}));
     }
 
     function showChat(chat) { // 수신한 메세지를 출력
@@ -111,10 +113,10 @@
 
         var sendDateTime = chat.sendDateTime.split("T"); // 시간과 분 출력 
         sendDateTime = sendDateTime[1].split(":");
-        $("#chattings").append("<tr><td><span>"+chat.sender+
-        "</span></td><td><span>"+chat.message+
-        "</span></td><td><span>"+sendDateTime[0]+":"+sendDateTime[1]+
-        "</span></td></tr>");
+        $("#chattings").append("<tr><td><span>" + chat.sender +
+        "</span></td><td><span>" + chat.message + 
+        "</span></td><td><span>" + sendDateTime[0] + 
+        ":" + sendDateTime[1] + "</span></td></tr>");
     }
 
 
