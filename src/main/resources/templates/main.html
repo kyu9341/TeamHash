@@ -172,7 +172,7 @@
         <div class="card" th:each="project_member : ${projectList}" >
             
             <div class="card-body">
-                <a th:href="@{'/project/' + ${account.nickname} + '/' + ${project_member.project.title}}">
+                <a th:href="@{'/project/' + ${project_member.project.builderNick} + '/' + ${project_member.project.title}}">
                     <h5 class="card-title"  th:text="${project_member.project.title}"></h5>
                 </a>
                 
