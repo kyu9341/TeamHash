@@ -30,23 +30,38 @@
         </div>
         <div class="col-8">
             <div class="tab-content" id="v-pills-tabContent">
-                <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-home-tab">
-
+                <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel"
+                     aria-labelledby="v-pills-home-tab">
+                    프로젝트 정보
                 </div>
                 <div class="tab-pane fade" id="v-pills-project" role="tabpanel" aria-labelledby="v-pills-profile-tab">
                     <!-- 멤버검색 -->
                     <div>
                         <label for="members" class="col-form-label">멤버 추가:</label>
 
-                        <!--                        <div id="whitelist" th:text="${whitelist}" hidden></div>-->
+                        <div id="whitelist" th:text="${whitelist}" hidden></div>
                         <!--members 라는 리스트에 들어있는 각각의 데이터를 데이터가 콤마로 나누어진 문자열로 변환이 된다. -->
-                        <input id="members" type="text" name="members"
+                        <input id="members" name="members" type="text" class="form-control" placeholder="사용자 이름" aria-label="사용자 이름"
+                               aria-describedby="button-addon2">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button" id="button-addon2">검색</button>
+                        </div>
+
+                        <!--members 라는 리스트에 들어있는 각각의 데이터를 데이터가 콤마로 나누어진 문자열로 변환이 된다. -->
+                        <label for="invited-member">초대 보낸 목록</label>
+                        <input id="invited-member" type="text" name="members"
                                class="tagify--outside" aria-describedby="membersHelp">
 
+                        <div class="mt-5">
+                            <li class="list-group-item">프로젝트 멤버</li>
+                            <ul class="list-group" th:each="member : ${members}">
+                                <a href="#" class="list-group-item list-group-item-action"
+                                   th:text="${member.account.nickname}">Dapibus ac facilisis in</a>
+                            </ul>
+                        </div>
                     </div>
+                    <!--                    <small id="title-error" class="form-text text-danger" th:if="${error}" th:text="${error}">Title Error</small>-->
 
-
-<!--                    <small id="title-error" class="form-text text-danger" th:if="${error}" th:text="${error}">Title Error</small>-->
 
                 </div>
 
@@ -57,7 +72,6 @@
     </div>
 
 </div>
-
 
 
 <footer th:replace="fragments.html :: footer"></footer>
@@ -72,6 +86,7 @@
     });
 </script>
 <script type="application/javascript">
+
     $(function () {
 
         let pathname = window.location.pathname; // 현재 경로 읽어오기
@@ -90,11 +105,24 @@
             }).done(function (data, status) {
                 console.log("${data} and status is ${status}");
 
+            }).fail(function (data, status) {
+                console.log("${data} and status is ${status}");
+            }).always(function (data, status) {
+                console.log("${data} and status is ${status}");
             });
+
         }
 
         function onAdd(e) {
-            memberRequest("/add", e.detail.data.value);
+            const member = e.detail.data.value;
+            const whitelist = JSON.parse(document.querySelector("#whitelist").textContent);
+            console.log("member : " + member + " whitelist : " + whitelist);
+            if (whitelist.indexOf(member) !== -1) { // 가입된 사용자가 입력된 경우
+                memberRequest("/add", member);
+            } else { // 존재하지 않는 사용자인 경우
+                tagify.removeTags(member);
+            }
+
         }
 
         function onRemove(e) {
@@ -104,18 +132,21 @@
         var memberInput = document.querySelector("#members");
         var tagify = new Tagify(memberInput, {
             pattern: /^.{0,20}$/,
+            whitelist: JSON.parse(document.querySelector("#whitelist").textContent), // whitelist 추가
             dropdown: {
                 enabled: 1, // suggest members after a single character input
             } // map members
         });
 
         tagify.on("add", onAdd);
-        tagify.on("remove", onRemove);
+        // tagify.on("remove", onRemove);
+
 
         // add a class to Tagify's input element
         tagify.DOM.input.classList.add('form-control');
         // re-place Tagify's input element outside of the  element (tagify.DOM.scope), just before it
         tagify.DOM.scope.parentNode.insertBefore(tagify.DOM.input, tagify.DOM.scope);
+
     });
 </script>
 </body>

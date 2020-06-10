@@ -1,5 +1,7 @@
 package kr.co.teamhash.project;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.co.teamhash.domain.entity.*;
 import kr.co.teamhash.domain.repository.AccountRepository;
 import kr.co.teamhash.domain.repository.MemberRepository;
@@ -10,7 +12,9 @@ import kr.co.teamhash.project.validator.MemberValidator;
 import kr.co.teamhash.project.validator.ProjectBuildValidator;
 import lombok.RequiredArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -36,6 +40,7 @@ public class ProjectController {
     private final MemberRepository memberRepository;
     private final ProjectRepository projectRepository;
     private final MemberValidator memberValidator;
+    private final ObjectMapper objectMapper;
 
     @InitBinder("projectBuildForm")
     public void projectInitBinder(WebDataBinder webDataBinder) {
@@ -276,9 +281,17 @@ public class ProjectController {
 
     @GetMapping("/project/{nickname}/{title}/settings")
     public String settings(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
-                           Model model,  @CurrentUser Account account){
+                           Model model,  @CurrentUser Account account) throws JsonProcessingException {
+
+        Project project = projectRepository.findByTitle(title);
+        List<ProjectMember> members = memberRepository.findAllByProjectId(project.getId());
 
         model.addAttribute(account);
+        model.addAttribute("members", members);
+
+        List<String> userList = accountRepository.findAll().stream().map(Account::getNickname).collect(Collectors.toList());
+        model.addAttribute("whitelist", objectMapper.writeValueAsString(userList));
+
         return "project/settings";
     }
 
@@ -297,5 +310,7 @@ public class ProjectController {
 
         return ResponseEntity.ok().build();
     }
+
+
 
 }
