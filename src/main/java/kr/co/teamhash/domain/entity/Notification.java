@@ -1,17 +1,16 @@
 package kr.co.teamhash.domain.entity;
 
 import kr.co.teamhash.notification.NotificationType;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.accessibility.AccessibleIcon;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity
+@Entity @Builder
 @Getter @Setter @EqualsAndHashCode(of = "id")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Notification {
 
     @Id @GeneratedValue

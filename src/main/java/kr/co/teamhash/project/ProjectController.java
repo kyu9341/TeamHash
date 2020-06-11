@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.co.teamhash.domain.entity.*;
 import kr.co.teamhash.domain.repository.AccountRepository;
 import kr.co.teamhash.domain.repository.MemberRepository;
+import kr.co.teamhash.domain.repository.NotificationRepository;
 import kr.co.teamhash.domain.repository.ProjectRepository;
 import kr.co.teamhash.project.form.MemberForm;
 import kr.co.teamhash.project.form.ProjectBuildForm;
@@ -39,6 +40,7 @@ public class ProjectController {
     private final AccountRepository accountRepository;
     private final MemberRepository memberRepository;
     private final ProjectRepository projectRepository;
+    private final NotificationRepository notificationRepository;
     private final MemberValidator memberValidator;
     private final ObjectMapper objectMapper;
 
@@ -292,21 +294,30 @@ public class ProjectController {
         List<String> userList = accountRepository.findAll().stream().map(Account::getNickname).collect(Collectors.toList());
         model.addAttribute("whitelist", objectMapper.writeValueAsString(userList));
 
+        List<Notification> sentInvitations = projectService.getSentInvitations(project.getId());
+        model.addAttribute("sentInvitations", sentInvitations.stream()
+                .map(Notification::getAccount)
+                .map(Account::getNickname).collect(Collectors.toList()));
+
         return "project/settings";
     }
 
     @PostMapping("/project/{nickname}/{title}/settings/add")
     @ResponseBody
     public ResponseEntity addMember(@CurrentUser Account account, @RequestBody @Valid MemberForm memberForm,
-                                    Errors errors, @PathVariable("title") String title, Model model) {
+                                    Errors errors, @PathVariable("title") String title,
+                                    @PathVariable("nickname") String builderNick, Model model) {
         if (errors.hasErrors()) {
             model.addAttribute("error", "존재하지 않는 닉네임입니다.");
             return ResponseEntity.badRequest().build();
         }
         String memberNickname = memberForm.getMemberNickname();
-        projectService.saveProjectMember(memberNickname, title);
+//        projectService.saveProjectMember(memberNickname, title);
 
         log.info("title: " + title);
+
+        // 초대 알림 보냄
+        projectService.addNotification(memberNickname, title, builderNick);
 
         return ResponseEntity.ok().build();
     }

@@ -40,16 +40,16 @@
                         <label for="members" class="col-form-label">멤버 추가:</label>
 
                         <div id="whitelist" th:text="${whitelist}" hidden></div>
-                        <!--members 라는 리스트에 들어있는 각각의 데이터를 데이터가 콤마로 나누어진 문자열로 변환이 된다. -->
-                        <input id="members" name="members" type="text" class="form-control" placeholder="사용자 이름" aria-label="사용자 이름"
-                               aria-describedby="button-addon2">
-                        <div class="input-group-append">
-                            <button class="btn btn-outline-secondary" type="button" id="button-addon2">검색</button>
-                        </div>
+<!--                        <input id="members" name="members" type="text" class="form-control" placeholder="사용자 이름" aria-label="사용자 이름"-->
+<!--                               aria-describedby="button-addon2">-->
+<!--                        <div class="input-group-append">-->
+<!--                            <button class="btn btn-outline-secondary" type="button" id="button-addon2">검색</button>-->
+<!--                        </div>-->
 
-                        <!--members 라는 리스트에 들어있는 각각의 데이터를 데이터가 콤마로 나누어진 문자열로 변환이 된다. -->
-                        <label for="invited-member">초대 보낸 목록</label>
-                        <input id="invited-member" type="text" name="members"
+                        <label for="members">초대를 보낸 멤버</label>
+
+                        <!--sentInvitations 라는 리스트에 들어있는 각각의 데이터를 데이ㄹ터가 콤마로 나누어진 문자열로 변환이 된다. -->
+                        <input id="members" type="text" name="members" th:value="${#strings.listJoin(sentInvitations, ',')}"
                                class="tagify--outside" aria-describedby="membersHelp">
 
                         <div class="mt-5">

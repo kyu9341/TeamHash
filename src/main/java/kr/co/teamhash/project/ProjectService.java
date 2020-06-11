@@ -6,8 +6,11 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import kr.co.teamhash.domain.entity.Notification;
 import kr.co.teamhash.domain.entity.ProjectMember;
 import kr.co.teamhash.domain.repository.AccountRepository;
+import kr.co.teamhash.domain.repository.NotificationRepository;
+import kr.co.teamhash.notification.NotificationType;
 import kr.co.teamhash.project.form.ProjectBuildForm;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +29,7 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
     private final MemberRepository memberRepository;
     private final AccountRepository accountRepository;
+    private final NotificationRepository notificationRepository;
 
     // 프로젝트 저장
     public void saveNewProject(ProjectBuildForm projectBuildForm, Account account){
@@ -110,5 +114,21 @@ public class ProjectService {
                 .joinDate(LocalDateTime.now())
                 .build());
 
+    }
+
+    public void addNotification(String invitedMember, String title, String builderNick) {
+        Account account = accountRepository.findByNickname(invitedMember);
+        Project project = projectRepository.findByTitleAndBuilderNick(title, builderNick);
+        notificationRepository.save(Notification.builder()
+                .account(account)
+                .project(project)
+                .createdLocalDateTime(LocalDateTime.now())
+                .notificationType(NotificationType.PROJECT_INVITE)
+                .message(project.getBuilderNick() + "님의 "+ project.getTitle() + "에 초대 받았습니다.")
+                .build());
+    }
+
+    public List<Notification> getSentInvitations(Long projectId) {
+        return notificationRepository.findAllByProjectId(projectId);
     }
 }
