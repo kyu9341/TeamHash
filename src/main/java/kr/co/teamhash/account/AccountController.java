@@ -1,7 +1,11 @@
 package kr.co.teamhash.account;
 
 import kr.co.teamhash.domain.entity.Account;
+import kr.co.teamhash.domain.entity.Notification;
 import kr.co.teamhash.domain.repository.AccountRepository;
+import kr.co.teamhash.domain.repository.NotificationRepository;
+import kr.co.teamhash.notification.NotificationService;
+import kr.co.teamhash.project.ProjectService;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Controller;
@@ -11,6 +15,8 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.Optional;
 
 
 @Controller
@@ -20,6 +26,9 @@ public class AccountController {
     private final SignUpValidator signUpValidator;
     private final AccountRepository accountRepository;
     private final AccountService accountService;
+    private final NotificationRepository notificationRepository;
+    private final NotificationService notificationService;
+    private final ProjectService projectService;
 
     @InitBinder("signUpForm") // signUpForm 이라는 데이터를 받을 때 바인더를 설정
     public void initBinder(WebDataBinder webDataBinder){
@@ -95,6 +104,9 @@ public class AccountController {
             throw new IllegalArgumentException(nickname + "에 해당하는 사용자가 없습니다.");
         }
 
+        List<Notification> notifications = notificationRepository.findAllByAccountId(account.getId());
+        model.addAttribute("notifications", notifications);
+
         model.addAttribute(byNickname);
         // 해당 get 파라미터로 넘어온 닉네임에 해당하는 Account 객체와 현재 인증된 객체를 비교
         model.addAttribute("isOwner", byNickname.equals(account));
@@ -102,5 +114,19 @@ public class AccountController {
         return "account/profile";
     }
 
+    @PostMapping("/profile/{nickname}/accept/{notificationId}")
+    public String confirmNotification(@PathVariable("notificationId") Long notificationId, @PathVariable("nickname") String nickname,
+                                      @CurrentUser Account account) {
+        Optional<Notification> notification = notificationRepository.findById(notificationId);
+        if (!notification.isPresent()) {
+            return "redirect:/profile/" + nickname;
+        }
+        String projectTitle = notification.get().getProject().getTitle();
+        String projectBuilder = notification.get().getProject().getBuilderNick();
+        projectService.saveProjectMember(account.getNickname(), projectTitle); // 수락한 경우 프로젝트 멤버로 등록
+        notificationService.deleteNotification(notificationId); // 해당 알림 제거
+
+        return String.format("redirect:/project/%s/%s", projectBuilder, projectTitle);
+    }
 
 }

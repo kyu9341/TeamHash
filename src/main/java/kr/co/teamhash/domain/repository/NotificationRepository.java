@@ -13,4 +13,6 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
     Notification findByAccountIdAndProjectId(Long accountId, Long projectId);
 
     void removeByAccountIdAndProjectId(Long accountId, Long projectId);
+
+    List<Notification> findAllByAccountId(Long accountId);
 }

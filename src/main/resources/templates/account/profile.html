@@ -33,6 +33,8 @@
                    role="tab" aria-controls="v-pills-home" aria-selected="true">소개</a>
                 <a class="nav-link" id="v-pills-project-tab" data-toggle="pill" href="#v-pills-project"
                    role="tab" aria-controls="v-pills-project" aria-selected="false">프로젝트</a>
+                <a class="nav-link" id="v-pills-notification-tab" data-toggle="pill" href="#v-pills-notification"
+                   role="tab" aria-controls="v-pills-notification" aria-selected="false">알림</a>
             </div>
         </div>
         <div class="col-8">
@@ -69,8 +71,32 @@
                         <a class="btn btn-outline-primary" href="#" th:href="@{/settings/profile}">프로필 수정</a>
                     </div>
                 </div>
-                <div class="tab-pane fade" id="v-pills-project" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                <div class="tab-pane fade" id="v-pills-project" role="tabpanel" aria-labelledby="v-pills-project-tab">
                     Project
+                </div>
+                <div class="tab-pane fade" id="v-pills-notification" role="tabpanel" aria-labelledby="v-pills-notification-tab">
+
+                    <ul class="list-group" th:each="notification : ${notifications}">
+
+                        <li class="list-group-item">
+                            <p class="alert alert-info" th:text="${notification.message}">알림</p>
+                            <form id="confirm-form" th:action="@{'/profile/' + ${nickname} + '/accept/' + ${notification.id}}" method="post">
+                                <button id="notification-accept" type="submit" value="accept" class="member-list list-group-item">
+                                수락
+                                </button>
+                            </form>
+                            <form id="reject-form" th:action="@{'/profile/' + ${nickname} + '/reject/' + ${notification.id}}" method="post">
+
+                                <button id="notification-reject" type="submit" value="reject" class="member-list list-group-item">
+                                    거절
+                                </button>
+                            </form>
+
+                        </li>
+
+
+
+                    </ul>
                 </div>
             </div>
 
