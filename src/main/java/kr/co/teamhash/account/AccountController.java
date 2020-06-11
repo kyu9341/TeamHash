@@ -115,7 +115,7 @@ public class AccountController {
     }
 
     @PostMapping("/profile/{nickname}/accept/{notificationId}")
-    public String confirmNotification(@PathVariable("notificationId") Long notificationId, @PathVariable("nickname") String nickname,
+    public String acceptNotification(@PathVariable("notificationId") Long notificationId, @PathVariable("nickname") String nickname,
                                       @CurrentUser Account account) {
         Optional<Notification> notification = notificationRepository.findById(notificationId);
         if (!notification.isPresent()) {
@@ -129,4 +129,15 @@ public class AccountController {
         return String.format("redirect:/project/%s/%s", projectBuilder, projectTitle);
     }
 
+    @PostMapping("/profile/{nickname}/reject/{notificationId}")
+    public String rejectNotification(@PathVariable("notificationId") Long notificationId, @PathVariable("nickname") String nickname) {
+        Optional<Notification> notification = notificationRepository.findById(notificationId);
+        if (!notification.isPresent()) {
+            return "redirect:/profile/" + nickname;
+        }
+
+        notificationService.deleteNotification(notificationId); // 해당 알림 제거
+
+        return "redirect:/profile/" + nickname;
+    }
 }

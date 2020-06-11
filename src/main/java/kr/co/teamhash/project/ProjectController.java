@@ -7,6 +7,7 @@ import kr.co.teamhash.domain.repository.AccountRepository;
 import kr.co.teamhash.domain.repository.MemberRepository;
 import kr.co.teamhash.domain.repository.NotificationRepository;
 import kr.co.teamhash.domain.repository.ProjectRepository;
+import kr.co.teamhash.notification.NotificationService;
 import kr.co.teamhash.project.form.MemberForm;
 import kr.co.teamhash.project.form.ProjectBuildForm;
 import kr.co.teamhash.project.validator.MemberValidator;
@@ -40,7 +41,7 @@ public class ProjectController {
     private final AccountRepository accountRepository;
     private final MemberRepository memberRepository;
     private final ProjectRepository projectRepository;
-    private final NotificationRepository notificationRepository;
+    private final NotificationService notificationService;
     private final MemberValidator memberValidator;
     private final ObjectMapper objectMapper;
 
@@ -294,7 +295,7 @@ public class ProjectController {
         List<String> userList = accountRepository.findAll().stream().map(Account::getNickname).collect(Collectors.toList());
         model.addAttribute("whitelist", objectMapper.writeValueAsString(userList));
 
-        List<Notification> sentInvitations = projectService.getSentInvitations(project.getId());
+        List<Notification> sentInvitations = notificationService.getSentInvitations(project.getId());
         model.addAttribute("sentInvitations", sentInvitations.stream()
                 .map(Notification::getAccount)
                 .map(Account::getNickname).collect(Collectors.toList()));
@@ -312,12 +313,11 @@ public class ProjectController {
             return ResponseEntity.badRequest().build();
         }
         String memberNickname = memberForm.getMemberNickname();
-//        projectService.saveProjectMember(memberNickname, title);
 
         log.info("title: " + title);
 
         // 초대 알림 보냄
-        projectService.addNotification(memberNickname, title, builderNick);
+        notificationService.addNotification(memberNickname, title, builderNick);
 
         return ResponseEntity.ok().build();
     }
@@ -331,7 +331,7 @@ public class ProjectController {
             return ResponseEntity.badRequest().build();
         }
 
-        projectService.removeNotification(memberNickname, title, builderNick);
+        notificationService.removeTagNotification(memberNickname, title, builderNick); // 태그 삭제 시
         return ResponseEntity.ok().build();
     }
 

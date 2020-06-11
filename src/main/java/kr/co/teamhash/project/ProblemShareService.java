@@ -75,9 +75,7 @@ public class ProblemShareService {
         comment.setProblemId(problem);
         comment.getProblemId().getComments().add(comment);
         comment.setWriterId(account);
-        
 
-        
         commentRepository.save(comment);
     }
 }
