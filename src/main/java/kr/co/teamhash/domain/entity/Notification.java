@@ -22,7 +22,7 @@ public class Notification {
 
     @ManyToOne
     @JoinColumn(name = "account_id")
-    private Account account;
+    private Account account; // 알림을 받을 대상
 
     @ManyToOne
     @JoinColumn(name = "project_id")

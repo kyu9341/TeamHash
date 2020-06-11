@@ -124,8 +124,15 @@ public class ProjectService {
                 .project(project)
                 .createdLocalDateTime(LocalDateTime.now())
                 .notificationType(NotificationType.PROJECT_INVITE)
-                .message(project.getBuilderNick() + "님의 "+ project.getTitle() + "에 초대 받았습니다.")
+                .message(project.getBuilderNick() + "님의 " + project.getTitle() + "에 초대 받았습니다.")
                 .build());
+    }
+
+    public void removeNotification(String invitedMember, String title, String builderNick) {
+        Account account = accountRepository.findByNickname(invitedMember);
+        Project project = projectRepository.findByTitleAndBuilderNick(title, builderNick);
+        notificationRepository.removeByAccountIdAndProjectId(account.getId(), project.getId());
+//        notificationRepository.save(Notification.builder().build());
     }
 
     public List<Notification> getSentInvitations(Long projectId) {

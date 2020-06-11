@@ -304,7 +304,7 @@ public class ProjectController {
 
     @PostMapping("/project/{nickname}/{title}/settings/add")
     @ResponseBody
-    public ResponseEntity addMember(@CurrentUser Account account, @RequestBody @Valid MemberForm memberForm,
+    public ResponseEntity addMember(@RequestBody @Valid MemberForm memberForm,
                                     Errors errors, @PathVariable("title") String title,
                                     @PathVariable("nickname") String builderNick, Model model) {
         if (errors.hasErrors()) {
@@ -322,6 +322,18 @@ public class ProjectController {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("/project/{nickname}/{title}/settings/remove")
+    @ResponseBody
+    public ResponseEntity removeMember(@RequestBody MemberForm memberForm, @PathVariable("title") String title,
+                                       @PathVariable("nickname") String builderNick, Model model) {
+        String memberNickname = memberForm.getMemberNickname();
+        if (memberNickname == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        projectService.removeNotification(memberNickname, title, builderNick);
+        return ResponseEntity.ok().build();
+    }
 
 
 }
