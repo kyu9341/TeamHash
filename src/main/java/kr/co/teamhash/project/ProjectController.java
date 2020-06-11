@@ -283,7 +283,7 @@ public class ProjectController {
     public String settings(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
                            Model model,  @CurrentUser Account account) throws JsonProcessingException {
 
-        Project project = projectRepository.findByTitle(title);
+        Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
         List<ProjectMember> members = memberRepository.findAllByProjectId(project.getId());
 
         model.addAttribute(account);

@@ -44,6 +44,9 @@ public class Account {
     @OneToMany(mappedBy = "account")
     private List<ProjectMember> projects = new ArrayList<>();
 
+    @OneToMany(mappedBy = "account")
+    private List<Notification> notifications = new ArrayList<>();
+
     public void generateEmailCheckToken(){
         // 이메일 확인 토큰 생성
         this.emailCheckToken = UUID.randomUUID().toString();
