@@ -1,11 +1,12 @@
 package kr.co.teamhash;
 
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
-
 
 
 @EnableJpaAuditing // 자동으로 날짜를 수정해주는 JPA Auditing
@@ -22,6 +23,7 @@ public class App {
     public HiddenHttpMethodFilter hiddenHttpMethodFilter(){
         return new HiddenHttpMethodFilter();
     }
+
 
 
 }

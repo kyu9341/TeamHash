@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" lang="en"
+    xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="fragments.html :: head">
+
+</head>
+
+
+<body>
+    <div th:if="${message}">
+		<h2 th:text="${message}">
+	</div>
+
+	<div>
+		<form method="POST" enctype="multipart/form-data"  action="#" th:action="@{'/project/'+${nickname}+'/'+${title}+'/cloud/upload'}">
+			<table>
+				<tr><td>File to upload:</td><td><input type="file" name="file" /></td></tr>
+				<tr><td></td><td><input type="submit" value="Upload" /></td></tr>
+			</table>
+		</form>
+	</div>
+
+	<div>
+		<ul>
+			<li th:each="file : ${files}">
+				<a th:href="${file}" th:text="${file}">
+			</li>
+		</ul>
+	</div>
+</body>
+
+
+</html>
