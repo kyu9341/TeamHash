@@ -1,80 +1,74 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-    xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 
 <head th:replace="fragments.html :: head"></head>
 
 <body>
-    <style>
-        .col-form-label{
 
-        }
-    </style>
-    <nav th:replace="fragments.html :: main-nav"></nav>
-    <nav th:replace="fragments.html :: project-nav(currentProject = 'settings')"></nav>
+<nav th:replace="fragments.html :: main-nav"></nav>
+<nav th:replace="fragments.html :: project-nav(currentProject = 'settings')"></nav>
 
-    <div class="container">
-        <div class="row mt-3 justify-content-center">
-            <div class="col-2">
-                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                    <a class="nav-link active" id="v-pills-intro-tab" data-toggle="pill" href="#v-pills-profile"
-                        role="tab" aria-controls="v-pills-home" aria-selected="true">프로젝트 정보</a>
-                    <a class="nav-link" id="v-pills-project-tab" data-toggle="pill" href="#v-pills-project" role="tab"
-                        aria-controls="v-pills-project" aria-selected="false">멤버 초대</a>
-                </div>
+<div class="container">
+    <div class="row mt-3 justify-content-center">
+        <div class="col-2">
+            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <a class="nav-link active" id="v-pills-intro-tab" data-toggle="pill" href="#v-pills-profile"
+                   role="tab" aria-controls="v-pills-home" aria-selected="true">프로젝트 정보</a>
+                <a class="nav-link" id="v-pills-project-tab" data-toggle="pill" href="#v-pills-project" role="tab"
+                   aria-controls="v-pills-project" aria-selected="false">멤버 초대</a>
             </div>
-            
-            <div class="col-8">
-                <div class="tab-content" id="v-pills-tabContent">
-                    <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel"
-                        aria-labelledby="v-pills-home-tab">
-                        프로젝트 정보
-                    </div>
-                    <div class="tab-pane fade" id="v-pills-project" role="tabpanel"
-                        aria-labelledby="v-pills-profile-tab">
+        </div>
 
-                        <!-- 멤버검색 -->
-                        <div class="container">
-                            <div class="row">
-                              <div class="col col-lg-2">
-                                <label for="members" class="col-form-label">멤버 추가:</label>
+        <div class="col-8">
+            <div class="tab-content" id="v-pills-tabContent">
+                <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel"
+                     aria-labelledby="v-pills-home-tab">
+                    프로젝트 정보
+                </div>
+                <div class="tab-pane fade" id="v-pills-project" role="tabpanel"
+                     aria-labelledby="v-pills-profile-tab">
+
+                    <!-- 멤버검색 -->
+                    <div class="container">
+                        <div class="row">
+                            <div class="col col-lg-2 text-right">
+                                <label for="members" class="col-form-label">멤버 추가</label>
                                 <br>
-                                <label for="members" class="col-form-label mt-2">초대된 멤버:</label>
-                              </div>
+                                <label for="members" class="col-form-label mt-2">초대된 멤버</label>
+                            </div>
 
-                              <div class="col">
-                                <div id="whitelist" th:text="${whitelist}" hidden>cdsf</div>
-                            <!--sentInvitations 라는 리스트에 들어있는 각각의 데이터를 데이ㄹ터가 콤마로 나누어진 문자열로 변환이 된다. -->
-                            <input id="members" type="text" name="members" th:value="${#strings.listJoin(sentInvitations, ',')}"
-                            class="tagify--outside" aria-describedby="membersHelp">
+                            <div class="col">
+                                <div id="whitelist" th:text="${whitelist}" hidden></div>
+                                <!--sentInvitations 라는 리스트에 들어있는 각각의 데이터를 데이ㄹ터가 콤마로 나누어진 문자열로 변환이 된다. -->
+                                <input id="members" type="text" name="members"
+                                       th:value="${#strings.listJoin(sentInvitations, ',')}"
+                                       class="tagify--outside" aria-describedby="membersHelp">
+                            </div>
 
-                     <div class="mt-5">
-                         <li class="list-group-item text-white bg-info">프로젝트 멤버</li>
-                         <ul class="list-group" th:each="member : ${members}">
-                             <svg th:if="${#strings.isEmpty(member.account?.profileImage)}"
-                                  data-jdenticon-value="user127" th:data-jdenticon-value="${member.account.nickname}"
-                                  width="36" height="36" class="rounded border bg-light"></svg>
-                             <img th:if="${!#strings.isEmpty(member.account?.profileImage)}"
-                                  th:src="${member.account.profileImage}"
-                                  width="36" height="36" class="rounded border">
-                             <a id="member-list" href="#" class="member-list list-group-item list-group-item-action"
-                                th:text="${member.account.nickname}">
-                             </a>
 
-                         </ul>
-                     </div>
-                               
-                              </div>
+                        </div>
 
-                            
+                        <div class="mt-5 ml-5 mr-3">
+                            <li class="list-group-item text-white bg-info">프로젝트 멤버</li>
+                            <ul class="list-group" th:each="member : ${members}">
+                                <svg th:if="${#strings.isEmpty(member.account?.profileImage)}"
+                                     data-jdenticon-value="user127"
+                                     th:data-jdenticon-value="${member.account.nickname}"
+                                     width="36" height="36" class="rounded border bg-light"></svg>
+                                <img th:if="${!#strings.isEmpty(member.account?.profileImage)}"
+                                     th:src="${member.account.profileImage}"
+                                     width="36" height="36" class="rounded border">
+                                <a id="member-list" href="#"
+                                   class="member-list list-group-item list-group-item-action"
+                                   th:text="${member.account.nickname}">
+                                </a>
 
-                            
-
+                            </ul>
+                        </div>
 
                     </div>
-                    <!--                    <small id="title-error" class="form-text text-danger" th:if="${error}" th:text="${error}">Title Error</small>-->
-
 
                 </div>
 
@@ -84,87 +78,93 @@
 
     </div>
 
-</div>
 
-
-<footer th:replace="fragments.html :: footer"></footer>
-<script src="/node_modules/@yaireo/tagify/dist/tagify.min.js"></script>
-<script type="application/javascript" th:inline="javascript">
-    $(function () { // csrf 토큰 추가하여 요청
-        var csrfToken = /*[[${_csrf.token}]]*/ null;
-        var csrfHeader = /*[[${_csrf.headerName}]]*/ null;
-        $(document).ajaxSend(function (e, xhr, options) {
-            xhr.setRequestHeader(csrfHeader, csrfToken);
+    <footer th:replace="fragments.html :: footer"></footer>
+    <script src="/node_modules/@yaireo/tagify/dist/tagify.min.js"></script>
+    <script type="application/javascript" th:inline="javascript">
+        $(function () { // csrf 토큰 추가하여 요청
+            var csrfToken = /*[[${_csrf.token}]]*/ null;
+            var csrfHeader = /*[[${_csrf.headerName}]]*/ null;
+            $(document).ajaxSend(function (e, xhr, options) {
+                xhr.setRequestHeader(csrfHeader, csrfToken);
+            });
         });
-    });
-</script>
-<script type="application/javascript">
-    $(function () {
-    });
+    </script>
+    <script type="application/javascript" th:inline="javascript">
 
-    $(function () {
+        $(function () {
+            /*<![CDATA[*/
+            let sentInvitations = /*[[${sentInvitations}]]*/ 'default';
+            /*]]>*/
 
-        let pathname = window.location.pathname; // 현재 경로 읽어오기
+            let pathname = window.location.pathname; // 현재 경로 읽어오기
 
-        function memberRequest(url, memberNickname) {
-            $.ajax({
-                dataType: "json",
-                autocomplete: {
-                    enabled: true,
-                    rightKey: true,
-                },
-                contentType: "application/json; charset=utf-8",
-                method: "POST",
-                url: pathname + url,
-                data: JSON.stringify({ 'memberNickname': memberNickname })
-            }).done(function (data, status) {
-                console.log("${data} and status is ${status}");
-            });
+            function memberRequest(url, memberNickname) {
+                $.ajax({
+                    dataType: "json",
+                    autocomplete: {
+                        enabled: true,
+                        rightKey: true,
+                    },
+                    contentType: "application/json; charset=utf-8",
+                    method: "POST",
+                    url: pathname + url,
+                    data: JSON.stringify({'memberNickname': memberNickname})
+                }).done(function (data, status) {
+                    console.log("${data} and status is ${status}");
+                });
 
-        }
-
-        function onAdd(e) {
-            let member;
-            member = e.detail.data.value;
-            const whitelist = JSON.parse(document.querySelector("#whitelist").textContent);
-            let memberList = []; // 현재 프로젝트의 멤버 리스트
-            $(".member-list").each(function () {
-                memberList.push($(this).text());
-            });
-
-            console.log(memberList);
-            console.log("member : " + member + " whitelist : " + whitelist);
-
-            if (whitelist.indexOf(member) !== -1 && memberList.indexOf(member) === -1) { // 가입된 사용자가 입력된 경우, 중복이 아닌경우
-                memberRequest("/add", member);
-            } else { // 존재하지 않는 사용자인 경우, 중복인 경우
-                tagify.removeTags(member);
             }
 
-        }
+            function onAdd(e) {
+                let member = e.detail.data.value;
+                const whitelist = JSON.parse(document.querySelector("#whitelist").textContent);
+                let memberList = []; // 현재 프로젝트의 멤버 리스트
+                $(".member-list").each(function () {
+                    memberList.push($(this).text());
+                });
 
-        function onRemove(e) {
-            memberRequest("/remove", e.detail.data.value);
-        }
+                console.log(memberList);
+                console.log("member : " + member + " whitelist : " + whitelist);
 
-        var memberInput = document.querySelector("#members");
-        var tagify = new Tagify(memberInput, {
-            pattern: /^.{0,20}$/,
-            whitelist: JSON.parse(document.querySelector("#whitelist").textContent), // whitelist 추가
-            dropdown: {
-                enabled: 1, // suggest members after a single character input
-            } // map members
+                if (whitelist.indexOf(member) !== -1 && memberList.indexOf(member) === -1) { // 가입된 사용자가 입력된 경우, 중복이 아닌경우
+                    memberRequest("/add", member);
+                    sentInvitations.push(member); // 추가되면 현재 초대된 멤버 목록에 추가
+                    console.log(sentInvitations);
+                } else { // 존재하지 않는 사용자인 경우, 중복인 경우
+                    tagify.removeTags(member);
+                }
+
+            }
+
+            function onRemove(e) {
+
+                console.log("sentInvitations : " + sentInvitations);
+                let member = e.detail.data.value;
+
+                if (sentInvitations.indexOf(member) !== -1) { // 현재 초대된 사용자인 경우에만 서버에 요청을 보냄.
+                    memberRequest("/remove", e.detail.data.value);
+                }
+            }
+
+            var memberInput = document.querySelector("#members");
+            var tagify = new Tagify(memberInput, {
+                pattern: /^.{0,20}$/,
+                whitelist: JSON.parse(document.querySelector("#whitelist").textContent), // whitelist 추가
+                dropdown: {
+                    enabled: 1, // suggest members after a single character input
+                } // map members
+            });
+
+            tagify.on("add", onAdd);
+            tagify.on("remove", onRemove);
+
+            // add a class to Tagify's input element
+            tagify.DOM.input.classList.add('form-control');
+            // re-place Tagify's input element outside of the  element (tagify.DOM.scope), just before it
+            tagify.DOM.scope.parentNode.insertBefore(tagify.DOM.input, tagify.DOM.scope);
         });
-
-        tagify.on("add", onAdd);
-        tagify.on("remove", onRemove);
-
-        // add a class to Tagify's input element
-        tagify.DOM.input.classList.add('form-control');
-        // re-place Tagify's input element outside of the  element (tagify.DOM.scope), just before it
-        tagify.DOM.scope.parentNode.insertBefore(tagify.DOM.input, tagify.DOM.scope);
-    });
-</script>
+    </script>
 </body>
 
 </html>
