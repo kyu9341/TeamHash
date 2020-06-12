@@ -8,6 +8,12 @@
 
 
 <body>
+
+	<nav th:replace="fragments.html :: main-nav"></nav>
+
+    <nav th:replace="fragments.html :: project-nav(currentProject='document')"></nav>
+  
+
     <div th:if="${message}">
 		<h2 th:text="${message}">
 	</div>
@@ -21,10 +27,12 @@
 		</form>
 	</div>
 
+
 	<div>
 		<ul>
-			<li th:each="file : ${files}">
-				<a th:href="${file}" th:text="${file}">
+			<!-- 파일이름, 업로더, 업로드 날짜, 파일유형에 맞는 아이콘 추가 -->
+			<li th:each="file : ${fileList}">
+				<a th:href="@{'/project/'+${nickname}+'/'+${title}+'/cloud/download/'+${file.id}}" th:text="${file.fileName}">
 			</li>
 		</ul>
 	</div>

@@ -2,22 +2,14 @@ package kr.co.teamhash.project.uploadfile;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.validation.Valid;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.Errors;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -27,6 +19,7 @@ import org.springframework.http.MediaType;
 import kr.co.teamhash.account.CurrentUser;
 import kr.co.teamhash.domain.entity.Account;
 import kr.co.teamhash.domain.entity.UploadFile;
+import kr.co.teamhash.project.ProjectService;
 import kr.co.teamhash.project.uploadfile.exception.StorageFileNotFoundException;
 
 
@@ -37,7 +30,7 @@ import kr.co.teamhash.project.uploadfile.exception.StorageFileNotFoundException;
 public class UploadFilecontroller {
     
     private final UploadFileService uploadFileService;
-
+    private final ProjectService projectService;
 
     // uploadFile main tamplete
     // 현재는 탬플릿만 반환하고 있으며 이후 해당 프로젝트에서 업로드한 파일의 리스트를
@@ -46,12 +39,15 @@ public class UploadFilecontroller {
    public String cloud(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
                     Model model,  @CurrentUser Account account) throws IOException {
         
-        //String[] files 
+        // nickname과 projectTitle로 projectId 찾기
+        Long projectId = projectService.getProjectId(nickname, title);
+
+        List<UploadFile> fileList = uploadFileService.getFileList(projectId);
+
+        model.addAttribute("fileList", fileList);
+        model.addAttribute("nickname", nickname);
+        model.addAttribute("title", title);
         
-        // model.addAttribute("files", uploadFileService.loadAll().map(
-        //     path -> MvcUriComponentsBuilder.fromMethodName(UploadFilecontroller.class,
-        //             "serveFile", path.getFileName().toString()).build().toUri().toString())
-        //     .collect(Collectors.toList()));
 
         return "project/cloud";
    }
@@ -63,9 +59,12 @@ public class UploadFilecontroller {
    // 이후에 projectId와 저장하는 사람의 정보도 함께 저장할 것
 	@PostMapping("/project/{nickname}/{title}/cloud/upload")
     public String handleFileUpload(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
-                @RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
+                @RequestParam("file") MultipartFile file, @CurrentUser Account account, RedirectAttributes redirectAttributes) {
 
-        uploadFileService.storeFile(file);
+        // nickname과 projectTitle로 projectId 찾기
+        Long projectId = projectService.getProjectId(nickname, title);
+
+        uploadFileService.storeFile(file,projectId,account);
 		redirectAttributes.addFlashAttribute("message",
 				"You successfully uploaded " + file.getOriginalFilename() + "!");
 
@@ -76,7 +75,7 @@ public class UploadFilecontroller {
     // 파일 다운로드 맵핑
     // 아래의 주소에 get요청을 보내면 파일 다운로드가 제공됨
     // 이후 파일의 리스트를 a태그에 담아 아래의 url을 담게 할 것
-    @GetMapping("/downloadFile/{fileId}")
+    @GetMapping("/project/{nickname}/{title}/cloud/download/{fileId}")
     public ResponseEntity<Resource> downloadFile(@PathVariable("fileId") String fileId) {
         // Load file from database
         
