@@ -16,7 +16,8 @@
 <body>
 
 <nav th:replace="fragments.html :: main-nav"></nav>
-
+<nav th:replace="fragments.html :: project-nav(currentProject='chatting')"></nav>
+  
 <div id="main-content" class="container">
     <div class="row">
         <div class="col-md-6">
