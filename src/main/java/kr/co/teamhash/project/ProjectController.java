@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.co.teamhash.domain.entity.*;
 import kr.co.teamhash.domain.repository.AccountRepository;
 import kr.co.teamhash.domain.repository.MemberRepository;
-import kr.co.teamhash.domain.repository.NotificationRepository;
 import kr.co.teamhash.domain.repository.ProjectRepository;
 import kr.co.teamhash.notification.NotificationService;
 import kr.co.teamhash.project.form.MemberForm;
@@ -14,7 +13,7 @@ import kr.co.teamhash.project.validator.MemberValidator;
 import kr.co.teamhash.project.validator.ProjectBuildValidator;
 import lombok.RequiredArgsConstructor;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -156,6 +155,7 @@ public class ProjectController {
         model.addAttribute("nickname", nickname);
         
         List<Problems> problemList = problemShareService.getProblemList(projectId);
+        Collections.reverse(problemList);
 
         model.addAttribute("problemList", problemList);
         model.addAttribute("account", account);
