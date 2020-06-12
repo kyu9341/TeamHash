@@ -104,8 +104,10 @@ public class AccountController {
             throw new IllegalArgumentException(nickname + "에 해당하는 사용자가 없습니다.");
         }
 
-        List<Notification> notifications = notificationRepository.findAllByAccountId(account.getId());
-        model.addAttribute("notifications", notifications);
+        if (account != null) {
+            List<Notification> notifications = notificationRepository.findAllByAccountId(account.getId());
+            model.addAttribute("notifications", notifications);
+        }
 
         model.addAttribute(byNickname);
         // 해당 get 파라미터로 넘어온 닉네임에 해당하는 Account 객체와 현재 인증된 객체를 비교
