@@ -15,12 +15,12 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ProblemShareService {
     private final ProblemsRepository problemsRepository;
     private final CommentRepository commentRepository;
 
     // 문제 공유 글 저장
-    @Transactional
     public Long saveProblem(Problems problem, Long projectId,Account account){
 
 
@@ -37,7 +37,6 @@ public class ProblemShareService {
     }
 
     // 문제 공유 글 리스트 얻기
-    @Transactional
     public List<Problems> getProblemList(Long projectId){
 
         List<Problems> problemList = problemsRepository.findByProjectId(projectId);
@@ -46,7 +45,6 @@ public class ProblemShareService {
     }
 
     // 문제 공유 글 내용 얻기
-    @Transactional
     public Problems getProblem(Long problemId){
         Problems problem = problemsRepository.findById(problemId).get();
 
@@ -54,14 +52,17 @@ public class ProblemShareService {
     }
 
     // 문제 공유 글 삭제
-    @Transactional
     public void deleteProblem(Long problemId){
+        //문제 공유 글 삭제시 해당 글에 있는 
+        // 코멘트를 모두 제거해야 한다.
+        for (Comment comment : this.getProblem(problemId).getComments()) {
+            this.deleteComment(comment.getId());
+        }
         problemsRepository.deleteById(problemId);
     }
 
 
     //코멘트 작성
-    @Transactional
     public void saveComment(Comment comment, Long problemId, Account account){
 
         //외래키 객체 주입
@@ -77,5 +78,10 @@ public class ProblemShareService {
         comment.setWriterId(account);
 
         commentRepository.save(comment);
+    }
+
+    //코멘트 삭제
+    public void deleteComment(Long commentId){
+        commentRepository.deleteById(commentId);
     }
 }

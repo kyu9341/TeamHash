@@ -283,6 +283,12 @@
                                         </div>
                                         <p th:text="${comment.content}"></p>
                                     </div>
+                                    <div>
+                                        <form id="delete-form" th:action="@{'/project/'+${nickname}+'/'+${title}+'/problem-share/comment/' + ${comment.id}}" method="post">
+                                            <input type="hidden" name="_method" value="delete"/>
+                                            <button id="delete-btn">삭제</button>
+                                        </form>
+                                    </div>
                             </ul>
                         </div>
                     </div>
