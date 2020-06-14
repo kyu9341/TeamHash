@@ -105,9 +105,9 @@ public class ProjectService {
         return im;
     }
 
-    public void saveProjectMember(String nickname, String title) {
+    public void saveProjectMember(String nickname, String title, String builderNick) {
         Account account = accountRepository.findByNickname(nickname);
-        Project project = projectRepository.findByTitle(title);
+        Project project = projectRepository.findByTitleAndBuilderNick(title, builderNick);
         memberRepository.save(ProjectMember.builder()
                 .account(account)
                 .project(project)
