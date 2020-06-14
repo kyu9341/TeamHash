@@ -1,5 +1,6 @@
 package kr.co.teamhash.account;
 
+import kr.co.teamhash.config.AppProperties;
 import kr.co.teamhash.domain.entity.Account;
 import kr.co.teamhash.domain.repository.AccountRepository;
 import kr.co.teamhash.mail.EmailMessage;
@@ -21,6 +22,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -36,6 +39,8 @@ public class AccountService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final AccountRepository accountRepository;
     private final EmailService emailService;
+    private final TemplateEngine templateEngine;
+    private final AppProperties appProperties;
 
     public Account processNewAccount(SignUpForm signUpForm){
         Account newAccount = saveNewAccount(signUpForm);
@@ -60,10 +65,21 @@ public class AccountService implements UserDetailsService {
 
     // 회원 가입 인증 이메일을 전송하는 메소드
     public void sendSignUpConfirmEmail(Account newAccount){
+
+        // 템플릿 엔진 사용하여 html 메세지를 만들어 전송
+        Context context = new Context();
+        context.setVariable("link", "/check-email-token?token="+newAccount.getEmailCheckToken() +
+                "&email="+newAccount.getEmail());
+        context.setVariable("nickname", newAccount.getNickname());
+        context.setVariable("linkName", "이메일 인증하기");
+        context.setVariable("message", "TEAM # 이메일 인증을 완료하려면 링크를 클릭하세요");
+        context.setVariable("host", appProperties.getHost());
+        String message = templateEngine.process("mail/simple-link", context);
+
         EmailMessage emailMessage = EmailMessage.builder()
                 .to(newAccount.getEmail())
                 .subject("Team# 회원가입 인증")
-                .message("/check-email-token?token="+newAccount.getEmailCheckToken() + "&email="+newAccount.getEmail())
+                .message(message)
                 .build();
 
         // 이메일 전송
