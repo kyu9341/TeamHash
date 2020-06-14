@@ -2,11 +2,15 @@ package kr.co.teamhash.account;
 
 import kr.co.teamhash.domain.entity.Account;
 import kr.co.teamhash.domain.repository.AccountRepository;
+import kr.co.teamhash.mail.EmailMessage;
+import kr.co.teamhash.mail.EmailService;
 import kr.co.teamhash.settings.Profile;
 import kr.co.teamhash.settings.form.NicknameForm;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,17 +22,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import javax.validation.Valid;
 import java.util.List;
 
-@Transactional
+@Slf4j
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class AccountService implements UserDetailsService {
 
     private final PasswordEncoder passwordEncoder;
     private final AccountRepository accountRepository;
-    private final JavaMailSender javaMailSender;
+    private final EmailService emailService;
 
     public Account processNewAccount(SignUpForm signUpForm){
         Account newAccount = saveNewAccount(signUpForm);
@@ -53,12 +60,14 @@ public class AccountService implements UserDetailsService {
 
     // 회원 가입 인증 이메일을 전송하는 메소드
     public void sendSignUpConfirmEmail(Account newAccount){
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setTo(newAccount.getEmail());
-        mailMessage.setSubject("Team# 회원가입 인증");
-        mailMessage.setText("/check-email-token?token="+newAccount.getEmailCheckToken() + "&email="+newAccount.getEmail());
+        EmailMessage emailMessage = EmailMessage.builder()
+                .to(newAccount.getEmail())
+                .subject("Team# 회원가입 인증")
+                .message("/check-email-token?token="+newAccount.getEmailCheckToken() + "&email="+newAccount.getEmail())
+                .build();
+
         // 이메일 전송
-        javaMailSender.send(mailMessage);
+        emailService.sendEmail(emailMessage);
     }
 
     public void login(Account account){
