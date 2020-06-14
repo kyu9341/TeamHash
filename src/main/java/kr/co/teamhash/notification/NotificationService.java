@@ -31,7 +31,7 @@ public class NotificationService {
                 .project(project)
                 .createdLocalDateTime(LocalDateTime.now())
                 .notificationType(NotificationType.PROJECT_INVITE)
-                .message(project.getBuilderNick() + "님의 " + project.getTitle() + "에 초대 받았습니다.")
+                .message("<b>" + project.getBuilderNick() + "</b>님의 " + "<b>" + project.getTitle() + "\"</b>\"에 초대 받았습니다.")
                 .build());
     }
 
