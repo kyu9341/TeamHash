@@ -1,12 +1,17 @@
 package kr.co.teamhash.account;
 
+import kr.co.teamhash.config.AppProperties;
 import kr.co.teamhash.domain.entity.Account;
 import kr.co.teamhash.domain.repository.AccountRepository;
+import kr.co.teamhash.mail.EmailMessage;
+import kr.co.teamhash.mail.EmailService;
 import kr.co.teamhash.settings.Profile;
 import kr.co.teamhash.settings.form.NicknameForm;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,18 +22,25 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import javax.validation.Valid;
 import java.util.List;
 
-@Transactional
+@Slf4j
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class AccountService implements UserDetailsService {
 
     private final PasswordEncoder passwordEncoder;
     private final AccountRepository accountRepository;
-    private final JavaMailSender javaMailSender;
+    private final EmailService emailService;
+    private final TemplateEngine templateEngine;
+    private final AppProperties appProperties;
 
     public Account processNewAccount(SignUpForm signUpForm){
         Account newAccount = saveNewAccount(signUpForm);
@@ -53,12 +65,25 @@ public class AccountService implements UserDetailsService {
 
     // 회원 가입 인증 이메일을 전송하는 메소드
     public void sendSignUpConfirmEmail(Account newAccount){
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setTo(newAccount.getEmail());
-        mailMessage.setSubject("Team# 회원가입 인증");
-        mailMessage.setText("/check-email-token?token="+newAccount.getEmailCheckToken() + "&email="+newAccount.getEmail());
+
+        // 템플릿 엔진 사용하여 html 메세지를 만들어 전송
+        Context context = new Context();
+        context.setVariable("link", "/check-email-token?token="+newAccount.getEmailCheckToken() +
+                "&email="+newAccount.getEmail());
+        context.setVariable("nickname", newAccount.getNickname());
+        context.setVariable("linkName", "이메일 인증하기");
+        context.setVariable("message", "TEAM # 이메일 인증을 완료하려면 링크를 클릭하세요");
+        context.setVariable("host", appProperties.getHost());
+        String message = templateEngine.process("mail/simple-link", context);
+
+        EmailMessage emailMessage = EmailMessage.builder()
+                .to(newAccount.getEmail())
+                .subject("Team# 회원가입 인증")
+                .message(message)
+                .build();
+
         // 이메일 전송
-        javaMailSender.send(mailMessage);
+        emailService.sendEmail(emailMessage);
     }
 
     public void login(Account account){

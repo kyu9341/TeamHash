@@ -95,6 +95,12 @@
                     <p class="lead" th:if="${#strings.isEmpty(account.introduction)}">
                         한 줄 소개를 해주세요.
                     </p>
+                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#project-modal">
+                        프로젝트 생성하기
+                      </button>
+                     <!-- <div th:object="${projectBuildForm}" >
+                      <small class="form-text text-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title Error</small>
+                     </div> -->
                 </div>
                 <div class="col-8">
 
@@ -108,12 +114,7 @@
 
 
       <!-- 프로젝트생성 버튼 -->
-     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#project-modal">
-        프로젝트 생성하기
-      </button>
-     <!-- <div th:object="${projectBuildForm}" >
-      <small class="form-text text-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title Error</small>
-     </div> -->
+
 
 
     <!-- 프로젝트생성 모달 -->
@@ -178,9 +179,9 @@
                 
                 <p class="card-text" th:text="${project_member.project.title}"></p>
             </div>
-            <div class="card-footer">
+            <div class="card-footer" style="background-color:#0f4c81">
                 
-                <small class="text-muted" th:text="${#strings.arraySplit(project_member.project.buildDate,'T')[0]}"></small>
+                <small class="text-light" th:text="${#strings.arraySplit(project_member.project.buildDate,'T')[0]}"></small>
             </div>
         </div>
     </div>

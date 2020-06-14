@@ -79,13 +79,19 @@
                     <ul class="list-group" th:each="notification : ${notifications}">
 
                         <li class="list-group-item">
-                            <p class="alert alert-info" th:text="${notification.message}">알림</p>
-                            <form id="confirm-form" th:action="@{'/profile/' + ${nickname} + '/accept/' + ${notification.id}}" method="post">
+
+                            <p class="alert alert-info" th:utext="${notification.message}">알림</p>
+                            <form id="confirm-form" th:action="@{'/profile/' + ${nickname} + '/accept/' + ${notification.id}}"
+                                  style="display: inline-block" method="post">
+
                                 <button id="notification-accept" type="submit" value="accept" class="member-list list-group-item">
                                 수락
                                 </button>
                             </form>
-                            <form id="reject-form" th:action="@{'/profile/' + ${nickname} + '/reject/' + ${notification.id}}" method="post">
+
+                            <form id="reject-form" th:action="@{'/profile/' + ${nickname} + '/reject/' + ${notification.id}}"
+                                  method="post" style="display: inline-block">
+
 
                                 <button id="notification-reject" type="submit" value="reject" class="member-list list-group-item">
                                     거절
