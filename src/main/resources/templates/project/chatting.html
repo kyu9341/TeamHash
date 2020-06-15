@@ -623,8 +623,8 @@ body {
     margin: 6px 8px 0 0;
   }
   #frame .content .messages ul li.another-chat p {
-    background: #435f7a;
-    color: #f5f5f5;
+    background: #f5f5f5;
+    
   }
   #frame .content .messages ul li.my-chat img {
     float: right;
@@ -636,7 +636,8 @@ body {
   }
   
   #frame .content .messages ul li.my-chat p {
-    background: #f5f5f5;
+    background: #435f7a;
+    color: #f5f5f5;
     float: right;
   }
   #frame .content .messages ul li img {
@@ -749,14 +750,14 @@ body {
         <!-- <img id="profile-img" src="http://emilcarlsson.se/assets/mikeross.png" class="online" alt="" /> -->
         
         <!-- 프로필 사진이 존재하지 않을 경우 -->
-        <svg class="profile-svg online" th:if="${#strings.isEmpty(account?.profileImage)}" data-jdenticon-value="user127" 
+        <svg id="my-profile" class="profile-svg online" th:if="${#strings.isEmpty(account?.profileImage)}" data-jdenticon-value="user127" 
         th:data-jdenticon-value="${account.nickname}"></svg>
         
         <!-- 프로필 사진이 존재할 경우 -->
-        <img class="online" th:if="${!#strings.isEmpty(account?.profileImage)}" th:src="${account.profileImage}">
+        <img id="my-profile" class="online" th:if="${!#strings.isEmpty(account?.profileImage)}" th:src="${account.profileImage}">
         
 
-				<p th:text="${account.nickname}"></p>
+				<p id="whoami" th:text="${account.nickname}"></p>
 				
 			</div>
     </div>
@@ -780,11 +781,15 @@ body {
             <!-- <span class="contact-status"></span> -->
 
             <!-- 프로필 사진이 존재하지 않을 경우 -->
-            <svg class="profile-svg" th:if="${#strings.isEmpty(member?.profileImage)}"
-            data-jdenticon-value="user127" th:data-jdenticon-value="${member.nickname}"></svg>
 
-            <!-- 프로필 사진이 존재할 경우 -->
-            <img th:src="${member.profileImage}" th:if="${!#strings.isEmpty(member?.profileImage)}" >
+            <div th:id="${'member-' + member.nickname}" >
+              <svg class="profile-svg" th:if="${#strings.isEmpty(member?.profileImage)}"
+              data-jdenticon-value="user127" th:data-jdenticon-value="${member.nickname}"></svg>
+  
+              <!-- 프로필 사진이 존재할 경우 -->
+              <img th:src="${member.profileImage}" th:if="${!#strings.isEmpty(member?.profileImage)}" >
+  
+            </div>
 
             <div class="meta">
 							<p class="name" th:text="${member.nickname}"></p>
@@ -807,7 +812,7 @@ body {
 			<p>Project Chatting Room</p>
 		</div>
 		<div class="messages">
-			<ul>
+			<ul id="messagesUl">
 
         <!-- js에서 입력되는 값을 해당 태그와 일치시켜야 한다 -->
 
@@ -927,14 +932,19 @@ body {
 
     var projectId = /*[[${projectId}]]*/ 'default';
     var members = /*[[${members}]]*/ 'default';
+    var whoami = $("#whoami").text();
+    // var myProfileImageTag = $("#my-profile").children();
+    
 
+    members.forEach(element => {
+      console.log(element.nickname);
+    });
 
-    var accountProfileImage = /*[[${account.profileImage}]]*/ 'default';
+  
     console.log('project info : ' + projectId); 
-    // console.log('acount : ' + account.nickname);
-    // console.log('account profile Image :' + accountProfileImage);
-    
-    
+    console.log('whami : '+whoami);
+    console.log('myprofile : ' + document.getElementById("my-profile").outerHTML);
+
 
     function connect() { // 생성된 소켓과 연결
         var socket = new SockJS('/teamhash-websocket');
@@ -967,29 +977,38 @@ body {
                             // DB에 저장된 값을 출력해주는 Thymeleaf와 형태를 맞추기 위해 
                             // 적절한 배치 필요
 
-        var sendDateTime = chat.sendDateTime.split("T"); // 시간과 분 출력 
-        sendDateTime = sendDateTime[1].split(":");
-        $("#chattings").append("<tr><td><span>" + chat.sender +
-        "</span></td><td><span>" + chat.message + 
-        "</span></td><td><span>" + sendDateTime[0] + 
-        ":" + sendDateTime[1] + "</span></td></tr>");
+        // var sendDateTime = chat.sendDateTime.split("T"); // 시간과 분 출력 
+        // sendDateTime = sendDateTime[1].split(":");
+        // $("#chattings").append("<tr><td><span>" + chat.sender +
+        // "</span></td><td><span>" + chat.message + 
+        // "</span></td><td><span>" + sendDateTime[0] + 
+        // ":" + sendDateTime[1] + "</span></td></tr>");
+        
+        // 내가 전송했을 때
+        if(chat.sender == whoami){
+          console.log("my chat");
+          var myProfileImageTag = document.getElementById("my-profile").outerHTML;
+          $("#messagesUl").append('<div><li class="my-chat">' + myProfileImageTag
+                                    + "<p>"+chat.message+"</p></li><div>");
+        }
+        // 상대방이 전송했을때
+        else{
+          console.log("member chat");
+          
+          members.forEach(member => {
+            if(chat.sender == member.nickname){
+              console.log("member-"+member.nickname);
+              
+              var memberProfileImageTag = document.getElementById("member-"+member.nickname).outerHTML;  
+              console.log(memberProfileImageTag);
+              $("#messagesUl").append('<div><li class="another-chat">' + memberProfileImageTag
+                                    + "<p>"+chat.message+"</p></li><div>");
+              
+            }
+          });
+          
+        }
 
-        // <li class="my-chat"  th:if="${chat.sender == account.nickname}">
-        //   <svg class="profile-svg" th:if="${#strings.isEmpty(account?.profileImage)}" data-jdenticon-value="user127" 
-        //   th:data-jdenticon-value="${account.nickname}"></svg>
-        //   <img th:if="${!#strings.isEmpty(account?.profileImage)}" th:src="${account.profileImage}">
-        //   <p th:text="${chat.message}"></p>
-        // </li>
-
-        // <li class="another-chat"  th:unless="${chat.sender == account.nickname}">
-        //   <svg class="profile-svg"  th:each="member : ${members}" 
-        //     th:if="${(chat.sender == member.nickname) && (#strings.isEmpty(member?.profileImage))}"
-        //     data-jdenticon-value="user127" 
-        //     th:data-jdenticon-value="${member.nickname}"></svg>
-        //   <img th:each="member : ${members}" th:src="${member.profileImage}"
-        //   th:if="${(chat.sender == member.nickname) && (!#strings.isEmpty(member?.profileImage))}" >
-        //   <p th:text="${chat.message}"></p>
-        // </li>
 
 
 

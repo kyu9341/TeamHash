@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import kr.co.teamhash.account.CurrentUser;
 import kr.co.teamhash.domain.entity.Account;
 import kr.co.teamhash.domain.entity.Chat;
+import kr.co.teamhash.domain.entity.ChatMemberDTO;
 import kr.co.teamhash.domain.entity.Project;
 import kr.co.teamhash.domain.entity.ProjectMember;
 import kr.co.teamhash.project.ProjectService;
@@ -40,16 +41,18 @@ public class ChatController {
     // 해당 프로젝트의 모든 유저 이미지와 이름을 가져온다
     Project thisProject = projectService.getProject(projectId).get();
     List<ProjectMember> projectMember = thisProject.getMembers();
-    List<Account> members = new ArrayList<Account>();
+    List<ChatMemberDTO> members = new ArrayList<ChatMemberDTO>();
     
     for (ProjectMember member : projectMember) {
-      members.add(member.getAccount());
+      Account data = member.getAccount();
+      members.add(new ChatMemberDTO(data.getEmail(),
+                      data.getNickname(),
+                      data.getIntroduction(),
+                      data.getSchool(),
+                      data.getProfileImage()));
     }
 
-    for (Account account2 : members) {
-      System.out.println(account2.getNickname() + " : " + account2.getProfileImage());
-    }
-    
+
     System.out.println("ProjectId : "+projectId);
     
     List<Chat> chatList = chatservice.getChatList(projectId); // 채팅 리스트 추출
