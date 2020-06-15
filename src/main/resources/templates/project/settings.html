@@ -62,6 +62,9 @@
                                     <img th:if="${!#strings.isEmpty(member.account?.profileImage)}"
                                          th:src="${member.account.profileImage}"
                                          width="36" height="36" class="rounded border"> <span th:text="${member.account.nickname}"></span>
+                                         <button type="button" class="close" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                          </button>
                                 </a>
 
                             </ul>
