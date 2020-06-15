@@ -125,7 +125,7 @@ public class AccountController {
         }
         String projectTitle = notification.get().getProject().getTitle();
         String projectBuilder = notification.get().getProject().getBuilderNick();
-        projectService.saveProjectMember(account.getNickname(), projectTitle); // 수락한 경우 프로젝트 멤버로 등록
+        projectService.saveProjectMember(account.getNickname(), projectTitle, projectBuilder); // 수락한 경우 프로젝트 멤버로 등록
         notificationService.deleteNotification(notificationId); // 해당 알림 제거
 
         return String.format("redirect:/project/%s/%s", projectBuilder, projectTitle);
