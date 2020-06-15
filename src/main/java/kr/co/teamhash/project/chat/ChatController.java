@@ -1,6 +1,7 @@
 package kr.co.teamhash.project.chat;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -14,6 +15,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import kr.co.teamhash.account.CurrentUser;
 import kr.co.teamhash.domain.entity.Account;
 import kr.co.teamhash.domain.entity.Chat;
+import kr.co.teamhash.domain.entity.ChatMemberDTO;
+import kr.co.teamhash.domain.entity.Project;
+import kr.co.teamhash.domain.entity.ProjectMember;
 import kr.co.teamhash.project.ProjectService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +36,22 @@ public class ChatController {
 
     // nickname과 projectTitle로 projectId 찾기
     Long projectId = projectService.getProjectId(nickname, title);
+    
+    // 채팅에서의 유저 이미지 매핑을 위해 
+    // 해당 프로젝트의 모든 유저 이미지와 이름을 가져온다
+    Project thisProject = projectService.getProject(projectId).get();
+    List<ProjectMember> projectMember = thisProject.getMembers();
+    List<ChatMemberDTO> members = new ArrayList<ChatMemberDTO>();
+    
+    for (ProjectMember member : projectMember) {
+      Account data = member.getAccount();
+      members.add(new ChatMemberDTO(data.getEmail(),
+                      data.getNickname(),
+                      data.getIntroduction(),
+                      data.getSchool(),
+                      data.getProfileImage()));
+    }
+
 
     System.out.println("ProjectId : "+projectId);
     
@@ -40,6 +60,7 @@ public class ChatController {
     
     model.addAttribute("chatList",chatList);// 추출된 채팅 리스트 전달
     model.addAttribute("account",account);
+    model.addAttribute("members", members);
     model.addAttribute("projectId", projectId);
     return "project/chatting";
   }
