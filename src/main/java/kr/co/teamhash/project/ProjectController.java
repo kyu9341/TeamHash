@@ -104,10 +104,10 @@ public class ProjectController {
     @GetMapping("/project/{nickname}/{title}")
     public String projectMain(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
                               Model model, @CurrentUser Account account){
-        
 
         // nickname과 projectTitle로 projectId 찾기
         Long projectId = projectService.getProjectId(nickname, title);
+
 
         // nickname과 projectTitle에 맞는 프로젝트가 없을 때
         if(projectId == null)
@@ -116,6 +116,8 @@ public class ProjectController {
         //프로젝트 검색
         if(!projectService.getProject(projectId).isPresent())
             return "project/no-project";
+
+        List<ProjectMember> members = memberRepository.findAllByProjectId(projectId);
 
         // 프로젝트의 맴버 리스트에 현재 유저의 아이디가 있다면 페이지 공개
         boolean isMember = projectService.isMember(projectId, account);
@@ -126,6 +128,8 @@ public class ProjectController {
         model.addAttribute("projectId", projectId);
         model.addAttribute("title", title);
         model.addAttribute("nickname", nickname);
+        model.addAttribute("members", members);
+        model.addAttribute(account);
 
         return "project/project-main";
     }

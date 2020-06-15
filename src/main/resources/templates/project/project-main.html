@@ -25,11 +25,19 @@
                 <!-- project projectMember  -->
                 <div th:if="${isMember}">
 
-                    <ul class="list-group">
-                        <li class="list-group-item">초대된 멤버</li>
-                        <a href="#" class="list-group-item list-group-item-action">Dapibus ac facilisis in</a>
-                        <a href="#" class="list-group-item list-group-item-action">Dapibus ac facilisis in</a>
-                        <a href="#" class="list-group-item list-group-item-action">Dapibus ac facilisis in</a>
+                    <li class="list-group-item text-white bg-info">프로젝트 멤버</li>
+                    <ul class="list-group" th:each="member : ${members}">
+                        <a id="member-list" href="#"
+                           class="member-list list-group-item list-group-item-action">
+                            <svg th:if="${#strings.isEmpty(member.account?.profileImage)}"
+                                 data-jdenticon-value="user127"
+                                 th:data-jdenticon-value="${member.account.nickname}"
+                                 width="36" height="36" class="rounded border bg-light"></svg>
+                            <img th:if="${!#strings.isEmpty(member.account?.profileImage)}"
+                                 th:src="${member.account.profileImage}"
+                                 width="36" height="36" class="rounded border"> <span th:text="${member.account.nickname}"></span>
+                        </a>
+
                     </ul>
 
 

@@ -54,8 +54,7 @@
                             <li class="list-group-item text-white bg-info">프로젝트 멤버</li>
                             <ul class="list-group" th:each="member : ${members}">
                                 <a id="member-list" href="#"
-                                   class="member-list list-group-item list-group-item-action"
-                                   >
+                                   class="member-list list-group-item list-group-item-action">
                                     <svg th:if="${#strings.isEmpty(member.account?.profileImage)}"
                                          data-jdenticon-value="user127"
                                          th:data-jdenticon-value="${member.account.nickname}"
