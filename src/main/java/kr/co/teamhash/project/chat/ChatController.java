@@ -46,7 +46,9 @@ public class ChatController {
       members.add(member.getAccount());
     }
 
-    
+    for (Account account2 : members) {
+      System.out.println(account2.getNickname() + " : " + account2.getProfileImage());
+    }
     
     System.out.println("ProjectId : "+projectId);
     
