@@ -12,19 +12,6 @@
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"
         integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 
-    <style type="text/css">
-        td {
-            width: 50px;
-            height: 50px;
-            text-align: center;
-            font-size: 20px;
-            font-family: 굴림;
-            border: 2px border-color:#3333FF;
-            border-radius: 8px;
-            /*모서리 둥글게*/
-        }
-    </style>
-
 
 </head>
 
@@ -38,19 +25,39 @@
 
     <style type="text/css">
         td {
-            width: 50px;
-            height: 50px;
+
+            width: 100px;
+            height: 70px;
             text-align: center;
-            font-size: 20px; 
-            font-family: 굴림;
-            border: 2px border-color:#3333FF;
-            border-radius: 8px;
-            /*모서리 둥글게*/
+            font-size: 15px;
         }
     </style>
+
     <script type="text/javascript">
         var today = new Date();//오늘 날짜//내 컴퓨터 로컬을 기준으로 today에 Date 객체를 넣어줌
         var date = new Date();//today의 Date를 세어주는 역할
+        var clickday = null;
+        
+
+        function makeEvent(onday,onYM) {//날짜를 누르면 이벤트를 만들어주는 함수
+            var ym;//년월
+            var y,m,d;
+
+            ym=onYM.replace(/[^0-9]/g,'0'); //날짜만 추출
+            y=ym.substring(0,4); //년 쪼개기
+            m=ym.substring(5,7); //달 쪼개기
+
+            if(onday.length==1){ //일 쪼개기
+                d='0'+onday;               
+            }
+            else d=onday;
+
+            clickday = document.getElementById('date-input');
+            clickday.value = y +'-'+ m +'-'+ d; //value 전달
+
+        }
+
+
         function prevCalendar() {//이전 달
             // 이전 달을 today에 값을 저장하고 달력에 today를 넣어줌
             //today.getFullYear() 현재 년도//today.getMonth() 월  //today.getDate() 일 
@@ -103,21 +110,26 @@
                 cell = row.insertCell();//열 한칸한칸 계속 만들어주는 역할
                 cnt = cnt + 1;//열의 갯수를 계속 다음으로 위치하게 해주는 역할
             }
+
             /*달력 출력*/
             for (i = 1; i <= lastDate.getDate(); i++) {
                 //1일부터 마지막 일까지 돌림
                 cell = row.insertCell();//열 한칸한칸 계속 만들어주는 역할
                 cell.innerHTML = i;//셀을 1부터 마지막 day까지 HTML 문법에 넣어줌
                 cnt = cnt + 1;//열의 갯수를 계속 다음으로 위치하게 해주는 역할
+
+
+
+
                 if (cnt % 7 == 1) {/*일요일 계산*/
                     //1주일이 7일 이므로 일요일 구하기
                     //월화수목금토일을 7로 나눴을때 나머지가 1이면 cnt가 1번째에 위치함을 의미한다
-                    cell.innerHTML = "<font color=#F79DC2>" + i
+                    cell.innerHTML = "<font color=#DB4455>" + i
                     //1번째의 cell에만 색칠
                 }
                 if (cnt % 7 == 0) {/* 1주일이 7일 이므로 토요일 구하기*/
                     //월화수목금토일을 7로 나눴을때 나머지가 0이면 cnt가 7번째에 위치함을 의미한다
-                    cell.innerHTML = "<font color=skyblue>" + i
+                    cell.innerHTML = "<font color=#0f4c81>" + i
                     //7번째의 cell에만 색칠
                     row = calendar.insertRow();
                     //토요일 다음에 올 셀을 추가
@@ -127,41 +139,121 @@
                     && today.getMonth() == date.getMonth()
                     && i == date.getDate()) {
                     //달력에 있는 년,달과 내 컴퓨터의 로컬 년,달이 같고, 일이 오늘의 일과 같으면
-                    cell.bgColor = "#FAF58C";//셀의 배경색을 노랑으로 
+                    cell.bgColor = "#ffb6c1";//셀의 배경색을 핑크로 
                 }
+                cell.setAttribute('onclick', 'makeEvent(innerText,tbCalendarYM.innerText)'); //날짜 클릭이벤트
             }
         }
+
     </script>
 
-    <h3 align="center">프로젝트명 달력</h3>
-    <table id="calendar" border="3" align="center" style="border-color:#0000">
-        <tr>
-            <!-- label은 마우스로 클릭을 편하게 해줌 -->
-            <td><label onclick="prevCalendar()"></label>
-            </td>
-            <td align="center" id="tbCalendarYM" colspan="5">
-                yyyy년 m월</td>
-            <td><label onclick="nextCalendar()">></label></td>
-        </tr>
-        <tr>
-            <td align="center">
-                <font color="#F79DC2">일
-            </td>
-            <td align="center">월</td>
-            <td align="center">화</td>
-            <td align="center">수</td>
-            <td align="center">목</td>
-            <td align="center">금</td>
-            <td align="center">
-                <font color="skyblue">토
-            </td>
-        </tr>
-    </table>
-    <script language="javascript" type="text/javascript">
-        buildCalendar();//
-    </script>
 
-    <footer th:replace="fragments.html :: footer"></footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-7 mt-3">
+                <h3 align="center">프로젝트명 달력</h3>
+                <table id="calendar" border="1" align="center" style="border-color:#b2b2b2">
+                    <tr>
+                        <!-- label은 마우스로 클릭을 편하게 해줌 -->
+                        <td><label onclick="prevCalendar()"> < </label>
+                        </td>
+                        <td align="center" id="tbCalendarYM" colspan="5"></td>
+                        <!--년월-->
+                        <td><label onclick="nextCalendar()"> > </label></td>
+                    </tr>
+                    <tr>
+                        <td align="centers">
+                            <font color="#DB4455">일
+                        </td>
+                        <td align="center">월</td>
+                        <td align="center">화</td>
+                        <td align="center">수</td>
+                        <td align="center">목</td>
+                        <td align="center">금</td>
+                        <td align="center">
+                            <font color="0f4c81">토
+                        </td>
+                    </tr>
+                </table>
+                <script language="javascript" type="text/javascript">
+                    buildCalendar();
+                </script>
+            </div>
+
+
+            <div class="col-4">
+
+                <form class="card mt-3">
+                    <div class="card-body ">
+                        <div class="form-group">
+                            <label for="date-input">날짜</label>
+                            <input class="form-control" type="date" value="2020년00월00" id="date-input">
+
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlInput1 ">일정 이름</label>
+                            <input type="email" class="form-control" id="exampleFormControlInput1"
+                                placeholder="일정을 입력하세요">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1">일정 내용</label>
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleFormControlInput1 ">일정 장소</label>
+                            <input type="email" class="form-control" id="exampleFormControlInput1"
+                                placeholder="장소를 입력하세요">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlSelect1">일정 시작 시간</label>
+                            <p><input type="time" class="form-control"></p>
+                            <label for="exampleFormControlSelect1">일정 마감 시간</label>
+                            <p><input type="time" class="form-control"></p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="example-color-input">Color</label>
+                            <input class="form-control" type="color" value="#ff0000" id="example-color-input">
+
+                        </div>
+
+                        <div class="form-group" align="center">
+                            <button type="button" class="btn btn-info">저장하기</button>
+                            <button type="button" class="btn btn-light">취소하기</button>
+                        </div>
+                    </div>
+                </form>
+
+
+<!--
+                <div class="list-group">
+                    <a class="list-group-item">
+                      <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">List group item heading</h5>
+                      </div>
+                    </a>
+
+                    <a href="#" class="list-group-item list-group-item-action">
+                      <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">List group item heading</h5>
+                        <small class="text-muted">3 days ago</small>
+                      </div>
+                      <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+                      <small class="text-muted">Donec id elit non mi porta.</small>
+                    </a>
+                -->
+
+                <div class="col-1">
+
+                </div>
+
+
+            </div>
+
+
+            <footer th:replace="fragments.html :: footer"></footer>
 </body>
 
 </html>
