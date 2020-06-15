@@ -12,32 +12,42 @@
 	<nav th:replace="fragments.html :: main-nav"></nav>
 
     <nav th:replace="fragments.html :: project-nav(currentProject='document')"></nav>
-  
 
-    <div th:if="${message}">
+
+	<div th:if="${message}">
 		<h2 th:text="${message}">
 	</div>
 
-	<div>
-		<form method="POST" enctype="multipart/form-data"  action="#" th:action="@{'/project/'+${nickname}+'/'+${title}+'/cloud/upload'}">
-			<table>
-				<tr><td>File to upload:</td><td><input type="file" name="file" /></td></tr>
-				<tr><td></td><td><input type="submit" value="Upload" /></td></tr>
-			</table>
-		</form>
+	<div class="container">
+		<div class="row justify-content-center pt-3">
 
-	
+			<form method="POST" enctype="multipart/form-data" action="#"
+				  th:action="@{'/project/'+${nickname}+'/'+${title}+'/cloud/upload'}">
+				<table>
+					<tr>
+						<td class="alert alert-primary">File to upload:</td>
+						<td><input class="alert alert-secondary" type="file" name="file"/></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td><input class="btn alert-info" type="submit" value="Upload"/></td>
+					</tr>
+				</table>
+			</form>
+		</div>
+
+		<div class="row justify-content-center pt-3">
+			<ul class="list-group">
+				<!-- 파일이름, 업로더, 업로드 날짜, 파일유형에 맞는 아이콘 추가 -->
+				<li th:each="file : ${fileList}" class="list-group-item">
+					<a th:href="@{'/project/'+${nickname}+'/'+${title}+'/cloud/download/'+${file.id}}" th:text="${file.fileName}">
+				</li>
+			</ul>
+		</div>
+
 	</div>
 
 
-	<div>
-		<ul>
-			<!-- 파일이름, 업로더, 업로드 날짜, 파일유형에 맞는 아이콘 추가 -->
-			<li th:each="file : ${fileList}">
-				<a th:href="@{'/project/'+${nickname}+'/'+${title}+'/cloud/download/'+${file.id}}" th:text="${file.fileName}">
-			</li>
-		</ul>
-	</div>
 </body>
 
 
