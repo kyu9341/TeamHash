@@ -1130,7 +1130,7 @@ body {
       console.log("my chat");
       var myProfileImageTag = document.getElementById("my-profile").outerHTML;
       $("#messagesUl").append('<div><li class="my-chat">' + myProfileImageTag
-        + "<p>" + chat.message + "</p></li><div>");
+        + "<p>" + chat.message + "</p></li></div>");
     }
     // 상대방이 전송했을때
     else {
@@ -1143,7 +1143,7 @@ body {
           var memberProfileImageTag = document.getElementById("member-" + member.nickname).outerHTML;
           console.log(memberProfileImageTag);
           $("#messagesUl").append('<div><li class="another-chat">' + memberProfileImageTag
-            + "<p>" + chat.message + "</p></li><div>");
+            + "<p>" + chat.message + "</p></li></div>");
 
         }
       });
