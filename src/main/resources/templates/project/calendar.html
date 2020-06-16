@@ -31,31 +31,43 @@
             text-align: center;
             font-size: 15px;
         }
+        td:hover{               
+
+        background:rgb(116, 116, 116); 
+        color:#fff;                  
+
+   }
     </style>
 
     <script type="text/javascript">
         var today = new Date();//오늘 날짜//내 컴퓨터 로컬을 기준으로 today에 Date 객체를 넣어줌
         var date = new Date();//today의 Date를 세어주는 역할
         var clickday = null;
-        
+        var schedule = null;
+        var tod, toy = null;// 오늘날짜 
 
-        function makeEvent(onday,onYM) {//날짜를 누르면 이벤트를 만들어주는 함수
+
+        function makeEvent(onday, onYM) {//날짜를 누르면 이벤트를 만들어주는 함수
             var ym;//년월
-            var y,m,d;
+            var y, m, d;
 
-            ym=onYM.replace(/[^0-9]/g,'0'); //날짜만 추출
-            y=ym.substring(0,4); //년 쪼개기
-            m=ym.substring(5,7); //달 쪼개기
+            ym = onYM.replace(/[^0-9]/g, '0'); //날짜만 추출
+            y = ym.substring(0, 4); //년 쪼개기
+            m = ym.substring(5, 7); //달 쪼개기
 
-            if(onday.length==1){ //일 쪼개기
-                d='0'+onday;               
+            if (onday.length == 1) { //일 쪼개기
+                d = '0' + onday;
             }
-            else d=onday;
+            else d = onday;
 
             clickday = document.getElementById('date-input');
-            clickday.value = y +'-'+ m +'-'+ d; //value 전달
+            clickday.value = y + '-' + m + '-' + d; //value 전달
+
+            //오늘의 일정 바꾸기
+            document.getElementById('schedule').innerHTML = onYM + onday;
 
         }
+
 
 
         function prevCalendar() {//이전 달
@@ -140,10 +152,23 @@
                     && i == date.getDate()) {
                     //달력에 있는 년,달과 내 컴퓨터의 로컬 년,달이 같고, 일이 오늘의 일과 같으면
                     cell.bgColor = "#ffb6c1";//셀의 배경색을 핑크로 
+                    tod = cell.innerText;
                 }
                 cell.setAttribute('onclick', 'makeEvent(innerText,tbCalendarYM.innerText)'); //날짜 클릭이벤트
+
             }
+            toy = tbCalendarYM.innerText + tod;
+            console.log(toy);
+            $(function () {
+                $('#schedule').text(toy);
+            });
+
+
         }
+
+
+
+
 
     </script>
 
@@ -155,7 +180,8 @@
                 <table id="calendar" border="1" align="center" style="border-color:#b2b2b2">
                     <tr>
                         <!-- label은 마우스로 클릭을 편하게 해줌 -->
-                        <td><label onclick="prevCalendar()"> < </label>
+                        <td><label onclick="prevCalendar()">
+                                < </label>
                         </td>
                         <td align="center" id="tbCalendarYM" colspan="5"></td>
                         <!--년월-->
@@ -182,78 +208,110 @@
 
 
             <div class="col-4">
-
                 <form class="card mt-3">
-                    <div class="card-body ">
-                        <div class="form-group">
-                            <label for="date-input">날짜</label>
-                            <input class="form-control" type="date" value="2020년00월00" id="date-input">
+                    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
 
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleFormControlInput1 ">일정 이름</label>
-                            <input type="email" class="form-control" id="exampleFormControlInput1"
-                                placeholder="일정을 입력하세요">
+                        <li class="nav-item mt-3">
+                            <a class="nav-link active ml-3" id="pills-home-tab" data-toggle="pill" href="#pills-home"
+                                role="tab" aria-controls="pills-home" aria-selected="true">일정</a>
+                        </li>
+
+                        <li class="nav-item mt-3">
+                            <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile"
+                                role="tab" aria-controls="pills-profile" aria-selected="false">일정 추가</a>
+                        </li>
+
+                    </ul>
+
+
+                    <div class="tab-content" id="pills-tabContent">
+                        <div class="tab-pane fade show active" id="pills-home" role="tabpanel"
+                            aria-labelledby="pills-home-tab">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">
+                                    <label id="schedule">
+
+                                    </label>일 일정
+                                </li>
+
+                                <a href="#" class="list-group-item list-group-item-action">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h5 class="mb-1">일정이름</h5>
+                                        <small class="text-muted">약속시간</small>
+
+                                    </div>
+                                    <p class="mb-1">일정 내용asdasdasdasd</p>
+                                    <!--<small class="text-muted">Donec id elit non mi porta.</small>-->
+                                    <button type="button" class="close" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </a>
+
+                            </ul>
                         </div>
 
-                        <div class="form-group">
-                            <label for="exampleFormControlTextarea1">일정 내용</label>
-                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                        </div>
 
-                        <div class="form-group">
-                            <label for="exampleFormControlInput1 ">일정 장소</label>
-                            <input type="email" class="form-control" id="exampleFormControlInput1"
-                                placeholder="장소를 입력하세요">
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleFormControlSelect1">일정 시작 시간</label>
-                            <p><input type="time" class="form-control"></p>
-                            <label for="exampleFormControlSelect1">일정 마감 시간</label>
-                            <p><input type="time" class="form-control"></p>
-                        </div>
+                        <div class="tab-pane fade" id="pills-profile" role="tabpanel"
+                            aria-labelledby="pills-profile-tab">
+                            <div class="card-body ">
+                                <div class="form-group">
+                                    <label for="date-input">날짜</label>
+                                    <input class="form-control" type="date" value="2020년00월00일" id="date-input">
 
-                        <div class="form-group">
-                            <label for="example-color-input">Color</label>
-                            <input class="form-control" type="color" value="#ff0000" id="example-color-input">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleFormControlInput1 ">일정 이름</label>
+                                    <input type="email" class="form-control" id="exampleFormControlInput1"
+                                        placeholder="일정을 입력하세요">
+                                </div>
 
-                        </div>
+                                <div class="form-group">
+                                    <label for="exampleFormControlTextarea1">일정 내용</label>
+                                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                </div>
 
-                        <div class="form-group" align="center">
-                            <button type="button" class="btn btn-info">저장하기</button>
-                            <button type="button" class="btn btn-light">취소하기</button>
-                        </div>
-                    </div>
+                                <div class="form-group">
+                                    <label for="exampleFormControlInput1 ">일정 장소</label>
+                                    <input type="email" class="form-control" id="exampleFormControlInput1"
+                                        placeholder="장소를 입력하세요">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleFormControlSelect1">일정 시작 시간</label>
+                                    <p><input type="time" class="form-control"></p>
+                                    <label for="exampleFormControlSelect1">일정 마감 시간</label>
+                                    <p><input type="time" class="form-control"></p>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="example-color-input">Color</label>
+                                    <input class="form-control" type="color" value="#ff0000" id="example-color-input">
+
+                                </div>
+
+                                <div class="form-group" align="center">
+                                    <button type="button" class="btn btn-info">저장하기</button>
+                                    <button type="button" class="btn btn-light">취소하기</button>
+                                </div>
+                            </div>
                 </form>
-
-
-<!--
-                <div class="list-group">
-                    <a class="list-group-item">
-                      <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1">List group item heading</h5>
-                      </div>
-                    </a>
-
-                    <a href="#" class="list-group-item list-group-item-action">
-                      <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1">List group item heading</h5>
-                        <small class="text-muted">3 days ago</small>
-                      </div>
-                      <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-                      <small class="text-muted">Donec id elit non mi porta.</small>
-                    </a>
-                -->
-
-                <div class="col-1">
-
-                </div>
-
 
             </div>
 
+        </div>
 
-            <footer th:replace="fragments.html :: footer"></footer>
+
+
+
+        <!--레이아웃용 div-->
+        <div class="col-1">
+
+        </div>
+
+
+    </div>
+
+
+    <footer th:replace="fragments.html :: footer"></footer>
 </body>
 
 </html>
