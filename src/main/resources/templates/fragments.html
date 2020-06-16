@@ -51,7 +51,10 @@
 
 
 <nav th:fragment="main-nav" class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="/main" th:href="@{/main}">
+    <a sec:authorize="isAuthenticated()" class="navbar-brand" href="/main" th:href="@{/main}">
+        <img src="/images/teamhash-logo.png" width="64" height="64">
+    </a>
+    <a sec:authorize="!isAuthenticated()" class="navbar-brand" href="/" th:href="@{/}">
         <img src="/images/teamhash-logo.png" width="64" height="64">
     </a>
 
