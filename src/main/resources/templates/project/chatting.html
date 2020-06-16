@@ -938,7 +938,7 @@ body {
 			<img src="/images/chat.png" alt="" />
 			<p>Project Chatting Room</p>
 		</div>
-		<div class="messages">
+		<div class="messages" id="chat-box">
 			<ul id="messagesUl">
 
         <!-- js에서 입력되는 값을 해당 태그와 일치시켜야 한다 -->
@@ -1054,9 +1054,13 @@ body {
 
 <script th:inline="javascript">
   var stompClient = null;
+  
+  var elementHeight = document.getElementById("chat-box").scrollHeight;
+  
+  console.log("height : " + elementHeight);
+  
   // 스크롤 이동
-  document.querySelector(".messages").scrollTo({ top: 2500, behavior: 'auto' });
-
+  scrolldown();
   // How to Thymeleaf send data to JavaScript
 
   var projectId = /*[[${projectId}]]*/ 'default';
@@ -1074,6 +1078,10 @@ body {
   console.log('whami : ' + whoami);
   console.log('myprofile : ' + document.getElementById("my-profile").outerHTML);
 
+  function scrolldown(){
+    $(".messages").animate({ scrollTop: elementHeight+93 }, "fast");
+    elementHeight+=93;
+  }
 
   function connect() { // 생성된 소켓과 연결
     var socket = new SockJS('/teamhash-websocket');
@@ -1095,6 +1103,7 @@ body {
     console.log("Disconnected");
   }
 
+  
 
   function sendChat() { // 메세지 전송 index.html의 text box에 입력된 값을 읽어온다.
     stompClient.send("/send/chat/" + projectId, {},
@@ -1102,6 +1111,7 @@ body {
         'sender': $("#sender").val(),
         'message': $("#chatMessage").val()
       }));
+      $('#chatMessage').val(null);
   }
 
   function showChat(chat) { // 수신한 메세지를 출력
@@ -1140,9 +1150,9 @@ body {
 
     }
 
+    
 
-
-
+    scrolldown();
   }
 
 
