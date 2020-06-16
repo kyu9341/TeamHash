@@ -927,6 +927,8 @@ body {
 
 <script th:inline="javascript">
     var stompClient = null;
+    // 스크롤 이동
+    document.querySelector(".messages").scrollTo({top:2500, behavior:'auto'});
 
     // How to Thymeleaf send data to JavaScript
 
