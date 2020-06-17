@@ -964,17 +964,25 @@ body {
             
             <!-- 프로젝트 멤퍼의 항목을 모두 가져온 뒤 채팅 전송자와 같은 경우에만 출력 -->
             <!-- 프로필 사진이 존재하지 않을 경우 -->
-            <svg class="profile-svg"  th:each="member : ${members}" 
+            <div>
+              <svg class="profile-svg"  th:each="member : ${members}" 
             
               th:if="${(chat.sender == member.nickname) && (#strings.isEmpty(member?.profileImage))}"
               data-jdenticon-value="user127" 
               th:data-jdenticon-value="${member.nickname}"></svg>
+              
+            
+            
   
             <!-- 프로필 사진이 존재할 경우 -->
-            <img th:each="member : ${members}" th:src="${member.profileImage}"
             
-            th:if="${(chat.sender == member.nickname) && (!#strings.isEmpty(member?.profileImage))}" >
-  
+              <img th:each="member : ${members}" th:src="${member.profileImage}"
+            
+              th:if="${(chat.sender == member.nickname) && (!#strings.isEmpty(member?.profileImage))}" >
+              <span th:text="${chat.sender}"></span>
+
+            </div>
+            
              <!-- 메세지 -->
             
             <p th:text="${chat.message}"></p>
@@ -1142,9 +1150,9 @@ body {
 
           var memberProfileImageTag = document.getElementById("member-" + member.nickname).outerHTML;
           console.log(memberProfileImageTag);
-          $("#messagesUl").append('<div><li class="another-chat">' + memberProfileImageTag
-            + "<p>" + chat.message + "</p></li></div>");
-
+          $("#messagesUl").append('<div><li class="another-chat"><div>' + memberProfileImageTag
+            + '<span>' + chat.sender + '</span></div><p>' + chat.message + "</p></li></div>");
+            
         }
       });
 
