@@ -105,27 +105,21 @@ public class ProjectController {
     public String projectMain(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
                               Model model, @CurrentUser Account account){
 
-        // nickname과 projectTitle로 projectId 찾기
-        Long projectId = projectService.getProjectId(nickname, title);
-
+        Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
 
         // nickname과 projectTitle에 맞는 프로젝트가 없을 때
-        if(projectId == null)
+        if(project == null)
             return "project/no-project";
 
-        //프로젝트 검색
-        if(!projectService.getProject(projectId).isPresent())
-            return "project/no-project";
-
-        List<ProjectMember> members = memberRepository.findAllByProjectId(projectId);
+        List<ProjectMember> members = memberRepository.findAllByProjectId(project.getId());
 
         // 프로젝트의 맴버 리스트에 현재 유저의 아이디가 있다면 페이지 공개
-        boolean isMember = projectService.isMember(projectId, account);
+        boolean isMember = projectService.isMember(project.getId(), account);
 
         // 프로젝트에 필요한 정보와
         // 유저가 해당 프로젝트의 맴버인지 확인하는 정보
         model.addAttribute("isMember", isMember);
-        model.addAttribute("projectId", projectId);
+        model.addAttribute(project);
         model.addAttribute("title", title);
         model.addAttribute("nickname", nickname);
         model.addAttribute("members", members);
@@ -133,6 +127,27 @@ public class ProjectController {
 
         return "project/project-main";
     }
+
+    @GetMapping("/project/{nickname}/{title}/write")
+    public String projectDescription(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
+                                     Model model, @CurrentUser Account account) {
+        Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
+        boolean isMember = projectService.isMember(project.getId(), account);
+        model.addAttribute("isMember", isMember);
+        model.addAttribute(project);
+        model.addAttribute(account);
+
+        return "project/write";
+    }
+
+    @PostMapping("/project/{nickname}/{title}/write")
+    public String projectDescriptionForm(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
+                                         String description ,Model model, @CurrentUser Account account) {
+        Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
+        projectService.createDescription(project, description);
+        return "redirect:/project/"+nickname+"/"+title;
+    }
+
 
     // 문제 공유란 메인 페이지
     @GetMapping("/project/{nickname}/{title}/problem-share")

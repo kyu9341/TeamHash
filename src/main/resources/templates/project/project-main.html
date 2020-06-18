@@ -1,53 +1,81 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" lang="en"
-    xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:replace="fragments.html :: head">
 
 </head>
 
 <body>
-    <nav th:replace="fragments.html :: main-nav"></nav>
+<nav th:replace="fragments.html :: main-nav"></nav>
 
-    <nav th:replace="fragments.html :: project-nav(currentProject='project')"></nav>
-  
+<nav th:replace="fragments.html :: project-nav(currentProject='project')"></nav>
 
-    <!-- 멤버 표시 -->
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-sm-6 col-md-8">
 
-                <!-- no project projectMember -->
-                <div th:if="${!isMember}">
-                    your not project projectMember
-                </div>
+<!-- 멤버 표시 -->
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-sm-6 col-md-8">
 
-                <!-- project projectMember  -->
-                <div th:if="${isMember}">
+            <!-- no project projectMember -->
+            <div th:if="${!isMember}">
+                your not project projectMember
+            </div>
 
-                    <li class="list-group-item text-white bg-info">프로젝트 멤버</li>
-                    <ul class="list-group" th:each="member : ${members}">
-                        <a id="member-list" href="#"
-                           class="member-list list-group-item list-group-item-action">
-                            <svg th:if="${#strings.isEmpty(member.account?.profileImage)}"
-                                 data-jdenticon-value="user127"
-                                 th:data-jdenticon-value="${member.account.nickname}"
-                                 width="36" height="36" class="rounded border bg-light"></svg>
-                            <img th:if="${!#strings.isEmpty(member.account?.profileImage)}"
-                                 th:src="${member.account.profileImage}"
-                                 width="36" height="36" class="rounded border"> <span th:text="${member.account.nickname}"></span>
-                        </a>
+            <!-- project projectMember  -->
+            <div th:if="${isMember}">
 
-                    </ul>
-                    <br>
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar" style="width: 10%;" aria-valuenow="1" aria-valuemin="0" aria-valuemax="100">10%</div>
+                <li class="list-group-item text-white bg-info">프로젝트 멤버</li>
+                <ul class="list-group" th:each="member : ${members}">
+                    <a id="member-list" href="#"
+                       class="member-list list-group-item list-group-item-action">
+                        <svg th:if="${#strings.isEmpty(member.account?.profileImage)}"
+                             data-jdenticon-value="user127"
+                             th:data-jdenticon-value="${member.account.nickname}"
+                             width="36" height="36" class="rounded border bg-light"></svg>
+                        <img th:if="${!#strings.isEmpty(member.account?.profileImage)}"
+                             th:src="${member.account.profileImage}"
+                             width="36" height="36" class="rounded border"> <span
+                            th:text="${member.account.nickname}"></span>
+                    </a>
+
+                </ul>
+                <br>
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: 10%;" aria-valuenow="1" aria-valuemin="0"
+                         aria-valuemax="100">10%
                     </div>
-
                 </div>
+
+                <div class="mt-5">
+                    <button type="button" class="btn btn-info" style="width:100px;" th:onclick="moveWrite()">작성하기</button>
+                    <button type="button" class="btn btn-info" th:if="${project.description != null}" style="width:100px;">수정하기</button>
+                </div>
+
+                <div class="card" th:if="${project.description == null}">
+                    <div class="card-body">
+                        프로젝트 설명을 추가해주세요.
+                    </div>
+                </div>
+
+                <div class="card" th:if="${project.description != null}">
+                    <div class="card-body" th:utext="${project.description}">
+
+                    </div>
+                </div>
+
             </div>
         </div>
+
     </div>
+
+</div>
+<script type="application/javascript">
+    function moveWrite() {
+        let pathname = window.location.pathname; // 현재 경로 읽어오기
+        location.href=pathname + '/write';
+    }
+</script>
 </body>
 
 </html>

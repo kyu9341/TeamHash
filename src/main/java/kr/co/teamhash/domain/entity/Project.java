@@ -26,6 +26,10 @@ public class Project {
     //프로젝트를 생성한 유저의 id를 넣을 것
     private Long builder;
 
+    @Lob
+    @Basic(fetch = FetchType.EAGER)
+    private String description;
+
     @OneToMany(mappedBy = "project")
     private List<ProjectMember> members = new ArrayList<>();
 

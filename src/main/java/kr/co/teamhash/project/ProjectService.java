@@ -116,4 +116,8 @@ public class ProjectService {
 
     }
 
+    public void createDescription(Project project, String description) {
+        project.setDescription(description);
+        projectRepository.save(project);
+    }
 }
