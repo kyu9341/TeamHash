@@ -1114,24 +1114,30 @@ body {
   
 
   function sendChat() { // 메세지 전송 index.html의 text box에 입력된 값을 읽어온다.
-    stompClient.send("/send/chat/" + projectId, {},
+
+    console.log("data : " + $("#chatMessage").val());
+    
+    //채팅란 공백 검사
+    if($("#chatMessage").val() == ""){
+      console.log("no data!");
+      
+    }
+    else{
+      stompClient.send("/send/chat/" + projectId, {},
       JSON.stringify({
         'sender': $("#sender").val(),
         'message': $("#chatMessage").val()
       }));
       $('#chatMessage').val(null);
+    }
+
+   
   }
 
   function showChat(chat) { // 수신한 메세지를 출력
     // DB에 저장된 값을 출력해주는 Thymeleaf와 형태를 맞추기 위해 
     // 적절한 배치 필요
 
-    // var sendDateTime = chat.sendDateTime.split("T"); // 시간과 분 출력 
-    // sendDateTime = sendDateTime[1].split(":");
-    // $("#chattings").append("<tr><td><span>" + chat.sender +
-    // "</span></td><td><span>" + chat.message + 
-    // "</span></td><td><span>" + sendDateTime[0] + 
-    // ":" + sendDateTime[1] + "</span></td></tr>");
 
     // 내가 전송했을 때
     if (chat.sender == whoami) {
