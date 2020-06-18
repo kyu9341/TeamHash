@@ -229,7 +229,7 @@
 
                         <!-- post main -->
                         <div class="card-body">
-                            <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o" th:text="${problem.createdDate}"></i></div>
+                            <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o problem-time" th:text="${problem.createdDate}"></i></div>
                             <a class="card-link" href="#">
                                 <h5 class="card-title" th:text="${problem.title}"></h5>
                             </a>
@@ -293,7 +293,7 @@
                                         
                                         <div class="comment-heading">
                                             <h4 class="user" th:text="${comment.writerId.nickname}"></h4>
-                                            <h5 class="time">5 minutes ago</h5>
+                                            <h5 class="time comment-time" th:text="${comment.createdDate}"></h5>
                                           
                                         </div>
                                         <p th:text="${comment.content}"></p>
@@ -345,6 +345,103 @@
  
 
     </div>
+
     <footer th:replace="fragments.html :: footer"></footer>
+
+    <script th:inline="javascript">
+        
+
+        
+        
+
+        //let timeData = getTime(nowTime);
+        
+        
+        // set problem time
+
+        setWriteTimeByClassName("problem-time");
+        setWriteTimeByClassName("comment-time");
+        
+        function setWriteTimeByClassName(className) {
+
+            let pt = $("." + className).each(function() {
+            let problemTime = getTime($(this).text());
+            let timeGap = getTimeGap(problemTime);
+
+            if(timeGap == null){
+                $(this).text(" " + problemTime.year+'년 ' +
+                    problemTime.month + '월 ' +
+                    problemTime.day + '일 ' +
+                    problemTime.hour + '시 ' +
+                    problemTime.month + '분');
+            }
+            else{
+                $(this).text(" " + timeGap);
+            }
+            
+            
+        });
+        }
+        
+
+        
+        
+        // time data split  
+        function getTime(timeString) {
+            let timeData = timeString.split(":");
+
+            let min = timeData[1];
+            let hour = timeData[0].split("T")[1];
+            let day =  timeData[0].split("T")[0].split("-")[2];
+            let month = timeData[0].split("T")[0].split("-")[1];
+            let year = timeData[0].split("T")[0].split("-")[0];
+
+            return {
+                year : parseInt(year),
+                month : parseInt(month),
+                day : parseInt(day),
+                hour : parseInt(hour),
+                min : parseInt(min)
+            };
+
+        };
+        
+        // how many times from write day
+        function getTimeGap(timeData) {
+            let nowTimeString =/*[[${nowTime}]]*/ 'default';
+            let nowTimeData = getTime(nowTimeString);
+            let nowSec = 0;
+            let problemSec = 0;
+            if(nowTimeData.year == timeData.year && nowTimeData.month == timeData.month){
+                nowSec += nowTimeData.min*60;
+                nowSec += nowTimeData.hour*60*60;
+                nowSec += nowTimeData.day*60*60*24;
+
+                nowSec -= timeData.min*60;
+                nowSec -= timeData.hour*60*60;
+                nowSec -= timeData.day*60*60*24;
+
+                //시간 전 작성
+                if(nowSec<60)
+                    return "방금전";
+                else if(nowSec<3600){
+                    return nowSec/60+"분전";
+                }
+                else if(nowSec < 86400){
+                    return (nowSec/1440).toFixed(0) + "시간전"
+                }
+            }else
+                return null;
+            
+
+
+        }
+
+        
+
+       
+        
+
+    </script>
 </body>
 </html>

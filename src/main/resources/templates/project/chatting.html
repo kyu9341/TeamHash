@@ -1061,25 +1061,22 @@ body {
 <footer th:replace="fragments.html :: footer"></footer>
 
 <script th:inline="javascript">
-  var stompClient = null;
+  let stompClient = null;
   
-  var elementHeight = document.getElementById("chat-box").scrollHeight;
-  
-  console.log("height : " + elementHeight);
+
+  // 스크롤 박스 높이 계산
+  let elementHeight = document.getElementById("chat-box").scrollHeight;
   
   // 스크롤 이동
   scrolldown();
+
+
+
   // How to Thymeleaf send data to JavaScript
-
-  var projectId = /*[[${projectId}]]*/ 'default';
-  var members = /*[[${members}]]*/ 'default';
-  var whoami = $("#whoami").text();
-  // var myProfileImageTag = $("#my-profile").children();
-
-
-  members.forEach(element => {
-    console.log(element.nickname);
-  });
+  let projectId = /*[[${projectId}]]*/ 'default';
+  let members = /*[[${members}]]*/ 'default';
+  let whoami = $("#whoami").text();
+  // let myProfileImageTag = $("#my-profile").children();
 
 
   console.log('project info : ' + projectId);
@@ -1092,7 +1089,7 @@ body {
   }
 
   function connect() { // 생성된 소켓과 연결
-    var socket = new SockJS('/teamhash-websocket');
+    let socket = new SockJS('/teamhash-websocket');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
 
@@ -1140,7 +1137,7 @@ body {
     // 내가 전송했을 때
     if (chat.sender == whoami) {
       console.log("my chat");
-      var myProfileImageTag = document.getElementById("my-profile").outerHTML;
+      let myProfileImageTag = document.getElementById("my-profile").outerHTML;
       $("#messagesUl").append('<div><li class="my-chat">' + myProfileImageTag
         + "<p>" + chat.message + "</p></li></div>");
     }
@@ -1152,7 +1149,7 @@ body {
         if (chat.sender == member.nickname) {
           console.log("member-" + member.nickname);
 
-          var memberProfileImageTag = document.getElementById("member-" + member.nickname).outerHTML;
+          let memberProfileImageTag = document.getElementById("member-" + member.nickname).outerHTML;
           console.log(memberProfileImageTag);
           $("#messagesUl").append('<div><li class="another-chat"><div>' + memberProfileImageTag
             + '<span>' + chat.sender + '</span></div><p>' + chat.message + "</p></li></div>");
