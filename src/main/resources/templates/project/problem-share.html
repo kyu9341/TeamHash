@@ -229,7 +229,7 @@
 
                         <!-- post main -->
                         <div class="card-body">
-                            <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i>10 min ago</div>
+                            <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o" th:text="${problem.createdDate}"></i></div>
                             <a class="card-link" href="#">
                                 <h5 class="card-title" th:text="${problem.title}"></h5>
                             </a>

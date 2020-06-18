@@ -13,6 +13,7 @@ import kr.co.teamhash.project.validator.MemberValidator;
 import kr.co.teamhash.project.validator.ProjectBuildValidator;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -163,6 +164,7 @@ public class ProjectController {
 
         model.addAttribute("problemList", problemList);
         model.addAttribute("account", account);
+        model.addAttribute("nowTime",  LocalDateTime.now());
 
         return "project/problem-share";
     }

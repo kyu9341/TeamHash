@@ -1115,12 +1115,10 @@ body {
 
   function sendChat() { // 메세지 전송 index.html의 text box에 입력된 값을 읽어온다.
 
-    console.log("data : " + $("#chatMessage").val());
-    
+
     //채팅란 공백 검사
     if($("#chatMessage").val() == ""){
       console.log("no data!");
-      
     }
     else{
       stompClient.send("/send/chat/" + projectId, {},
