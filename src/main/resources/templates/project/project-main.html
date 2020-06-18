@@ -47,18 +47,20 @@
                     </div>
                 </div>
 
-                <div class="mt-5">
-                    <button type="button" class="btn btn-info" style="width:100px;" th:onclick="moveWrite()">작성하기</button>
-                    <button type="button" class="btn btn-info" th:if="${project.description != null}" style="width:100px;">수정하기</button>
+                <div class="mt-5 mb-1" align="right">
+                    <button type="button" class="btn alert-primary" th:if="${project.description == null}" style="width:100px;"
+                            th:onclick="moveWrite()">작성하기</button>
+                    <button type="button" class="btn alert-primary" th:if="${project.description != null}" style="width:100px;"
+                            th:onclick="moveWrite()">수정하기</button>
                 </div>
 
-                <div class="card" th:if="${project.description == null}">
+                <div class="card mb-5" th:if="${project.description == null}">
                     <div class="card-body">
                         프로젝트 설명을 추가해주세요.
                     </div>
                 </div>
 
-                <div class="card" th:if="${project.description != null}">
+                <div class="card mb-5" th:if="${project.description != null}">
                     <div class="card-body" th:utext="${project.description}">
 
                     </div>

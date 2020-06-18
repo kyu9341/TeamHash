@@ -28,7 +28,7 @@
                       novalidate>
                     <div class="form-group">
                         <label for="description">상세 소개</label>
-                        <textarea id="description" type="textarea" name="description" class="editor form-control"
+                        <textarea id="description" type="textarea" name="description" th:utext="${project.description}" class="editor form-control"
                                   placeholder="프로젝트를 설명해주세요." aria-describedby="descriptionHelp" required></textarea>
                         <small id="fullDescriptionHelp" class="form-text text-muted">
                             프로젝트를 설명해주세요.
@@ -38,8 +38,11 @@
                     </div>
 
                     <div class="form-group">
-                        <button class="btn btn-primary btn-block" type="submit"
+                        <button class="btn alert-primary btn-block" th:if="${project.description == null}" type="submit"
                                 aria-describedby="submitHelp">작성하기
+                        </button>
+                        <button class="btn alert-primary btn-block" th:if="${project.description != null}" type="submit"
+                                aria-describedby="submitHelp">수정하기
                         </button>
                     </div>
                 </form>
@@ -53,8 +56,13 @@
 <script src="/node_modules/summernote/dist/summernote-bs4.js"></script>
 <script type="application/javascript">
     $(function () {
-
-    };
+        $('#description').summernote({
+            fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Noto Sans KR', 'Merriweather'],
+            placeholder: '프로젝트 설명을 적어주세요.',
+            tabsize: 2,
+            height: 300
+        });
+    });
 </script>
 </body>
 

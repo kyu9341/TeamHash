@@ -133,6 +133,7 @@ public class ProjectController {
                                      Model model, @CurrentUser Account account) {
         Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
         boolean isMember = projectService.isMember(project.getId(), account);
+
         model.addAttribute("isMember", isMember);
         model.addAttribute(project);
         model.addAttribute(account);
