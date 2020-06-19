@@ -44,6 +44,6 @@ public class CalendarController {
         return "project/calendar";
     }
 
-    @PostMapping("/project/{nickname}/{title}/calendar/scedule")
+    // @PostMapping("/project/{nickname}/{title}/calendar/scedule")
 
 }
