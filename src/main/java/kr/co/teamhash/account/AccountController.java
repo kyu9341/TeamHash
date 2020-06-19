@@ -112,6 +112,27 @@ public class AccountController {
         model.addAttribute(byNickname);
         // 해당 get 파라미터로 넘어온 닉네임에 해당하는 Account 객체와 현재 인증된 객체를 비교
         model.addAttribute("isOwner", byNickname.equals(account));
+        model.addAttribute("throughNotification", false);
+
+        return "account/profile";
+    }
+
+    @GetMapping("/profile/{nickname}/notification") // 알림 버튼으로 넘어온 경우
+    public String viewNotification(@PathVariable String nickname, Model model, @CurrentUser Account account) {
+        Account byNickname = accountRepository.findByNickname(nickname);
+        if (nickname == null) {
+            throw new IllegalArgumentException(nickname + "에 해당하는 사용자가 없습니다.");
+        }
+
+        if (account != null) {
+            List<Notification> notifications = notificationRepository.findAllByAccountId(account.getId());
+            model.addAttribute("notifications", notifications);
+        }
+
+        model.addAttribute(byNickname);
+        // 해당 get 파라미터로 넘어온 닉네임에 해당하는 Account 객체와 현재 인증된 객체를 비교
+        model.addAttribute("isOwner", byNickname.equals(account));
+        model.addAttribute("throughNotification", true);
 
         return "account/profile";
     }

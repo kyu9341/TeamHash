@@ -82,9 +82,10 @@
                 <a class="nav-link" th:href="@{/sign-up}">가입</a>
             </li>
             <li class="nav-item" sec:authorize="isAuthenticated()">
-                <a class="nav-link" th:href="@{'/profile/' + ${#authentication.name}}">
-                    <i th:if="${!hasNotification}" class="fa fa-bell-o" aria-hidden="true"></i>
-                    <span class="text-info" th:if="${hasNotification}"><i class="fa fa-bell"
+                <a class="nav-link" th:href="@{'/profile/' + ${#authentication.name} + '/notification'}">
+                    <span class="text-secondary" th:if="${!hasNotification}"><i class="fa fa-bell-o"
+                                                                             aria-hidden="true"></i></span>
+                    <span class="text-warning" th:if="${hasNotification}"><i class="fa fa-bell"
                                                                           aria-hidden="true"></i></span>
                 </a>
             </li>
