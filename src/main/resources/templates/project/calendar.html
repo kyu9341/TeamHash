@@ -152,8 +152,10 @@
                     && i == date.getDate()) {
                     //달력에 있는 년,달과 내 컴퓨터의 로컬 년,달이 같고, 일이 오늘의 일과 같으면
                     cell.bgColor = "#ffb6c1";//셀의 배경색을 핑크로 
+                    
                     tod = cell.innerText;
                 }
+                cell.setAttribute('id',i);
                 cell.setAttribute('onclick', 'makeEvent(innerText,tbCalendarYM.innerText)'); //날짜 클릭이벤트
 
             }
@@ -180,12 +182,12 @@
                 <table id="calendar" border="1" align="center" style="border-color:#b2b2b2">
                     <tr>
                         <!-- label은 마우스로 클릭을 편하게 해줌 -->
-                        <td><label onclick="prevCalendar()">
+                        <td onclick="prevCalendar()"><label >
                                 < </label>
                         </td>
                         <td align="center" id="tbCalendarYM" colspan="5"></td>
                         <!--년월-->
-                        <td><label onclick="nextCalendar()"> > </label></td>
+                        <td  onclick="nextCalendar()"><label> > </label></td>
                     </tr>
                     <tr>
                         <td align="centers">
