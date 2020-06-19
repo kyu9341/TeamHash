@@ -365,15 +365,15 @@
         function setWriteTimeByClassName(className) {
 
             let pt = $("." + className).each(function() {
-            let problemTime = getTime($(this).text());
+            let problemTime = new Date($(this).text());
             let timeGap = getTimeGap(problemTime);
 
             if(timeGap == null){
-                $(this).text(" " + problemTime.year+'년 ' +
-                    problemTime.month + '월 ' +
-                    problemTime.day + '일 ' +
-                    problemTime.hour + '시 ' +
-                    problemTime.month + '분');
+                $(this).text(" " + problemTime.getFullYear()+'년 ' +
+                    (problemTime.getMonth()+1) + '월 ' +
+                    problemTime.getDate() + '일 ' +
+                    problemTime.getHours() + '시 ' +
+                    problemTime.getMinutes() + '분');
             }
             else{
                 $(this).text(" " + timeGap);
@@ -383,40 +383,41 @@
         });
         };
 
-        // time data split  
-        function getTime(timeString) {
-            let timeData = timeString.split(":");
+        // // time data split  
+        // function getTime(timeString) {
+        //     let timeData = timeString.split(":");
 
-            let min = timeData[1];
-            let hour = timeData[0].split("T")[1];
-            let day =  timeData[0].split("T")[0].split("-")[2];
-            let month = timeData[0].split("T")[0].split("-")[1];
-            let year = timeData[0].split("T")[0].split("-")[0];
+        //     let min = timeData[1];
+        //     let hour = timeData[0].split("T")[1];
+        //     let day =  timeData[0].split("T")[0].split("-")[2];
+        //     let month = timeData[0].split("T")[0].split("-")[1];
+        //     let year = timeData[0].split("T")[0].split("-")[0];
 
-            return {
-                year : parseInt(year),
-                month : parseInt(month),
-                day : parseInt(day),
-                hour : parseInt(hour),
-                min : parseInt(min)
-            };
+        //     return {
+        //         year : parseInt(year),
+        //         month : parseInt(month),
+        //         day : parseInt(day),
+        //         hour : parseInt(hour),
+        //         min : parseInt(min)
+        //     };
 
-        };
+        // };
         
         // how many times from write day
         function getTimeGap(timeData) {
             let nowTimeString =/*[[${nowTime}]]*/ 'default';
-            let nowTimeData = getTime(nowTimeString);
+            
+            let nowTimeData = new Date(nowTimeString);
             let nowSec = 0;
             let problemSec = 0;
-            if(nowTimeData.year == timeData.year && nowTimeData.month == timeData.month){
-                nowSec += nowTimeData.min*60;
-                nowSec += nowTimeData.hour*60*60;
-                nowSec += nowTimeData.day*60*60*24;
+            if(nowTimeData.getFullYear == timeData.getFullYear && nowTimeData.getMonth() == timeData.getMonth()){
+                nowSec += nowTimeData.getMinutes()*60;
+                nowSec += nowTimeData.getHours()*60*60;
+                nowSec += nowTimeData.getDate()*60*60*24;
 
-                nowSec -= timeData.min*60;
-                nowSec -= timeData.hour*60*60;
-                nowSec -= timeData.day*60*60*24;
+                nowSec -= timeData.getMinutes()*60;
+                nowSec -= timeData.getHours()*60*60;
+                nowSec -= timeData.getDate()*60*60*24;
 
                 //시간 전 작성
                 if(nowSec<60)
