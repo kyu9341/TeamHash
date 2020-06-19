@@ -4,9 +4,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import kr.co.teamhash.account.CurrentUser;
 import kr.co.teamhash.domain.entity.Account;
+import kr.co.teamhash.domain.entity.Schedule;
 import kr.co.teamhash.project.ProjectService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,6 +46,26 @@ public class CalendarController {
         return "project/calendar";
     }
 
-    // @PostMapping("/project/{nickname}/{title}/calendar/scedule")
+    // 스케줄 생성
+    @PostMapping("/project/{nickname}/{title}/calendar/schedule")
+    public String makeSchedule(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
+                                Model model,  @CurrentUser Account account, Schedule schedule){
+         
+
+
+        // nickname과 projectTitle로 projectId 찾기
+        Long projectId = projectService.getProjectId(nickname, title);
+
+        
+        System.out.println(schedule.toString());
+
+        model.addAttribute("projectId", projectId);
+        model.addAttribute("title", title);
+        
+        model.addAttribute("account", account);                                    
+        return "redirect:/project/"+nickname+"/"+title+"/calendar";                   
+
+        // return "project/calendar";
+    }
 
 }

@@ -24,11 +24,15 @@ public class Schedule {
     @Id @GeneratedValue
     private Long id;
 
-    private Long projectId;
 
-   
+    // 프로젝트에 적용된 스케줄
+    // 이후 유저 -> 프로젝트맴버 -> 프로젝트 -> 스케쥴로 접근하여 
+    // 메인 페이지에 유저의 스케줄 표시해줄 것    
+    @ManyToOne
+    @JoinColumn(name = "project_id")
+    private Project project;
 
-    private LocalDateTime date;
+    private String date;
 
     @Column(length = 100, nullable = false)
     private String title;
@@ -38,4 +42,11 @@ public class Schedule {
 
     private String color;
 
+	@Override
+	public String toString() {
+		return "Schedule [color=" + color + ", content=" + content + ", date=" + date + ", id=" + id + ", title="
+				+ title + "]";
+	}
+
+    
 }
