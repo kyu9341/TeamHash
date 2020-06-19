@@ -47,14 +47,33 @@
         var tod, toy = null;// 오늘날짜 
 
 
+        
+
         function makeEvent(onday, onYM) {//날짜를 누르면 이벤트를 만들어주는 함수
             var ym;//년월
             var y, m, d;
 
+            // click color change
+            for(let i = 1 ; i < 32 ; i++){
+                if($("#"+i).attr("bgcolor") == "#ffb6c1"){
+                    $("#"+i).css('background-color','#ffb6c1');
+                    $("#"+i).css('color','#000000');
+                }
+                else{
+                    $("#"+i).css('background-color','#ffffff');
+                    $("#"+i).css('color','#000000');
+            
+                }
+            }
+            
+            $("#"+onday).css('background-color','#007bff');
+            $("#"+onday).css('color','#ffffff');
+
             ym = onYM.replace(/[^0-9]/g, '0'); //날짜만 추출
             y = ym.substring(0, 4); //년 쪼개기
             m = ym.substring(5, 7); //달 쪼개기
-
+            console.log("this day : "+onday);
+            
             if (onday.length == 1) { //일 쪼개기
                 d = '0' + onday;
             }
@@ -66,6 +85,7 @@
             //오늘의 일정 바꾸기
             document.getElementById('schedule').innerHTML = onYM + onday;
 
+            $("#")
         }
 
 
@@ -154,6 +174,7 @@
                     cell.bgColor = "#ffb6c1";//셀의 배경색을 핑크로 
                     
                     tod = cell.innerText;
+                    
                 }
                 cell.setAttribute('id',i);
                 cell.setAttribute('onclick', 'makeEvent(innerText,tbCalendarYM.innerText)'); //날짜 클릭이벤트
@@ -258,41 +279,29 @@
                             <div class="card-body ">
                                 <div class="form-group">
                                     <label for="date-input">날짜</label>
-                                    <input class="form-control" type="date" value="2020년00월00일" id="date-input">
+                                    <input class="form-control" type="date" name="date"  id="date-input">
 
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleFormControlInput1 ">일정 이름</label>
-                                    <input type="email" class="form-control" id="exampleFormControlInput1"
+                                    <input type="text" class="form-control" name="title" id="exampleFormControlInput1"
                                         placeholder="일정을 입력하세요">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="exampleFormControlTextarea1">일정 내용</label>
-                                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="exampleFormControlInput1 ">일정 장소</label>
-                                    <input type="email" class="form-control" id="exampleFormControlInput1"
-                                        placeholder="장소를 입력하세요">
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleFormControlSelect1">일정 시작 시간</label>
-                                    <p><input type="time" class="form-control"></p>
-                                    <label for="exampleFormControlSelect1">일정 마감 시간</label>
-                                    <p><input type="time" class="form-control"></p>
+                                    <textarea class="form-control" name="content" id="exampleFormControlTextarea1" rows="3"></textarea>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="example-color-input">Color</label>
-                                    <input class="form-control" type="color" value="#ff0000" id="example-color-input">
+                                    <input class="form-control" type="color" name="color" value="#ff0000" id="example-color-input">
 
                                 </div>
 
                                 <div class="form-group" align="center">
-                                    <button type="button" class="btn btn-info">저장하기</button>
-                                    <button type="button" class="btn btn-light">취소하기</button>
+                                    <button type="submit" class="btn btn-info">저장하기</button>
+                                    <button type="reset" class="btn btn-light">취소하기</button>
                                 </div>
                             </div>
                 </form>
