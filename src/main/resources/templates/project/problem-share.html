@@ -424,11 +424,11 @@
                 //시간 전 작성
                 if(nowSec<60)
                     return "방금전";
-                else if(nowSec<3600){
+                else if(nowSec < 3600){
                     return nowSec/60+"분전";
                 }
                 else if(nowSec < 86400){
-                    return (nowSec/1440).toFixed(0) + "시간전"
+                    return (nowSec/3600).toFixed(0) + "시간전"
                 }
             }else
                 return null;
