@@ -128,9 +128,10 @@
                                     <li class="nav-item">
                                         <a class="nav-link active" id="posts-tab" data-toggle="tab" href="#posts" role="tab" aria-controls="posts" aria-selected="true">글 작성</a>
                                     </li>
-                                    <li class="nav-item">
+                                    <!-- 이후에 기능할 예정인 사진 업로드 기능 -->
+                                    <!-- <li class="nav-item">
                                         <a class="nav-link" id="images-tab" data-toggle="tab" role="tab" aria-controls="images" aria-selected="false" href="#images">사진</a>
-                                    </li>
+                                    </li> -->
                                 </ul>
                             </div>
     
@@ -358,10 +359,9 @@
         
         
         // set problem time
-
         setWriteTimeByClassName("problem-time");
         setWriteTimeByClassName("comment-time");
-        
+
         function setWriteTimeByClassName(className) {
 
             let pt = $("." + className).each(function() {
@@ -381,11 +381,8 @@
             
             
         });
-        }
-        
+        };
 
-        
-        
         // time data split  
         function getTime(timeString) {
             let timeData = timeString.split(":");
@@ -428,14 +425,14 @@
                     return nowSec/60+"분전";
                 }
                 else if(nowSec < 86400){
-                    return (nowSec/3600).toFixed(0) + "시간전"
+                    return (nowSec/3600).toFixed(0) + "시간전";
                 }
             }else
                 return null;
             
 
 
-        }
+        };
 
         
 
