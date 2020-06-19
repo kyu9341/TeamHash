@@ -1,5 +1,6 @@
 package kr.co.teamhash.domain.repository;
 
+import kr.co.teamhash.domain.entity.Account;
 import kr.co.teamhash.domain.entity.Notification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,4 +16,6 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
     void removeByAccountIdAndProjectId(Long accountId, Long projectId);
 
     List<Notification> findAllByAccountId(Long accountId);
+
+    long countByAccount(Account account);
 }
