@@ -1,5 +1,8 @@
 package kr.co.teamhash.project.calendar;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,7 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import kr.co.teamhash.account.CurrentUser;
 import kr.co.teamhash.domain.entity.Account;
+import kr.co.teamhash.domain.entity.Project;
 import kr.co.teamhash.domain.entity.Schedule;
+import kr.co.teamhash.domain.entity.ScheduleDTO;
 import kr.co.teamhash.project.ProjectService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 public class CalendarController {
 
     private final ProjectService projectService;
-    
+    private final CalendarService calendarService;
     // 캘린더
     @GetMapping("/project/{nickname}/{title}/calendar")
     public String calendar(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
@@ -27,6 +32,19 @@ public class CalendarController {
         
         // nickname과 projectTitle로 projectId 찾기
         Long projectId = projectService.getProjectId(nickname, title);
+        
+        // schedule DTO 변환
+        Project thisProject = projectService.getProject(projectId).get();
+        List<Schedule> schedules = thisProject.getSchedules();
+        List<ScheduleDTO> scheduleDTO = new ArrayList<ScheduleDTO>();
+
+        for (Schedule schedule : schedules) {
+            scheduleDTO.add(new ScheduleDTO(schedule.getDate(),
+                                schedule.getTitle(),
+                                schedule.getContent(),
+                                schedule.getColor()));
+        }
+
 
         // nickname과 projectTitle에 맞는 프로젝트가 없을 때
         if(projectId == null)
@@ -40,8 +58,8 @@ public class CalendarController {
         model.addAttribute("isMember", isMember);
         model.addAttribute("projectId", projectId);
         model.addAttribute("title", title);
-        
         model.addAttribute("account", account);
+        model.addAttribute("schedules", scheduleDTO);
 
         return "project/calendar";
     }
@@ -56,6 +74,7 @@ public class CalendarController {
         // nickname과 projectTitle로 projectId 찾기
         Long projectId = projectService.getProjectId(nickname, title);
 
+        calendarService.saveNewSchedule(schedule, account, projectId);
         
         System.out.println(schedule.toString());
 
@@ -65,7 +84,6 @@ public class CalendarController {
         model.addAttribute("account", account);                                    
         return "redirect:/project/"+nickname+"/"+title+"/calendar";                   
 
-        // return "project/calendar";
     }
 
 }

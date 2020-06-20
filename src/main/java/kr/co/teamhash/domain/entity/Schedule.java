@@ -4,7 +4,6 @@ package kr.co.teamhash.domain.entity;
 
 import lombok.*;
 
-import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -42,11 +41,4 @@ public class Schedule {
 
     private String color;
 
-	@Override
-	public String toString() {
-		return "Schedule [color=" + color + ", content=" + content + ", date=" + date + ", id=" + id + ", title="
-				+ title + "]";
-	}
-
-    
 }

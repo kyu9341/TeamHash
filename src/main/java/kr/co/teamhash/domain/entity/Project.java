@@ -33,6 +33,7 @@ public class Project {
     @OneToMany(mappedBy = "project")
     private List<ProjectMember> members = new ArrayList<>();
 
+    // @OneToMany(mappedBy = "project", targetEntity=Schedule.class)
     @OneToMany(mappedBy = "project")
     private List<Schedule> schedules = new ArrayList<>();
 

@@ -58,16 +58,50 @@
                 if($("#"+i).attr("bgcolor") == "#ffb6c1"){
                     $("#"+i).css('background-color','#ffb6c1');
                     $("#"+i).css('color','#000000');
+                    $("#"+i).hover(
+                        function() {
+                            
+                            $(this).css('background','#747474');
+                            $(this).css('color','#ffffff');
+                        },
+                        function() {
+                            $(this).css('background-color','#ffb6c1');
+                            $(this).css('color','#000000');
+                        }
+                    );
                 }
                 else{
                     $("#"+i).css('background-color','#ffffff');
                     $("#"+i).css('color','#000000');
+                    $("#"+i).hover(
+                        function() {
+                            $(this).css('background','#747474');
+                            $(this).css('color','#ffffff');
+                        },
+                        function() {
+                            $(this).css('background-color','#ffffff');
+                            $(this).css('color','#000000');
+                        }
+                    );
             
                 }
             }
-            
             $("#"+onday).css('background-color','#007bff');
             $("#"+onday).css('color','#ffffff');
+            $("#"+onday).hover(
+                function() {
+                            
+                    $(this).css('background','#747474');
+                    $(this).css('color','#ffffff');
+                },
+                function() {
+                    $(this).css('background-color','#007bff');
+                    $(this).css('color','#ffffff');
+                }
+            )
+            
+         
+            
 
             ym = onYM.replace(/[^0-9]/g, '0'); //날짜만 추출
             y = ym.substring(0, 4); //년 쪼개기
@@ -190,8 +224,15 @@
         }
 
 
+    </script>
+    <script th:inline="javascript">
+    
+        let schedules = /*[[${schedules}]]*/ 'default';
 
-
+        $(function() {
+            console.log(schedules);
+            
+        })
 
     </script>
 
@@ -263,7 +304,7 @@
                                         <small class="text-muted">약속시간</small>
 
                                     </div>
-                                    <p class="mb-1">일정 내용asdasdasdasd</p>
+                                    <p class="mb-1">일정 내용</p>
                                     <!--<small class="text-muted">Donec id elit non mi porta.</small>-->
                                     <button type="button" class="close" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
