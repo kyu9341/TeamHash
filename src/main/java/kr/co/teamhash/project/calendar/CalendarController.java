@@ -3,11 +3,12 @@ package kr.co.teamhash.project.calendar;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import kr.co.teamhash.account.CurrentUser;
 import kr.co.teamhash.domain.entity.Account;
@@ -90,25 +91,25 @@ public class CalendarController {
 
     // 스케줄 삭제
     @PostMapping("/project/{nickname}/{title}/calendar/delete")
-    public String deleteSchedule(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
-                    Model model,  @CurrentUser Account account, Long scheduleId){
-
-        System.out.println(scheduleId);
-        calendarService.deleteSchedule(scheduleId);
-
+    @ResponseBody
+    public ResponseEntity deleteSchedule(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
+                                         Model model, @CurrentUser Account account, @RequestBody CalendarForm calendarForm) {
+        Long scheduleId = calendarForm.getScheduleId();
+        log.info("scheduleId : " + scheduleId);
         // nickname과 projectTitle로 projectId 찾기
         Long projectId = projectService.getProjectId(nickname, title);
 
+        if (projectId == null) {
+            return ResponseEntity.badRequest().build();
+        }
 
         System.out.println(scheduleId);
         calendarService.deleteSchedule(scheduleId);
 
-
         model.addAttribute("projectId", projectId);
         model.addAttribute("title", title);
-        
-        model.addAttribute("account", account);      
-        return "redirect:/project/"+nickname+"/"+title+"/calendar";     
+        model.addAttribute("account", account);
+        return ResponseEntity.ok().build();
     }
    
 

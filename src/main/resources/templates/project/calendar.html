@@ -53,7 +53,15 @@
 
    }
     </style>
-
+<!--    <script type="application/javascript" th:inline="javascript">-->
+<!--        $(function () { // csrf 토큰 추가하여 요청-->
+<!--            let csrfToken = /*[[${_csrf.token}]]*/ null;-->
+<!--            let csrfHeader = /*[[${_csrf.headerName}]]*/ null;-->
+<!--            $(document).ajaxSend(function (e, xhr, options) {-->
+<!--                xhr.setRequestHeader(csrfHeader, csrfToken);-->
+<!--            });-->
+<!--        });-->
+<!--    </script>-->
     <script type="text/javascript"  th:inline="javascript">
         var today = new Date();//오늘 날짜//내 컴퓨터 로컬을 기준으로 today에 Date 객체를 넣어줌
         var date = new Date();//today의 Date를 세어주는 역할
@@ -173,23 +181,40 @@
         function deleteSchedule(scheduleId) {
             console.log(scheduleId);
             let targetUrl = window.location.pathname + '/delete';
-            
+            let csrfToken = /*[[${_csrf.token}]]*/ null;
+            let csrfHeader = /*[[${_csrf.headerName}]]*/ null;
             console.log('['+targetUrl+']');
-            
-            
-            let form = document.createElement('form');
-            
-            form.setAttribute('action',targetUrl);
-            form.setAttribute('method','post');
 
-            let hiddenField = document.createElement('input');
-            hiddenField.setAttribute('type','hidden');
-            hiddenField.setAttribute('name','scheduleId');
-            hiddenField.setAttribute('value',scheduleId);
-            form.appendChild(hiddenField);
+            let xhr = new XMLHttpRequest();
+            let data = {
+                scheduleId : scheduleId
+            };
 
-            document.body.appendChild(form);
-            form.submit();
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    location.reload();
+                } else {
+                    console.error(xhr.responseText);
+                }
+            };
+            xhr.open('POST', targetUrl);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.setRequestHeader(csrfHeader, csrfToken);
+            xhr.send(JSON.stringify(data));
+            
+            // let form = document.createElement('form');
+            //
+            // form.setAttribute('action',targetUrl);
+            // form.setAttribute('method','post');
+            //
+            // let hiddenField = document.createElement('input');
+            // hiddenField.setAttribute('type','hidden');
+            // hiddenField.setAttribute('name','scheduleId');
+            // hiddenField.setAttribute('value',scheduleId);
+            // form.appendChild(hiddenField);
+            //
+            // document.body.appendChild(form);
+            // form.submit();
 
         }
 
