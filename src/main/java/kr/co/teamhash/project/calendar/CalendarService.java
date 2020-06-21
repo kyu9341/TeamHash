@@ -35,4 +35,10 @@ public class CalendarService {
         scheduleRepository.save(schedule);
     }
 
+    //스케줄 삭제
+    public void deleteSchedule(Long scheduleId){
+
+        scheduleRepository.deleteById(scheduleId);
+    }
+
 }

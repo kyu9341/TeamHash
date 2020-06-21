@@ -7,6 +7,8 @@ import lombok.*;
 @Getter @Setter  @AllArgsConstructor @NoArgsConstructor
 public class ScheduleDTO {
 
+    private Long id;
+    
     private String date;
 
     private String title;

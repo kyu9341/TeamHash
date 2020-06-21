@@ -39,7 +39,8 @@ public class CalendarController {
         List<ScheduleDTO> scheduleDTO = new ArrayList<ScheduleDTO>();
 
         for (Schedule schedule : schedules) {
-            scheduleDTO.add(new ScheduleDTO(schedule.getDate(),
+            scheduleDTO.add(new ScheduleDTO(schedule.getId(),
+                                schedule.getDate(),
                                 schedule.getTitle(),
                                 schedule.getContent(),
                                 schedule.getColor()));
@@ -64,8 +65,9 @@ public class CalendarController {
         return "project/calendar";
     }
 
+
     // 스케줄 생성
-    @PostMapping("/project/{nickname}/{title}/calendar/schedule")
+    @PostMapping("/project/{nickname}/{title}/calendar/make")
     public String makeSchedule(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
                                 Model model,  @CurrentUser Account account, Schedule schedule){
          
@@ -85,5 +87,29 @@ public class CalendarController {
         return "redirect:/project/"+nickname+"/"+title+"/calendar";                   
 
     }
+
+    // 스케줄 삭제
+    @PostMapping("/project/{nickname}/{title}/calendar/delete")
+    public String deleteSchedule(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
+                    Model model,  @CurrentUser Account account, Long scheduleId){
+
+        System.out.println(scheduleId);
+        calendarService.deleteSchedule(scheduleId);
+
+        // nickname과 projectTitle로 projectId 찾기
+        Long projectId = projectService.getProjectId(nickname, title);
+
+
+        System.out.println(scheduleId);
+        calendarService.deleteSchedule(scheduleId);
+
+
+        model.addAttribute("projectId", projectId);
+        model.addAttribute("title", title);
+        
+        model.addAttribute("account", account);      
+        return "redirect:/project/"+nickname+"/"+title+"/calendar";     
+    }
+   
 
 }

@@ -25,6 +25,7 @@ public class ChatService {
         chatRepository.save(chat);
     }
 
+    
     //채팅 목록 가져오기
     @Transactional
     public List<Chat> getChatList(Long projectId){

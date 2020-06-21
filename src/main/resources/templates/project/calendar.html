@@ -148,7 +148,7 @@
                                      '<div class="d-flex w-100 justify-content-between"> <h5 class="mb-1"> ' +
                                         '<span class="today-schedule-dot" style="background-color:'+schedule.color + '"></span> ' 
                                         + schedule.title + '</h5></div><p class="mb-1">' + schedule.content + '</p>' +
-                                    '<button type="button" class="close" aria-label="Close">' +
+                                    '<button type="button" class="close" aria-label="Close" onclick="deleteSchedule('+ schedule.id +')">' +
                                         '<span aria-hidden="true">&times;</span> </button></a>'
                 }
             });                            
@@ -170,6 +170,28 @@
             
         }
 
+        function deleteSchedule(scheduleId) {
+            console.log(scheduleId);
+            let targetUrl = window.location.pathname + '/delete';
+            
+            console.log('['+targetUrl+']');
+            
+            
+            let form = document.createElement('form');
+            
+            form.setAttribute('action',targetUrl);
+            form.setAttribute('method','post');
+
+            let hiddenField = document.createElement('input');
+            hiddenField.setAttribute('type','hidden');
+            hiddenField.setAttribute('name','scheduleId');
+            hiddenField.setAttribute('value',scheduleId);
+            form.appendChild(hiddenField);
+
+            document.body.appendChild(form);
+            form.submit();
+
+        }
 
 
         function prevCalendar() {//이전 달
@@ -287,10 +309,12 @@
                     }
                 });
 
-                // 다른 태그에 문자가 붙는 기현상 발생
+                // // 다른 태그에 문자가 붙는 기현상 발생
                 // if (scheduleCnt > 4) {
-                //     let plusText = document.createTextNode('+'+(scheduleCnt-4));
-                //     divTag.appendChild(plusText);
+                //     let plusTextTag = document.createElement('span');
+                //     let plusTextTagtext = document.createTextNode('test');
+                //     plusTextTag.appendChild(plusTextTagtext);
+                //     divTag.appendChild(plusTextTag);
                 // }
                 cell.appendChild(divTag);
 
@@ -344,7 +368,7 @@
 
 
             <div class="col-4">
-                <form class="card mt-3" action="#" th:action="@{'/project/'+${nickname}+'/'+${title}+'/calendar/schedule'}" method="post">
+                <form class="card mt-3" action="#" th:action="@{'/project/'+${nickname}+'/'+${title}+'/calendar/make'}" method="post">
                     <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
 
                         <li class="nav-item mt-3">
@@ -370,42 +394,6 @@
                                     </label>
                                 </li>
 
-                                <a href="#" class="list-group-item list-group-item-action">
-                                    <div class="d-flex w-100 justify-content-between">
-                                        <h5 class="mb-1">일정이름</h5>
-                                        <!-- <small class="text-muted">약속시간</small> -->
-
-                                    </div>
-                                    <p class="mb-1">일정 내용</p>
-                                    <!--<small class="text-muted">Donec id elit non mi porta.</small>-->
-                                    <button type="button" class="close" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </a>
-                                <a href="#" class="list-group-item list-group-item-action">
-                                    <div class="d-flex w-100 justify-content-between">
-                                        <h5 class="mb-1">일정이름</h5>
-                                        <!-- <small class="text-muted">약속시간</small> -->
-
-                                    </div>
-                                    <p class="mb-1">일정 내용</p>
-                                    <!--<small class="text-muted">Donec id elit non mi porta.</small>-->
-                                    <button type="button" class="close" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </a>
-                                <a href="#" class="list-group-item list-group-item-action">
-                                    <div class="d-flex w-100 justify-content-between">
-                                        <h5 class="mb-1">일정이름</h5>
-                                        <!-- <small class="text-muted">약속시간</small> -->
-
-                                    </div>
-                                    <p class="mb-1">일정 내용</p>
-                                    <!--<small class="text-muted">Donec id elit non mi porta.</small>-->
-                                    <button type="button" class="close" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </a>
                             </ul>
                           
                         </div>
