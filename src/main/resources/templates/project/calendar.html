@@ -39,7 +39,7 @@
    }
     </style>
 
-    <script type="text/javascript">
+    <script type="text/javascript"  th:inline="javascript">
         var today = new Date();//오늘 날짜//내 컴퓨터 로컬을 기준으로 today에 Date 객체를 넣어줌
         var date = new Date();//today의 Date를 세어주는 역할
         var clickday = null;
@@ -47,12 +47,18 @@
         var tod, toy = null;// 오늘날짜 
 
 
-        
+        let schedules = /*[[${schedules}]]*/ 'default';
+
+        $(function() {
+            console.log(schedules);
+            
+        })
 
         function makeEvent(onday, onYM) {//날짜를 누르면 이벤트를 만들어주는 함수
             var ym;//년월
             var y, m, d;
 
+            
             // click color change
             for(let i = 1 ; i < 32 ; i++){
                 if($("#"+i).attr("bgcolor") == "#ffb6c1"){
@@ -100,19 +106,46 @@
                 }
             )
             
-         
-            
 
             ym = onYM.replace(/[^0-9]/g, '0'); //날짜만 추출
             y = ym.substring(0, 4); //년 쪼개기
             m = ym.substring(5, 7); //달 쪼개기
-            console.log("this day : "+onday);
-            
             if (onday.length == 1) { //일 쪼개기
                 d = '0' + onday;
             }
             else d = onday;
 
+
+            console.log("this day : " + y + '-' + m + '-' + d);
+
+
+            //일정 테그 헤더
+            let $scheduleHeadTag = $('<li class="list-group-item">' +
+                                    '<label id="schedule">' +
+                                    '일 일정</label></li>');
+
+            let scheduleBody = '';
+            // 선택한 날짜의 일정을 검색한다.
+            // 나중에 color 적용할 것                            
+            schedules.forEach(schedule => {
+                if (schedule.date == (y + '-' + m + '-' + d)) {
+                    scheduleBody += '<a href="#" class="list-group-item list-group-item-action">' + 
+                                     '<div class="d-flex w-100 justify-content-between">' +
+                                        '<h5 class="mb-1">' + schedule.title + '</h5></div>' +
+                                    '<p class="mb-1">' + schedule.content + '</p>' +
+                                    '<button type="button" class="close" aria-label="Close">' +
+                                        '<span aria-hidden="true">&times;</span> </button></a>'
+                }
+            });                            
+
+            let $scheduleBodyTag = $(scheduleBody);
+
+            $("#today-schedule").empty();
+            $("#today-schedule").append($scheduleHeadTag);
+            $("#today-schedule").append($scheduleBodyTag);
+
+
+            
             clickday = document.getElementById('date-input');
             clickday.value = y + '-' + m + '-' + d; //value 전달
 
@@ -225,16 +258,7 @@
 
 
     </script>
-    <script th:inline="javascript">
     
-        let schedules = /*[[${schedules}]]*/ 'default';
-
-        $(function() {
-            console.log(schedules);
-            
-        })
-
-    </script>
 
 
     <div class="container">
@@ -291,17 +315,17 @@
                     <div class="tab-content" id="pills-tabContent">
                         <div class="tab-pane fade show active" id="pills-home" role="tabpanel"
                             aria-labelledby="pills-home-tab">
-                            <ul class="list-group list-group-flush">
+                            <ul class="list-group list-group-flush" id="today-schedule">
                                 <li class="list-group-item">
                                     <label id="schedule">
-
-                                    </label>일 일정
+                                        일 일정
+                                    </label>
                                 </li>
 
                                 <a href="#" class="list-group-item list-group-item-action">
                                     <div class="d-flex w-100 justify-content-between">
                                         <h5 class="mb-1">일정이름</h5>
-                                        <small class="text-muted">약속시간</small>
+                                        <!-- <small class="text-muted">약속시간</small> -->
 
                                     </div>
                                     <p class="mb-1">일정 내용</p>
@@ -310,8 +334,32 @@
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </a>
+                                <a href="#" class="list-group-item list-group-item-action">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h5 class="mb-1">일정이름</h5>
+                                        <!-- <small class="text-muted">약속시간</small> -->
 
+                                    </div>
+                                    <p class="mb-1">일정 내용</p>
+                                    <!--<small class="text-muted">Donec id elit non mi porta.</small>-->
+                                    <button type="button" class="close" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </a>
+                                <a href="#" class="list-group-item list-group-item-action">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h5 class="mb-1">일정이름</h5>
+                                        <!-- <small class="text-muted">약속시간</small> -->
+
+                                    </div>
+                                    <p class="mb-1">일정 내용</p>
+                                    <!--<small class="text-muted">Donec id elit non mi porta.</small>-->
+                                    <button type="button" class="close" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </a>
                             </ul>
+                          
                         </div>
 
 
