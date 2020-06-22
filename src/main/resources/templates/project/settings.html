@@ -16,7 +16,7 @@
             <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                 <a class="nav-link active" id="v-pills-intro-tab" data-toggle="pill" href="#v-pills-profile"
                    role="tab" aria-controls="v-pills-home" aria-selected="true">프로젝트 정보</a>
-                <a class="nav-link" id="v-pills-project-tab" data-toggle="pill" href="#v-pills-project" role="tab"
+                <a th:if="${#authentication.name == project.builderNick}" class="nav-link" id="v-pills-project-tab" data-toggle="pill" href="#v-pills-project" role="tab"
                    aria-controls="v-pills-project" aria-selected="false">멤버 초대</a>
             </div>
         </div>
@@ -62,9 +62,15 @@
                                     <img th:if="${!#strings.isEmpty(member.account?.profileImage)}"
                                          th:src="${member.account.profileImage}"
                                          width="36" height="36" class="rounded border"> <span class="member-list" id="member-list" th:text="${member.account.nickname}"></span>
-                                         <button type="button" class="close" aria-label="Close">
+                                    <form th:if="${#authentication.name != member.account.nickname}" style="display: inline-block; float: right; "
+                                          th:action="@{'/project/' + ${project.builderNick} + '/' + ${project.title} + '/settings/remove/member'}"
+                                          method="post">
+                                        <input hidden name="removeMember" th:value="${member.account.nickname}">
+                                        <button type="submit" class="close" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
-                                          </button>
+                                        </button>
+                                    </form>
+
                                 </a>
 
                             </ul>

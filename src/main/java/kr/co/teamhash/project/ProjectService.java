@@ -120,4 +120,9 @@ public class ProjectService {
         project.setDescription(description);
         projectRepository.save(project);
     }
+
+    public void removeMember(Long projectId, String removeMember) {
+        Account account = accountRepository.findByNickname(removeMember);
+        memberRepository.removeByAccountIdAndProjectId(account.getId(), projectId);
+    }
 }

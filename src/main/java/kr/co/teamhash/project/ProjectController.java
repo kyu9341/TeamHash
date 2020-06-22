@@ -315,6 +315,7 @@ public class ProjectController {
 
         model.addAttribute(account);
         model.addAttribute("members", members);
+        model.addAttribute(project);
 
         List<String> userList = accountRepository.findAll().stream().map(Account::getNickname).collect(Collectors.toList());
         model.addAttribute("whitelist", objectMapper.writeValueAsString(userList));
@@ -348,7 +349,7 @@ public class ProjectController {
 
     @PostMapping("/project/{nickname}/{title}/settings/remove")
     @ResponseBody
-    public ResponseEntity removeMember(@RequestBody MemberForm memberForm, @PathVariable("title") String title,
+    public ResponseEntity removeNotification(@RequestBody MemberForm memberForm, @PathVariable("title") String title,
                                        @PathVariable("nickname") String builderNick, Model model) {
         String memberNickname = memberForm.getMemberNickname();
         if (memberNickname == null) {
@@ -359,6 +360,17 @@ public class ProjectController {
         return ResponseEntity.ok().build();
     }
 
- 
+    @PostMapping("/project/{nickname}/{title}/settings/remove/member")
+    public String removeMember(@PathVariable("title") String title, @PathVariable("nickname") String nickname, String removeMember,
+                               @CurrentUser Account account, Model model) {
+
+        Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
+        if (project == null) {
+            return "project/settings";
+        }
+        projectService.removeMember(project.getId(), removeMember);
+
+        return "project/project-main";
+    }
 
 }
