@@ -5,6 +5,82 @@
 <head th:replace="fragments.html :: head">
 
 </head>
+<style>
+.files input {
+    outline: 2px dashed #92b0b3;
+    outline-offset: -10px;
+    -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
+    transition: outline-offset .15s ease-in-out, background-color .15s linear;
+    padding: 120px 0px 85px 35%;
+    text-align: center !important;
+    margin: 0;
+    width: 100% !important;
+}
+.files input:focus{     outline: 2px dashed #92b0b3;  outline-offset: -10px;
+    -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
+    transition: outline-offset .15s ease-in-out, background-color .15s linear; border:1px solid #92b0b3;
+ }
+.files{ position:relative}
+.files:after {  pointer-events: none;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 50px;
+    right: 0;
+    height: 56px;
+    content: "";
+    background-image: url(https://image.flaticon.com/icons/png/128/109/109612.png);
+    display: block;
+    margin: 0 auto;
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+.files:before {
+    position: absolute;
+    bottom: 10px;
+    left: 0;  pointer-events: none;
+    width: 100%;
+    right: 0;
+    height: 57px;
+    content: " or drag it here. ";
+    display: block;
+    margin: 0 auto;
+    color: #2ea591;
+    font-weight: 600;
+    text-transform: capitalize;
+    text-align: center;
+}
+
+
+
+.custab{
+    border: 1px solid #ccc;
+    padding: 5px;
+    margin: 5% 0;
+    box-shadow: 3px 3px 2px #ccc;
+    transition: 0.5s;
+    }
+.custab:hover{
+    box-shadow: 3px 3px 0px transparent;
+    transition: 0.5s;
+    }
+
+.fa{
+	font-size: 40px;
+}
+
+td{
+	text-overflow: ellipsis;
+	
+}
+.action{
+	font-size: 15px;
+
+}
+.btn{
+	width: 100px;
+}
+</style>
 
 
 <body>
@@ -14,40 +90,188 @@
     <nav th:replace="fragments.html :: project-nav(currentProject='document')"></nav>
 
 
-	<div th:if="${message}">
-		<h2 th:text="${message}">
-	</div>
+
 
 	<div class="container">
-		<div class="row justify-content-center pt-3">
-
+		<div class="row justify-content-center">
+		  <div class="col-md-6">
 			<form method="POST" enctype="multipart/form-data" action="#"
-				  th:action="@{'/project/'+${nickname}+'/'+${title}+'/cloud/upload'}">
-				<table>
-					<tr>
-						<td class="alert alert-primary">File to upload:</td>
-						<td><input class="alert alert-secondary" type="file" name="file"/></td>
-					</tr>
-					<tr>
-						<td></td>
-						<td><input class="btn alert-info" type="submit" value="Upload"/></td>
-					</tr>
-				</table>
-			</form>
+			th:action="@{'/project/'+${nickname}+'/'+${title}+'/cloud/upload'}">
+			   
+				  
+				  
+				  
+				  <div class="form-group files">
+					<input type="file" name="file" class="form-control" multiple="" required>
+					
+				  </div>
+				  <div align="right">
+					<input class="btn btn-primary btn-xs pull-right" type="submit" value="Upload"/>
+				  </div>
+				  
+			  </form>
+			  
+			  
+	
 		</div>
-
-		<div class="row justify-content-center pt-3">
-			<ul class="list-group">
-				<!-- 파일이름, 업로더, 업로드 날짜, 파일유형에 맞는 아이콘 추가 -->
-				<li th:each="file : ${fileList}" class="list-group-item">
-					<a th:href="@{'/project/'+${nickname}+'/'+${title}+'/cloud/download/'+${file.id}}" th:text="${file.fileName}">
-				</li>
-			</ul>
-		</div>
-
 	</div>
 
+	
+	
 
+	<div class="row justify-content-center pt-3">
+		<div class="row col-md-6 col-md-offset-2 custyle">
+		<table class="table table-striped custab">
+			<thead>
+			
+				<tr>
+					<th></th>
+					<th>Type</th>
+					<th>File name</th>
+					<th>Upload Date</th>
+					<th class="text-center">Action</th>
+				</tr>
+			</thead>
+			<tr th:each="file : ${fileList}">
+				<td></td>
+				<td><i th:id="${'icon.'+file.id}" class="fa fa-file-word-o" aria-hidden="true"></i></td>
+				<td th:text="${file.fileName}"></td>
+				<td class="upload-date" th:text="${file.uploadDate}"></td>
+				<input th:id="${'ft.'+file.id}" class="file-type" type="hidden" th:value="${file.fileType}">
+				<td class="text-center">
+					<a class='btn btn-info btn-xs' th:href="@{'/project/'+${nickname}+'/'+${title}+'/cloud/download/'+${file.id}}">
+					<i class="fa fa-download action" aria-hidden="true"></i> Down </a>
+					<form action="#" method="post"
+					th:action="@{'/project/'+${nickname}+'/'+${title}+'/cloud/delete'}" >
+						<input type="hidden" name="fileId" th:value="${file.id}"  >
+						<button class="btn btn-danger btn-xs" type="submit">
+							<i class="fa fa-trash-o action" aria-hidden="true"></i> Del </a>
+						</button>
+						
+					</form>
+				</td>
+			</tr>
+
+		</table>
+		</div>
+	</div>
+
+<script>
+
+	setWriteTimeByClassName("upload-date");
+	chnageFileTypeIcon();
+
+	// 파일의 형식과 id값을 태그에 넣어둔 뒤 꺼내서 맞는 아이콘 할당
+	function chnageFileTypeIcon() {
+		let fileTypeList = document.getElementsByClassName("file-type");
+	
+		
+		// 파일의 형식을 비교한 뒤 그에 맞는 아이콘 할당
+		for(let i = 0 ; i < fileTypeList.length ; i++){
+			// 아이콘에 접근할 id값 추출
+			let id = fileTypeList[i].id.split('.')[1];
+			let fileType = fileTypeList[i].value;
+			console.log(id);
+			console.log(fileType);
+
+			let iconClass = 'fa ';
+			
+			if(fileType.split('/')[0] === 'text'){
+				iconClass += 'fa-file-text-o';
+			}
+			else if(fileType.split('/')[0] === 'image'){
+				iconClass += 'fa-file-image-o';
+			}
+			else if(fileType.split('/')[0] === 'video'){
+				iconClass += 'fa-file-video-o';
+			}
+			else if(fileType.split('/')[0] == 'application'){
+
+				if(fileType.split('/')[1] == 'pdf'){
+					iconClass += 'fa-file-pdf-o';
+				}
+				else if(fileType.split('/')[1] == 'vnd.openxmlformats-officedocument.wordprocessingml.document'){
+					// word
+					iconClass += 'fa-file-word-o';
+				}
+				else if(fileType.split('/')[1] == 'vnd.openxmlformats-officedocument.presentationml.presentation'){
+					// ppt
+					iconClass += 'fa-file-powerpoint-o';
+				}
+				else if(fileType.split('/')[1] == 'vnd.openxmlformats-officedocument.spreadsheetml.sheet'){
+					// excel
+					iconClass += 'fa-file-excel-o';
+				}
+				else{
+					iconClass += 'fa-file-o';
+				}
+			}
+			else{
+				iconClass += 'fa-file-o';
+			}
+
+
+			// 추출한 id값으로 targetIcon에 접근 후 class 할당
+			let targetIcon = document.getElementById('icon.'+id);
+			targetIcon.setAttribute('class',iconClass);
+			
+		}
+	}
+
+
+	function setWriteTimeByClassName(className) {
+
+		let pt = $("." + className).each(function() {
+		let problemTime = new Date($(this).text());
+		let timeGap = getTimeGap(problemTime);
+
+		if(timeGap == null){
+			$(this).text(" " + problemTime.getFullYear()+'.' +
+				(problemTime.getMonth()+1) + '.' +
+				problemTime.getDate());
+		}
+		else{
+			$(this).text(" " + timeGap);
+		}
+		
+		
+	});
+	};
+
+
+	// how many times from write day
+	function getTimeGap(timeData) {
+		
+		
+		let nowTimeData = new Date();
+		let nowSec = 0;
+		let problemSec = 0;
+		if(nowTimeData.getFullYear == timeData.getFullYear && nowTimeData.getMonth() == timeData.getMonth()){
+			nowSec += nowTimeData.getMinutes()*60;
+			nowSec += nowTimeData.getHours()*60*60;
+			nowSec += nowTimeData.getDate()*60*60*24;
+
+			nowSec -= timeData.getMinutes()*60;
+			nowSec -= timeData.getHours()*60*60;
+			nowSec -= timeData.getDate()*60*60*24;
+
+			//시간 전 작성
+			if(nowSec<60)
+				return "방금전";
+			else if(nowSec < 3600){
+				return nowSec/60+"분전";
+			}
+			else if(nowSec < 86400){
+				return (nowSec/3600).toFixed(0) + "시간전";
+			}
+		}else
+			return null;
+		
+
+
+	};
+
+</script>
 </body>
 
 

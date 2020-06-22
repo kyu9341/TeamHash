@@ -45,6 +45,11 @@ public class UploadFileService{
         }
     }
 
+    public void deleteFile(Long fileId){
+
+        uploadFileRepository.deleteById(fileId);
+
+    }
 
     // 템플릿에 파일 리스트를 출력해주기 위한 매서드
     // 해당 프로젝트의 리스트만 출력해야 하기 때문에 projectId를 매개변수로 받는다.

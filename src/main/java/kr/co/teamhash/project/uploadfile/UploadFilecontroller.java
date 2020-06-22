@@ -65,8 +65,24 @@ public class UploadFilecontroller {
         Long projectId = projectService.getProjectId(nickname, title);
 
         uploadFileService.storeFile(file,projectId,account);
-		redirectAttributes.addFlashAttribute("message",
-				"You successfully uploaded " + file.getOriginalFilename() + "!");
+		// redirectAttributes.addFlashAttribute("message",
+		// 		"You successfully uploaded " + file.getOriginalFilename() + "!");
+
+       return "redirect:/project/"+nickname+"/"+title+"/cloud";
+    }
+    
+    // file delete
+	@PostMapping("/project/{nickname}/{title}/cloud/delete")
+    public String deleteFile(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
+                 @CurrentUser Account account, Long fileId) {
+
+        // nickname과 projectTitle로 projectId 찾기
+        Long projectId = projectService.getProjectId(nickname, title);
+        
+        System.out.println("delete file : " + fileId);
+        uploadFileService.deleteFile(fileId);
+		// redirectAttributes.addFlashAttribute("message",
+		// 		"You successfully uploaded " + file.getOriginalFilename() + "!");
 
        return "redirect:/project/"+nickname+"/"+title+"/cloud";
 	}
