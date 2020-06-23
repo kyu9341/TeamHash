@@ -26,6 +26,8 @@ public class Project {
     //프로젝트를 생성한 유저의 id를 넣을 것
     private Long builder;
 
+    private Integer progress = 0;
+
     @Lob
     @Basic(fetch = FetchType.EAGER)
     private String description;

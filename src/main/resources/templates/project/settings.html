@@ -25,7 +25,20 @@
             <div class="tab-content" id="v-pills-tabContent">
                 <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel"
                      aria-labelledby="v-pills-home-tab">
-                    프로젝트 정보
+                    <form  id="needs-validation" class="form-inline needs-validation mb-3" th:object="${progressForm}"
+                          th:action="@{'/project/' + ${nickname} + '/' + ${title} + '/settings/progress'}" method="post" novalidate>
+                        <label for="progressInput">진행률 : </label>
+                        <input id="progressInput" th:field="*{progress}" name="progress" type="text" class="form-control ml-2" placeholder="(%)" style="display: inline;"
+                               th:value="${project.progress}" required maxlength="3">
+                        <button type="submit" class="btn btn-primary ml-2">설정</button>
+                    <small class="form-text text-danger" th:if="${error}" th:text="${error}">progress
+                        Error</small>
+                    </form>
+                    <div id="progress-div" class="progress">
+                        <div class="progress-bar progress-bar-striped" id="progress" th:text="${project.progress}+'%'" role="progressbar" aria-valuenow="1"
+                             style="width: 0%;" aria-valuemin="0" aria-valuemax="100">
+                        </div>
+                    </div>
                 </div>
                 <div class="tab-pane fade" id="v-pills-project" role="tabpanel"
                      aria-labelledby="v-pills-profile-tab">
@@ -81,7 +94,7 @@
         </div>
     </div>
 
-
+    <script th:replace="fragments.html :: form-validation"></script>
     <footer th:replace="fragments.html :: footer"></footer>
     <script src="/node_modules/@yaireo/tagify/dist/tagify.min.js"></script>
     <script type="application/javascript" th:inline="javascript">
@@ -94,6 +107,15 @@
         });
     </script>
     <script type="application/javascript" th:inline="javascript">
+        window.addEventListener('load', function () {
+            let progress = document.getElementById('progress');
+            let progressGroup = document.getElementById('progress-div');
+            let progressPer = progress.textContent;
+            progressGroup.style.display = "block";
+            setTimeout(function () {
+                progress.style.width = progressPer;
+            }, 100);
+        });
 
         $(function () {
             /*<![CDATA[*/

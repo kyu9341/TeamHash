@@ -8,8 +8,10 @@ import kr.co.teamhash.domain.repository.MemberRepository;
 import kr.co.teamhash.domain.repository.ProjectRepository;
 import kr.co.teamhash.notification.NotificationService;
 import kr.co.teamhash.project.form.MemberForm;
+import kr.co.teamhash.project.form.ProgressForm;
 import kr.co.teamhash.project.form.ProjectBuildForm;
 import kr.co.teamhash.project.validator.MemberValidator;
+import kr.co.teamhash.project.validator.ProgressValidator;
 import kr.co.teamhash.project.validator.ProjectBuildValidator;
 import lombok.RequiredArgsConstructor;
 
@@ -44,6 +46,7 @@ public class ProjectController {
     private final NotificationService notificationService;
     private final MemberValidator memberValidator;
     private final ObjectMapper objectMapper;
+    private final ProgressValidator progressValidator;
 
     @InitBinder("projectBuildForm")
     public void projectInitBinder(WebDataBinder webDataBinder) {
@@ -53,6 +56,11 @@ public class ProjectController {
     @InitBinder("memberForm")
     public void memberInitBinder(WebDataBinder webDataBinder) {
         webDataBinder.addValidators(memberValidator);
+    }
+
+    @InitBinder("progressForm")
+    public void progressInitBinder(WebDataBinder webDataBinder) {
+        webDataBinder.addValidators(progressValidator);
     }
 
     //메인으로 이동
@@ -316,6 +324,7 @@ public class ProjectController {
         model.addAttribute(account);
         model.addAttribute("members", members);
         model.addAttribute(project);
+        model.addAttribute("progressForm", new ProgressForm());
 
         List<String> userList = accountRepository.findAll().stream().map(Account::getNickname).collect(Collectors.toList());
         model.addAttribute("whitelist", objectMapper.writeValueAsString(userList));
@@ -371,6 +380,19 @@ public class ProjectController {
         projectService.removeMember(project.getId(), removeMember);
 
         return "project/project-main";
+    }
+
+    @PostMapping("/project/{nickname}/{title}/settings/progress")
+    public String setProgress(@PathVariable("title") String title, @PathVariable("nickname") String nickname,
+                              @Valid @ModelAttribute ProgressForm progressForm, Errors errors, @CurrentUser Account account, Model model) {
+
+        if (errors.hasErrors()) {
+            model.addAttribute("error", "0 ~ 100의 값만 입력하세요.");
+            return "redirect:/project/" + nickname + "/" + title + "/settings/";
+        }
+        Integer progress = Integer.parseInt(progressForm.getProgress());
+        projectService.updateProgress(title, nickname, progress);
+        return "redirect:/project/" + nickname + "/" + title + "/settings/";
     }
 
 }

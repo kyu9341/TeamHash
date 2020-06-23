@@ -125,4 +125,10 @@ public class ProjectService {
         Account account = accountRepository.findByNickname(removeMember);
         memberRepository.removeByAccountIdAndProjectId(account.getId(), projectId);
     }
+
+    public void updateProgress(String title, String nickname, Integer progressPer) {
+        Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
+        project.setProgress(progressPer);
+        projectRepository.save(project);
+    }
 }
