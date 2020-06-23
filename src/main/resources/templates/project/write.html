@@ -15,42 +15,48 @@
 <!-- 멤버 표시 -->
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-sm-6 col-md-8">
+        <div class="col-1"></div>
+            <div class="col-10 col-sm-6 col-md-8">
 
-            <!-- no project projectMember -->
-            <div th:if="${!isMember}">
-                your not project projectMember
-            </div>
+                <!-- no project projectMember -->
+                <div th:if="${!isMember}">
+                    your not project projectMember
+                </div>
 
-            <!-- project projectMember  -->
-            <div th:if="${isMember}">
-                <form class="needs-validation col-sm-10" th:action="@{'/project/'+${nickname}+'/'+${title}+'/write'}" method="post"
-                      novalidate>
-                    <div class="form-group">
-                        <label for="description">상세 소개</label>
-                        <textarea id="description" type="textarea" name="description" th:utext="${project.description}" class="editor form-control"
-                                  placeholder="프로젝트를 설명해주세요." aria-describedby="descriptionHelp" required></textarea>
-                        <small id="fullDescriptionHelp" class="form-text text-muted">
-                            프로젝트를 설명해주세요.
-                        </small>
-                        <small class="invalid-feedback">상세 소개를 입력하세요.</small>
+                <!-- project projectMember  -->
+                <div th:if="${isMember}">
+                    <form class="needs-validation col-sm-10"
+                          th:action="@{'/project/'+${nickname}+'/'+${title}+'/write'}" method="post"
+                          novalidate>
+                        <div class="form-group mt-3">
+                            <label for="description"></label>
+                            <textarea id="description" type="textarea" name="description"
+                                      th:utext="${project.description}" class="editor form-control"
+                                      placeholder="프로젝트를 설명해주세요." aria-describedby="descriptionHelp"
+                                      required></textarea>
+                            <small id="fullDescriptionHelp" class="form-text text-muted">
+                                프로젝트를 설명해주세요.
+                            </small>
+                            <small class="invalid-feedback">상세 소개를 입력하세요.</small>
+                        </div>
 
-                    </div>
+                        <div class="form-group">
+                            <button class="btn alert-primary btn-block" th:if="${project.description == null}"
+                                    type="submit"
+                                    aria-describedby="submitHelp">작성하기
+                            </button>
+                            <button class="btn alert-primary btn-block" th:if="${project.description != null}"
+                                    type="submit"
+                                    aria-describedby="submitHelp">수정하기
+                            </button>
+                        </div>
+                    </form>
 
-                    <div class="form-group">
-                        <button class="btn alert-primary btn-block" th:if="${project.description == null}" type="submit"
-                                aria-describedby="submitHelp">작성하기
-                        </button>
-                        <button class="btn alert-primary btn-block" th:if="${project.description != null}" type="submit"
-                                aria-describedby="submitHelp">수정하기
-                        </button>
-                    </div>
-                </form>
 
-
+                </div>
             </div>
         </div>
-    </div>
+    <div class="col-1"></div>
 </div>
 <script th:replace="fragments.html :: form-validation"></script>
 <script src="/node_modules/summernote/dist/summernote-bs4.js"></script>
