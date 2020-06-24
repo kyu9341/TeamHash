@@ -73,7 +73,7 @@ public class CalendarController {
                                 Model model,  @CurrentUser Account account, Schedule schedule){
          
 
-
+        
         // nickname과 projectTitle로 projectId 찾기
         Long projectId = projectService.getProjectId(nickname, title);
 

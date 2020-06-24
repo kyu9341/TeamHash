@@ -26,13 +26,22 @@ public class CalendarService {
     //스케줄 저장
     public void saveNewSchedule(Schedule schedule, Account account, Long projectId ){
         
-        Project project = projectRepository.findById(projectId).get();
-        schedule.setProject(project);
-        schedule.getProject().getSchedules().add(schedule);
+        // null data check
+        if(schedule.getTitle().length() < 1 || schedule.getDate().length() < 1 || schedule.getColor().length() < 1){
+            System.out.println("no data");
+        }
+        else{
+            
+            Project project = projectRepository.findById(projectId).get();
+            schedule.setProject(project);
+            schedule.getProject().getSchedules().add(schedule);
+    
+            
+            
+            scheduleRepository.save(schedule);
+        }
 
         
-        
-        scheduleRepository.save(schedule);
     }
 
     //스케줄 삭제
