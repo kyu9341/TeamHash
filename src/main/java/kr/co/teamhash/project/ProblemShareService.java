@@ -52,13 +52,29 @@ public class ProblemShareService {
     }
 
     // 문제 공유 글 삭제
-    public void deleteProblem(Long problemId){
-        //문제 공유 글 삭제시 해당 글에 있는 
+    public void deleteProblem(Long problemId, Account currentUser){
+        // 문제 공유 글 삭제시 해당 글에 있는 
         // 코멘트를 모두 제거해야 한다.
-        for (Comment comment : this.getProblem(problemId).getComments()) {
-            this.deleteComment(comment.getId());
+
+        // 해당 글을 작성한 유저인지 확인
+        if(!problemsRepository.findById(problemId).get().
+                getWriterId().getId().equals(currentUser.getId())){
+            System.out.println("writer : " + problemsRepository.findById(problemId).get().
+            getWriterId().getId());
+            System.out.println("current : " + currentUser.getId());
+            System.out.println("not your problem post");
         }
-        problemsRepository.deleteById(problemId);
+        else{
+            System.out.println("writer : " + 
+                    problemsRepository.findById(problemId).get().getWriterId().getId());
+            System.out.println("current : " + currentUser.getId());
+            System.out.println("your post! delete problem");
+            for (Comment comment : this.getProblem(problemId).getComments()) {
+                this.deleteComment(comment.getId(), comment.getWriterId());
+            }
+            problemsRepository.deleteById(problemId);
+        }
+        
     }
 
 
@@ -81,7 +97,17 @@ public class ProblemShareService {
     }
 
     //코멘트 삭제
-    public void deleteComment(Long commentId){
-        commentRepository.deleteById(commentId);
+    public void deleteComment(Long commentId, Account currentUser){
+
+        if(!commentRepository.findById(commentId).get().getWriterId().
+                getId().equals(currentUser.getId())){
+
+            System.out.println("not your comment");
+        }else{
+            System.out.println("your comment");
+            commentRepository.deleteById(commentId);
+        }
+
+        
     }
 }
