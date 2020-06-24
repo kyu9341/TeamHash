@@ -28,11 +28,11 @@
                     <form  id="needs-validation" class="form-inline needs-validation mb-3" th:object="${progressForm}"
                           th:action="@{'/project/' + ${nickname} + '/' + ${title} + '/settings/progress'}" method="post" novalidate>
                         <label for="progressInput">진행률 : </label>
-                        <input id="progressInput" th:field="*{progress}" name="progress" type="text" class="form-control ml-2" placeholder="(%)" style="display: inline;"
-                               th:value="${project.progress}" required maxlength="3">
+                        <input id="progressInput" th:field="*{progress}" name="progress" type="number" class="form-control ml-2" placeholder="(%)" style="display: inline;"
+                              min="0" max="100" th:value="${project.progress}" required maxlength="3">
                         <button type="submit" class="btn btn-primary ml-2">설정</button>
-                    <small class="form-text text-danger" th:if="${error}" th:text="${error}">progress
-                        Error</small>
+                        <small class="invalid-feedback ml-3">0 ~ 100 사이의 숫자만 입력하세요.</small>
+
                     </form>
                     <div id="progress-div" class="progress">
                         <div class="progress-bar progress-bar-striped" id="progress" th:text="${project.progress}+'%'" role="progressbar" aria-valuenow="1"
