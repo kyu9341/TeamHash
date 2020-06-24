@@ -67,7 +67,9 @@
     margin-left: 50px;
     }
 
-
+    .comment-delete-btn{
+        border: 0px;
+    }
 
 </style>
 
@@ -216,10 +218,11 @@
                                     <!-- <a th:href="@{'edit/'+ ${problem.id}}">
                                         <button>수정</button>
                                     </a> -->
-
-                                    <form id="delete-form" th:action="@{'/project/'+${nickname}+'/'+${title}+'/problem-share/' + ${problem.id}}" method="post">
+                                    
+                                    <form id="delete-form" th:action="@{'/project/'+${nickname}+'/'+${title}+'/problem-share/' + ${problem.id}}" 
+                                        method="post" th:if="${#authentication.name == problem.writerId.nickname}">
                                         <input type="hidden" name="_method" value="delete"/>
-                                        <button id="delete-btn" class="btn btn-outline-danger">삭제</button>
+                                        <button class="btn btn-outline-danger post-delete-btn">삭제</button>
                                     </form>
                                 </div>
 
@@ -271,9 +274,10 @@
                                 <li class="comment" >
 
 
-                                    <form id="delete-form" th:action="@{'/project/'+${nickname}+'/'+${title}+'/problem-share/comment/' + ${comment.id}}" method="post">
+                                    <form id="delete-form" th:action="@{'/project/'+${nickname}+'/'+${title}+'/problem-share/comment/' + ${comment.id}}"
+                                        th:if="${#authentication.name == comment.writerId.nickname}" method="post">
                                         <input type="hidden" name="_method" value="delete"/>
-                                        <button id="delete-btn" class="btn btn-outline-danger pull-right">
+                                        <button class="btn btn-outline-danger pull-right comment-delete-btn">
                                             <i class="fa fa-times" aria-hidden="true"></i>
                                         </button>
                                     </form>
@@ -309,40 +313,7 @@
                             </ul>
                         </div>
                     </div>
-                    <!-- Post /////-->
-                   
-
-        <!-- <a th:href="@{'/project/'+${nickname}+'/'+${title}+'/problem-share/post'}">글쓰기</a>
-
-
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th scope="col">글제목</th>
-                    <th scope="col">작성자</th>
-                    <th scope="col">작성일</th>
-                </tr>
-
-            </thead>
-
-
-            <tbody>
-                <tr th:each="problem : ${problemList}">
-                    <td>
-                        <a th:href="@{'/project/'+${nickname}+'/'+${title}+'/problem-share/' + ${problem.id}}">
-                            <span th:text="${problem.title}"></span>
-                        </a>
-                    </td>
-                    <td>
-                        <span th:text="${problem.writer}"></span>
-                    </td>
-                    <td>
-                        <span th:text="${#temporals.format(problem.createdDate, 'yyyy-MM-dd HH:mm')}"></span>
-                        </td>
-    
-                    </tr>
-                </tbody>
-            </table> -->
+              
  
 
     </div>

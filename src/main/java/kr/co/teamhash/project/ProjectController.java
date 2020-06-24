@@ -280,11 +280,11 @@ public class ProjectController {
         model.addAttribute("title", title);
 
         model.addAttribute("nickname", nickname);
-        problemShareService.deleteProblem(problemId);
+        problemShareService.deleteProblem(problemId,account);
 
         return "redirect:/project/"+nickname+"/"+title+"/problem-share";
     }
-    //문제 공유글 삭제
+    //코멘트 삭제
     @DeleteMapping("/project/{nickname}/{title}/problem-share/comment/{commentId}")
     public String commentDelete(@PathVariable("nickname") String nickname, @PathVariable("title")
             String title,@PathVariable("commentId") Long commentId, @CurrentUser Account account, Model model){
@@ -307,7 +307,7 @@ public class ProjectController {
         model.addAttribute("title", title);
 
         model.addAttribute("nickname", nickname);
-        problemShareService.deleteComment(commentId);
+        problemShareService.deleteComment(commentId,account);
 
         return "redirect:/project/"+nickname+"/"+title+"/problem-share";
     }
