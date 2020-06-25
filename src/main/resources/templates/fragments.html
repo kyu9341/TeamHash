@@ -21,15 +21,19 @@
             border-radius: 0;
             background-color: #FFFFFF;
         }
-        /* Add a gray background color and some padding to the footer */
-        footer {
-            padding-top: 10%;
-            background-color: #FFFFFF;
-            padding: 25px;
+
+        html,body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
         }
+
          .container{
              max-width: 100%;
+             position: relative;
+             min-height: 100%;
          }
+        
 
 
         .tagify--outside{
@@ -53,16 +57,18 @@
 
         /* footer */
 
-                /* Footer */
-        @import url('https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
-  
-
+   
+        .row{
+            margin-left: 0px;
+            margin-right: 0px;
+        }
         .container-fluid{
             padding: 0%;
             height: 0px;
         }
+
         .icon-list{
-            margin-top: 0px;
+            margin-top: 10px;
         }
         section .section-title {
             text-align: center;
@@ -71,7 +77,15 @@
             text-transform: uppercase;
         }
         #footer {
-            background: #007b5e !important;
+            background: #0f4c81 !important;
+            margin-top: 10%;
+            position: relative; 
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            
+            
         }
         #footer h5{
             padding-left: 10px;
@@ -304,11 +318,11 @@
 
 
 <footer th:fragment="footer" class="container-fluid text-center">
-     
+
 	<section id="footer">
 		
 			<div class="row">
-				<div class="col-xs-12 col-sm-12 col-md-12 mt-2 mt-sm-5 icon-list">
+				<div class="col-xs-12 col-sm-12 col-md-12 icon-list">
 					<ul class="list-unstyled list-inline social text-center">
 						<li class="list-inline-item"><a href="javascript:void();"><i class="fa fa-facebook"></i></a></li>
 						<li class="list-inline-item"><a href="javascript:void();"><i class="fa fa-twitter"></i></a></li>
