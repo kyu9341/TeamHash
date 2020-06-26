@@ -55,8 +55,291 @@
         margin: 20px;
     }
 
+
+
+    /* calendar */
+    .today-schedule-dot {
+        height: 15px;
+        width: 15px;
+        border-radius: 50%;
+        display: inline-block;
+    }
+    .month-schedule-dot {
+        height: 8px;
+        width: 8px;
+        border-radius: 50%;
+        display: inline-block;
+        margin: 1px;
+    }
+    td {
+
+        width: 100px;
+        height: 70px;
+        text-align: center;
+        font-size: 15px;
+        color: black;
+    }
+    td:hover{               
+
+        background:rgb(116, 116, 116); 
+        color:#fff;  
+    }
+    .calendar-box{
+        background-color: white;
+  
+    }
+
+    /* calendar Event */
+    .schedule-box{
+        border: crimson;
+        color: black;
+    }
     </style>
 
+    <script type="text/javascript"  th:inline="javascript" >
+        var today = new Date();//오늘 날짜//내 컴퓨터 로컬을 기준으로 today에 Date 객체를 넣어줌
+        var date = new Date();//today의 Date를 세어주는 역할
+        var clickday = null;
+        var schedule = null;//오늘의 일정
+        var tod, toy = null;// 오늘날짜 
+
+
+        let schedules = /*[[${schedules}]]*/ 'default';
+
+        $(function() {
+            console.log(schedules);
+            
+        })
+
+        function makeEvent(onday, onYM) {//날짜를 누르면 이벤트를 만들어주는 함수
+            var ym;//년월
+            var y, m, d;
+
+            
+            // click color change
+            for(let i = 1 ; i < 32 ; i++){
+                if($("#"+i).attr("bgcolor") == "#ffb6c1"){
+                    $("#"+i).css('background-color','#ffb6c1');
+                    $("#"+i).css('color','#000000');
+                    $("#"+i).hover(
+                        function() {
+                            
+                            $(this).css('background','#747474');
+                            $(this).css('color','#ffffff');
+                        },
+                        function() {
+                            $(this).css('background-color','#ffb6c1');
+                            $(this).css('color','#000000');
+                        }
+                    );
+                }
+                else{
+                    $("#"+i).css('background-color','#ffffff');
+                    $("#"+i).css('color','#000000');
+                    $("#"+i).hover(
+                        function() {
+                            $(this).css('background','#747474');
+                            $(this).css('color','#ffffff');
+                        },
+                        function() {
+                            $(this).css('background-color','#ffffff');
+                            $(this).css('color','#000000');
+                        }
+                    );
+            
+                }
+            }
+            $("#"+onday).css('background-color','#007bff');
+            $("#"+onday).css('color','#ffffff');
+            $("#"+onday).hover(
+                function() {
+                            
+                    $(this).css('background','#747474');
+                    $(this).css('color','#ffffff');
+                },
+                function() {
+                    $(this).css('background-color','#007bff');
+                    $(this).css('color','#ffffff');
+                }
+            )
+            
+
+            ym = onYM.replace(/[^0-9]/g, '0'); //날짜만 추출
+            y = ym.substring(0, 4); //년 쪼개기
+            m = ym.substring(5, 7); //달 쪼개기
+            if (onday.length == 1) { //일 쪼개기
+                d = '0' + onday;
+            }
+            else d = onday;
+
+
+            console.log("this day : " + y + '-' + m + '-' + d);
+
+
+            //일정 테그 헤더
+            let $scheduleHeadTag = $('<li class="list-group-item">' +
+                                    '<label id="schedule">' +
+                                    '일 일정</label></li>');
+
+            let scheduleBody = '';
+            // 선택한 날짜의 일정을 검색한다.
+            // 나중에 color 적용할 것                            
+            schedules.forEach(schedule => {
+                if (schedule.date == (y + '-' + m + '-' + d)) {
+                    scheduleBody += '<a href="#" class="list-group-item list-group-item-action">' + 
+                                     '<div class="d-flex w-100 justify-content-between"> <h5 class="mb-1"> ' +
+                                        '<span class="today-schedule-dot" style="background-color:'+schedule.color + '"></span> ' 
+                                        + schedule.title + '</h5></div><p class="mb-1">' + schedule.content + '</p>'
+                }
+            });                            
+
+            let $scheduleBodyTag = $(scheduleBody);
+
+            $("#today-schedule").empty();
+            $("#today-schedule").append($scheduleHeadTag);
+            $("#today-schedule").append($scheduleBodyTag);
+
+
+
+            //오늘의 일정 바꾸기
+            document.getElementById('schedule').innerHTML = onYM + onday;
+
+            
+        }
+
+    
+
+
+        function prevCalendar() {//이전 달
+            // 이전 달을 today에 값을 저장하고 달력에 today를 넣어줌
+            //today.getFullYear() 현재 년도//today.getMonth() 월  //today.getDate() 일 
+            //getMonth()는 현재 달을 받아 오므로 이전달을 출력하려면 -1을 해줘야함
+            today = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate());
+            buildCalendar(); //달력 cell 만들어 출력 
+        }
+
+        function nextCalendar() {//다음 달
+            // 다음 달을 today에 값을 저장하고 달력에 today 넣어줌
+            //today.getFullYear() 현재 년도//today.getMonth() 월  //today.getDate() 일 
+            //getMonth()는 현재 달을 받아 오므로 다음달을 출력하려면 +1을 해줘야함
+            today = new Date(today.getFullYear(), today.getMonth() + 1, today.getDate());
+            buildCalendar();//달력 cell 만들어 출력
+        }
+        function buildCalendar() {//현재 달 달력 만들기
+            var doMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+            //이번 달의 첫째 날,
+            //new를 쓰는 이유 : new를 쓰면 이번달의 로컬 월을 정확하게 받아온다.     
+            //new를 쓰지 않았을때 이번달을 받아오려면 +1을 해줘야한다. 
+            //왜냐면 getMonth()는 0~11을 반환하기 때문
+            var lastDate = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+            //이번 달의 마지막 날
+            //new를 써주면 정확한 월을 가져옴, getMonth()+1을 해주면 다음달로 넘어가는데
+            //day를 1부터 시작하는게 아니라 0부터 시작하기 때문에 
+            //대로 된 다음달 시작일(1일)은 못가져오고 1 전인 0, 즉 전달 마지막일 을 가져오게 된다
+            var tbCalendar = document.getElementById("calendar");
+            //날짜를 찍을 테이블 변수 만듬, 일 까지 다 찍힘
+            var tbCalendarYM = document.getElementById("tbCalendarYM");
+            //테이블에 정확한 날짜 찍는 변수
+            //innerHTML : js 언어를 HTML의 권장 표준 언어로 바꾼다
+            //new를 찍지 않아서 month는 +1을 더해줘야 한다. 
+            tbCalendarYM.innerHTML = today.getFullYear() + "년 " + (today.getMonth() + 1) + "월";
+            
+            let year = today.getFullYear();
+                let month = (today.getMonth() + 1) < 10 ? '0' + (today.getMonth() + 1) : (today.getMonth() + 1);
+
+            console.log( year+ '-' + month + '-');
+            
+            
+            /*while은 이번달이 끝나면 다음달로 넘겨주는 역할*/
+            while (tbCalendar.rows.length > 2) {
+                //열을 지워줌
+                //기본 열 크기는 body 부분에서 2로 고정되어 있다.
+                tbCalendar.deleteRow(tbCalendar.rows.length - 1);
+                //테이블의 tr 갯수 만큼의 열 묶음은 -1칸 해줘야지 
+                //30일 이후로 담을달에 순서대로 열이 계속 이어진다.
+            }
+            var row = null;
+            row = tbCalendar.insertRow();
+            //테이블에 새로운 열 삽입//즉, 초기화
+            var cnt = 0;// count, 셀의 갯수를 세어주는 역할
+            // 1일이 시작되는 칸을 맞추어 줌
+            for (i = 0; i < doMonth.getDay(); i++) {
+                /*이번달의 day만큼 돌림*/
+                cell = row.insertCell();//열 한칸한칸 계속 만들어주는 역할
+                cnt = cnt + 1;//열의 갯수를 계속 다음으로 위치하게 해주는 역할
+            }
+
+            /*달력 출력*/
+            for (i = 1; i <= lastDate.getDate(); i++) {
+                //1일부터 마지막 일까지 돌림
+                cell = row.insertCell();//열 한칸한칸 계속 만들어주는 역할
+                cell.innerHTML = i;//셀을 1부터 마지막 day까지 HTML 문법에 넣어줌
+                cnt = cnt + 1;//열의 갯수를 계속 다음으로 위치하게 해주는 역할
+
+
+
+
+                if (cnt % 7 == 1) {/*일요일 계산*/
+                    //1주일이 7일 이므로 일요일 구하기
+                    //월화수목금토일을 7로 나눴을때 나머지가 1이면 cnt가 1번째에 위치함을 의미한다
+                    cell.innerHTML = "<font color=#DB4455>" + i
+                    //1번째의 cell에만 색칠
+                }
+                if (cnt % 7 == 0) {/* 1주일이 7일 이므로 토요일 구하기*/
+                    //월화수목금토일을 7로 나눴을때 나머지가 0이면 cnt가 7번째에 위치함을 의미한다
+                    cell.innerHTML = "<font color=#0f4c81>" + i
+                    //7번째의 cell에만 색칠
+                    row = calendar.insertRow();
+                    //토요일 다음에 올 셀을 추가
+                }
+                /*오늘의 날짜에 노란색 칠하기*/
+                if (today.getFullYear() == date.getFullYear()
+                    && today.getMonth() == date.getMonth()
+                    && i == date.getDate()) {
+                    //달력에 있는 년,달과 내 컴퓨터의 로컬 년,달이 같고, 일이 오늘의 일과 같으면
+                    cell.bgColor = "#ffb6c1";//셀의 배경색을 핑크로 
+                    
+                    tod = cell.innerText;
+                    
+                }
+            
+                cell.setAttribute('id',i);
+                cell.setAttribute('onclick', 'makeEvent(innerText,tbCalendarYM.innerText)'); //날짜 클릭이벤트
+
+                // 일정 dot 추가
+                // 해당 날짜에 해당하는 일정을 검색해서 태그를 추가한다.
+                let divTag = document.createElement('div');
+                let scheduleCnt = 0;
+                let day = i < 10 ? '0' + i : i;
+                schedules.forEach(schedule => {
+                    if(schedule.date == ( year+ '-' + month + '-' + day )){
+                        scheduleCnt++;
+                        if(scheduleCnt < 5){
+                            let scheduleDot = document.createElement('span');
+                            scheduleDot.setAttribute('class','month-schedule-dot');
+                            scheduleDot.setAttribute('style','background-color: '+schedule.color);
+                            divTag.appendChild(scheduleDot);
+                        }
+                        
+                        
+                    }
+                });
+
+ 
+                cell.appendChild(divTag);
+
+            }
+            toy = tbCalendarYM.innerText + tod;
+            console.log(toy);
+            $(function () {
+                $('#schedule').text(toy);
+            });
+
+
+        }
+
+
+    </script>
     <body>
 
     <nav th:replace="fragments.html :: main-nav"></nav>
@@ -71,38 +354,103 @@
         <div class="container" th:if="${account != null && account.emailVerified}">
             <div class="row mt-5 justify-content-center">
 
-                <div class="col-2">
+                <div class="col-3">
                     <!--Avatar-->
-                    <svg th:if="${#strings.isEmpty(account.profileImage)}"
-                         class="img-fluid float-left rounded img-thumbnail"
-                         th:data-jdenticon-value="${account.nickname}" width="90%" height="200"></svg>
-                    <img th:if="${!#strings.isEmpty(account.profileImage)}"
-                         class="img-fluid float-left rounded img-thumbnail"
-                         th:src="${account.profileImage}" style="width:90%;"/>
-
+                    <div class="row">
+                        <svg th:if="${#strings.isEmpty(account.profileImage)}"
+                            class="img-fluid float-left rounded img-thumbnail"
+                            th:data-jdenticon-value="${account.nickname}" width="90%" height="200"></svg>
+                        <img th:if="${!#strings.isEmpty(account.profileImage)}"
+                                class="img-fluid float-left rounded img-thumbnail"
+                                th:src="${account.profileImage}" style="width:90%;"/>
+                    </div>
+                    <div class="row">
+                        
+                        <p class="lead" th:text="${account.nickname}">Nickname</p>
+                        <p class="lead" th:if="${!#strings.isEmpty(account.introduction)}"
+                           th:text="${account.introduction}">introduction</p>
+                        <p class="lead" th:if="${#strings.isEmpty(account.introduction)}">
+                            한 줄 소개를 해주세요.
+                        </p>
+                        
+                    </div>
+                    <div class="row">
+                        <div class="col align-self-center">
+                            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#project-modal">
+                                프로젝트 생성
+                              </button>
+                        </div>
+                        
+                    </div>
+                         
+                  
 
                 </div>
 
-                <div class="col-8">
-
+                <div class="col-7 calendar-box">
+                  
+                   <div class="row">
+                    <div class="col-8">
+                        <div class="mt-3 mb-3">
+                        
+                            <table id="calendar" border="1" align="center" style="border-color:#b2b2b2">
+                                <tr>
+                                    <!-- label은 마우스로 클릭을 편하게 해줌 -->
+                                    <td onclick="prevCalendar()"><label >
+                                            < </label>
+                                    </td>
+                                    <td align="center" id="tbCalendarYM" colspan="5"></td>
+                                    <!--년월-->
+                                    <td  onclick="nextCalendar()"><label> > </label></td>
+                                </tr>
+                                <tr>
+                                    <td align="centers">
+                                        <font color="#DB4455">일
+                                    </td>
+                                    <td align="center">월</td>
+                                    <td align="center">화</td>
+                                    <td align="center">수</td>
+                                    <td align="center">목</td>
+                                    <td align="center">금</td>
+                                    <td align="center">
+                                        <font color="0f4c81">토
+                                    </td>
+                                </tr>
+                            </table>
+                            <script language="javascript" type="text/javascript">
+                                buildCalendar();
+                            </script>
+                        </div>
+                    </div>
+                    <!-- calendar event -->
+                    <div class="col-4 schedule-box" >
+                        <div class="tab-content" id="pills-tabContent">
+                            <div class="tab-pane fade show active" id="pills-home" role="tabpanel"
+                                aria-labelledby="pills-home-tab">
+                                <ul class="list-group list-group-flush" id="today-schedule">
+                                    <li class="list-group-item">
+                                        <label id="schedule">
+                                            일 일정
+                                        </label>
+                                    </li>
+    
+                                </ul>
+                              
+                            </div>
+                        </div>
+                    </div>
+                   </div>
+                    
+                   
+                    
+                    
                 </div>
             </div>
             <div class="row mt-3 justify-content-center" style="width:100%;" >
-                <div class="col-2">
-                    <p class="lead" th:text="${account.nickname}">Nickname</p>
-                    <p class="lead" th:if="${!#strings.isEmpty(account.introduction)}"
-                       th:text="${account.introduction}">introduction</p>
-                    <p class="lead" th:if="${#strings.isEmpty(account.introduction)}">
-                        한 줄 소개를 해주세요.
-                    </p>
-                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#project-modal">
-                        프로젝트 생성
-                      </button>
-                     <!-- <div th:object="${projectBuildForm}" >
-                      <small class="form-text text-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title Error</small>
-                     </div> -->
+                <div class="col-3">
+                    
                 </div>
-                <div class="col-8">
+                <div class="col-7">
 
 
                 </div>

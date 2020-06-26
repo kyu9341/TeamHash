@@ -63,15 +63,7 @@ public class ProjectController {
         webDataBinder.addValidators(progressValidator);
     }
 
-    //메인으로 이동
-//     // 프로젝트 생성 form
-//     @GetMapping("/project/build-project")
-//     public String buildProject(Model model){
-//         model.addAttribute("projectBuildForm", new ProjectBuildForm());
 
-// //        model.addAttribute("nickName", nickName);
-//         return "project/build-project";
-//     }
 
     @PostMapping("/main")
     public String buildProjectDone(@Valid @ModelAttribute ProjectBuildForm projectBuildForm, Errors errors,
