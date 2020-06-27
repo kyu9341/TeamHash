@@ -28,31 +28,31 @@
         display: inline-block;
         margin: 1px;
     }
+    .container{
+	padding-left: 0px;
+	padding-right: 0px;
+}
 </style>
 
+<style type="text/css">
+    td {
+
+        width: 100px;
+        height: 70px;
+        text-align: center;
+        font-size: 15px;
+    }
+    td:hover{               
+
+    background:rgb(116, 116, 116); 
+    color:#fff;                  
+
+}
+</style>
 <body>
-
-
     <nav th:replace="fragments.html :: main-nav"></nav>
-
-
     <nav th:replace="fragments.html :: project-nav(currentProject = 'Calendar')"></nav>
 
-    <style type="text/css">
-        td {
-
-            width: 100px;
-            height: 70px;
-            text-align: center;
-            font-size: 15px;
-        }
-        td:hover{               
-
-        background:rgb(116, 116, 116); 
-        color:#fff;                  
-
-   }
-    </style>
 <!--    <script type="application/javascript" th:inline="javascript">-->
 <!--        $(function () { // csrf 토큰 추가하여 요청-->
 <!--            let csrfToken = /*[[${_csrf.token}]]*/ null;-->
