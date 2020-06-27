@@ -4,7 +4,12 @@
 
 
 <head th:replace="fragments.html :: head"></head>
-
+<style>
+    .container{
+	padding-left: 0px;
+	padding-right: 0px;
+}
+</style>
 <body>
 
 <nav th:replace="fragments.html :: main-nav(currentProject=${title})"></nav>
@@ -93,8 +98,10 @@
             </div>
         </div>
     </div>
+    
 
     <script th:replace="fragments.html :: form-validation"></script>
+    <div class="white-space" style="min-height: 500px"></div>
     <footer th:replace="fragments.html :: footer"></footer>
     <script src="/node_modules/@yaireo/tagify/dist/tagify.min.js"></script>
     <script type="application/javascript" th:inline="javascript">
