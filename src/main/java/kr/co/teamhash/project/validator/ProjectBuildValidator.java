@@ -24,18 +24,14 @@ public class ProjectBuildValidator implements Validator{
         return clazz.isAssignableFrom(ProjectBuildForm.class);
     }
 
-
     @Override
     public void validate(Object target, Errors errors){
         ProjectBuildForm projectBuildForm = (ProjectBuildForm)target;
         log.info("result = " + projectBuildForm.getTitle() + ", " + projectBuildForm.getBuilderNick());
-        List<Project> projectListByBuilderNick = projectRepository.findAllByBuilderNick(projectBuildForm.getBuilderNick());
 
-        for (Project project : projectListByBuilderNick) {
-            if(project.getTitle().equals(projectBuildForm.getTitle())){
-                errors.rejectValue("title", "invalid.title",
-                        new Object[]{projectBuildForm.getTitle()}, "이미 사용중인 프로젝트명 입니다.");
-            }
+        if(projectRepository.existsByTitleAndBuilderNick(projectBuildForm.getTitle(), projectBuildForm.getBuilderNick())){
+            errors.rejectValue("title", "invalid.title",
+                    new Object[]{projectBuildForm.getTitle()}, "이미 사용중인 프로젝트명 입니다.");
         }
     }
 }
