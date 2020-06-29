@@ -3,11 +3,14 @@ package kr.co.teamhash.main;
 import kr.co.teamhash.account.CurrentUser;
 import kr.co.teamhash.domain.entity.Account;
 import kr.co.teamhash.domain.entity.ProjectMember;
+import kr.co.teamhash.domain.entity.Schedule;
+import kr.co.teamhash.domain.entity.ScheduleDTO;
 import kr.co.teamhash.domain.repository.AccountRepository;
 import kr.co.teamhash.project.form.ProjectBuildForm;
 import kr.co.teamhash.project.ProjectService;
 import lombok.RequiredArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -34,8 +37,24 @@ public class MainController {
         if(account != null){
             Account byNickname = accountRepository.findByNickname(account.getNickname());
             List<ProjectMember> projectList = byNickname.getProjects();
+            List<ScheduleDTO> scheduleDTO = new ArrayList<ScheduleDTO>();
+
+            // account가 속해있는 프로젝트에서 모든 스케쥴을 가져온다.
+            for(ProjectMember project : projectList){
+                for (Schedule schedule : project.getProject().getSchedules()) {
+                    scheduleDTO.add(new ScheduleDTO(schedule.getId(),
+                                        schedule.getDate(),
+                                        schedule.getTitle(),
+                                        schedule.getContent(),
+                                        schedule.getColor()));
+                }
+        
+            }
+
+
             model.addAttribute("projectBuildForm", new ProjectBuildForm());
             model.addAttribute("projectList", projectList);
+            model.addAttribute("schedules", scheduleDTO);
             model.addAttribute(account);
 
         }
