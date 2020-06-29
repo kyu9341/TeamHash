@@ -31,8 +31,6 @@
             <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                 <a class="nav-link" th:classappend="${!throughNotification}? active" id="v-pills-intro-tab" data-toggle="pill" href="#v-pills-profile"
                    role="tab" aria-controls="v-pills-home" aria-selected="true">소개</a>
-                <a class="nav-link" id="v-pills-project-tab" data-toggle="pill" href="#v-pills-project"
-                   role="tab" aria-controls="v-pills-project" aria-selected="false">프로젝트</a>
                 <a class="nav-link" th:classappend="${throughNotification}? active" id="v-pills-notification-tab" data-toggle="pill" href="#v-pills-notification"
                    role="tab" aria-controls="v-pills-notification" aria-selected="false">알림</a>
             </div>
@@ -71,9 +69,7 @@
                         <a class="btn btn-outline-primary" href="#" th:href="@{/settings/profile}">프로필 수정</a>
                     </div>
                 </div>
-                <div class="tab-pane fade" id="v-pills-project" role="tabpanel" aria-labelledby="v-pills-project-tab">
-                    Project
-                </div>
+
                 <div class="tab-pane fade" th:classappend="${throughNotification}? 'show active'" id="v-pills-notification" role="tabpanel" aria-labelledby="v-pills-notification-tab">
 
                     <ul class="list-group" th:each="notification : ${notifications}">

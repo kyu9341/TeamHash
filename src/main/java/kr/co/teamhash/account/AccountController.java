@@ -15,6 +15,8 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
 
@@ -137,6 +139,7 @@ public class AccountController {
         return "account/profile";
     }
 
+    // 알림 수락, 거절
     @PostMapping("/profile/{nickname}/accept/{notificationId}")
     public String acceptNotification(@PathVariable("notificationId") Long notificationId, @PathVariable("nickname") String nickname,
                                       @CurrentUser Account account) {
@@ -149,7 +152,7 @@ public class AccountController {
         projectService.saveProjectMember(account.getNickname(), projectTitle, projectBuilder); // 수락한 경우 프로젝트 멤버로 등록
         notificationService.deleteNotification(notificationId); // 해당 알림 제거
 
-        return String.format("redirect:/project/%s/%s", projectBuilder, projectTitle);
+        return String.format("redirect:/project/%s/%s", projectBuilder, URLEncoder.encode(projectTitle, StandardCharsets.UTF_8));
     }
 
     @PostMapping("/profile/{nickname}/reject/{notificationId}")

@@ -2,6 +2,9 @@ package kr.co.teamhash.project.uploadfile;
 
 import java.io.IOException;
 import java.util.List;
+
+import kr.co.teamhash.domain.entity.Project;
+import kr.co.teamhash.domain.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +34,7 @@ public class UploadFilecontroller {
     
     private final UploadFileService uploadFileService;
     private final ProjectService projectService;
+    private final ProjectRepository projectRepository;
 
     // uploadFile main tamplete
     // 현재는 탬플릿만 반환하고 있으며 이후 해당 프로젝트에서 업로드한 파일의 리스트를
@@ -62,13 +66,13 @@ public class UploadFilecontroller {
                 @RequestParam("file") MultipartFile file, @CurrentUser Account account, RedirectAttributes redirectAttributes) {
 
         // nickname과 projectTitle로 projectId 찾기
-        Long projectId = projectService.getProjectId(nickname, title);
+        Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
 
-        uploadFileService.storeFile(file,projectId,account);
+        uploadFileService.storeFile(file, project.getId(), account);
 		// redirectAttributes.addFlashAttribute("message",
 		// 		"You successfully uploaded " + file.getOriginalFilename() + "!");
 
-       return "redirect:/project/"+nickname+"/"+title+"/cloud";
+       return "redirect:/project/" + nickname + "/" + project.getEncodedTitle() + "/cloud";
     }
     
     // file delete
@@ -77,14 +81,14 @@ public class UploadFilecontroller {
                  @CurrentUser Account account, Long fileId) {
 
         // nickname과 projectTitle로 projectId 찾기
-        Long projectId = projectService.getProjectId(nickname, title);
+        Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
         
         System.out.println("delete file : " + fileId);
         uploadFileService.deleteFile(fileId);
 		// redirectAttributes.addFlashAttribute("message",
 		// 		"You successfully uploaded " + file.getOriginalFilename() + "!");
 
-       return "redirect:/project/"+nickname+"/"+title+"/cloud";
+        return "redirect:/project/" + nickname + "/" + project.getEncodedTitle() + "/cloud";
 	}
 
 

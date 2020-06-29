@@ -230,7 +230,7 @@
                 <div class="col-sm-8 ">
                     <nav aria-label="breadcrumb justify-content-center">
                         <ol class="breadcrumb ">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item"><a href="/main">Home</a></li>
                             <li class="breadcrumb-item active" aria-current="page" th:text="${title+' / '+ currentProject}"></li>
                         </ol>
                     </nav>
@@ -311,10 +311,6 @@
        th:href="@{/settings/profile}">프로필</a>
     <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'password'}? active" href="#"
        th:href="@{/settings/password}">패스워드</a>
-    <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'notifications'}? active"
-       href="#" th:href="@{/settings/notifications}">알림</a>
-    <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'project'}? active"
-       href="#" th:href="@{/settings/project}">프로젝트</a>
     <a class="list-group-item list-group-item-action list-group-item-danger"
        th:classappend="${currentMenu == 'account'}? active" href="#" th:href="@{/settings/account}">계정</a>
 </div>

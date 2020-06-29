@@ -4,6 +4,8 @@ package kr.co.teamhash.domain.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,4 +42,8 @@ public class Project {
     private List<Schedule> schedules = new ArrayList<>();
 
     private LocalDateTime buildDate;
+
+    public String getEncodedTitle() {
+        return URLEncoder.encode(this.title, StandardCharsets.UTF_8);
+    }
 }
