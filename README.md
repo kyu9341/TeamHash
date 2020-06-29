@@ -14,3 +14,12 @@
 - VScode, 인텔리J (Spring Boot)
 - mariaDB
 - AWS(호스팅 예정)
+
+## 동작 흐름도
+
+<img src="https://github.com/kyu9341/TeamHash/blob/master/images/hashflow1.png" alt="hashflow1" width="" height=""/>
+
+<img src="https://github.com/kyu9341/TeamHash/blob/master/images/hashflow2.png" alt="hashflow2" width="" height=""/>
+
+<img src="https://github.com/kyu9341/TeamHash/blob/master/images/hashflow3.png" alt="hashflow3" width="" height=""/>
+
