@@ -29,4 +29,4 @@
 <img src="https://github.com/kyu9341/TeamHash/blob/master/images/index2.png" alt="hashflow3" width="" height=""/>
 
 ## main 화면
-<img src="https://github.com/kyu9341/TeamHash/blob/master/images/main.png" alt="hashflow3" width="" height=""/>
+<img src="https://github.com/kyu9341/TeamHash/blob/master/images/main2.png" alt="hashflow3" width="" height=""/>
