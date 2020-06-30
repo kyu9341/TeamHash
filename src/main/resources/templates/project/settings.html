@@ -114,21 +114,31 @@
         });
     </script>
     <script type="application/javascript" th:inline="javascript">
-        window.addEventListener('load', function () {
-            let progress = document.getElementById('progress');
-            let progressGroup = document.getElementById('progress-div');
-            let progressPer = progress.textContent;
-            progressGroup.style.display = "block";
-            setTimeout(function () {
-                progress.style.width = progressPer;
-            }, 100);
-        });
+        // window.addEventListener('load', function () {
+        //     let progress = document.getElementById('progress');
+        //     let progressGroup = document.getElementById('progress-div');
+        //     let progressPer = progress.textContent;
+        //     progressGroup.style.display = "block";
+        //     setTimeout(function () {
+        //         progress.style.width = progressPer;
+        //     }, 100);
+        // });
+
+
+        (function () {
+
+        })();
 
         $(function () {
             /*<![CDATA[*/
             let sentInvitations = /*[[${sentInvitations}]]*/ 'default';
             /*]]>*/
-
+            let progress = document.getElementById('progress');
+            let progressGroup = document.getElementById('progress-div');
+            let progressPer = progress.innerText;
+            progressGroup.style.display = "block";
+            console.log(progress, progressGroup, "inner : ", progressPer);
+            progress.style.width = progressPer;
             let pathname = window.location.pathname; // 현재 경로 읽어오기
 
             function memberRequest(url, memberNickname) {
