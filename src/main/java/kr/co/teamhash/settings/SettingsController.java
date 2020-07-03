@@ -13,15 +13,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 
+import static kr.co.teamhash.settings.SettingsController.ROOT;
+import static kr.co.teamhash.settings.SettingsController.SETTINGS;
+
 @Controller
+@RequestMapping(ROOT + SETTINGS)
 @RequiredArgsConstructor
 public class SettingsController {
 
@@ -44,7 +45,7 @@ public class SettingsController {
         webDataBinder.addValidators(nicknameFormValidator);
     }
 
-    @GetMapping(ROOT + SETTINGS + PROFILE)
+    @GetMapping(PROFILE)
     public String profileUpdateForm(@CurrentUser Account account, Model model){
         model.addAttribute(account);
         model.addAttribute(new Profile(account));
@@ -52,7 +53,7 @@ public class SettingsController {
         return SETTINGS + PROFILE;
     }
 
-    @PostMapping(ROOT + SETTINGS + PROFILE)
+    @PostMapping(PROFILE)
     public String profileUpdateForm(@CurrentUser Account account, @Valid @ModelAttribute Profile profile, Errors errors,
                                     Model model, RedirectAttributes attributes) {
         if (errors.hasErrors()) {
@@ -65,14 +66,14 @@ public class SettingsController {
         return "redirect:/" + SETTINGS + PROFILE;
     }
 
-    @GetMapping(ROOT + SETTINGS + PASSWORD)
+    @GetMapping(PASSWORD)
     public String passwordUpdateForm(@CurrentUser Account account, Model model) {
         model.addAttribute(account);
         model.addAttribute(new PasswordForm());
         return SETTINGS + PASSWORD;
     }
 
-    @PostMapping(ROOT + SETTINGS + PASSWORD)
+    @PostMapping(PASSWORD)
     public String passwordUpdate(@CurrentUser Account account, @Valid @ModelAttribute PasswordForm passwordForm,
                                  Errors errors, Model model, RedirectAttributes attributes) {
         if (errors.hasErrors()) {
@@ -85,14 +86,14 @@ public class SettingsController {
         return "redirect:/" + SETTINGS + PASSWORD;
     }
 
-    @GetMapping(ROOT + SETTINGS + ACCOUNT)
+    @GetMapping(ACCOUNT)
     public String nicknameUpdateForm(@CurrentUser Account account, Model model) {
         model.addAttribute(account);
         model.addAttribute(new NicknameForm(account));
         return SETTINGS + ACCOUNT;
     }
 
-    @PostMapping(ROOT + SETTINGS + ACCOUNT)
+    @PostMapping(ACCOUNT)
     public String nicknameUpdate(@CurrentUser Account account, @Valid @ModelAttribute NicknameForm nicknameForm,
                                  Errors errors, Model model, RedirectAttributes attributes) {
         if (errors.hasErrors()) {
