@@ -22,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
+@RequestMapping("/project/{nickname}/{title}")
 @RequiredArgsConstructor
 public class CalendarController {
 
@@ -30,7 +31,7 @@ public class CalendarController {
     private final ProjectRepository projectRepository;
 
     // 캘린더
-    @GetMapping("/project/{nickname}/{title}/calendar")
+    @GetMapping("/calendar")
     public String calendar(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
                            Model model,  @CurrentUser Account account){
         
@@ -69,7 +70,7 @@ public class CalendarController {
 
 
     // 스케줄 생성
-    @PostMapping("/project/{nickname}/{title}/calendar/make")
+    @PostMapping("/calendar/make")
     public String makeSchedule(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
                                 Model model,  @CurrentUser Account account, Schedule schedule){
         
@@ -88,7 +89,7 @@ public class CalendarController {
     }
 
     // 스케줄 삭제
-    @PostMapping("/project/{nickname}/{title}/calendar/delete")
+    @PostMapping("/calendar/delete")
     @ResponseBody
     public ResponseEntity deleteSchedule(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
                                          Model model, @CurrentUser Account account, @RequestBody CalendarForm calendarForm) {

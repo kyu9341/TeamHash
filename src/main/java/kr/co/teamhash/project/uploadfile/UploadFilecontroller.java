@@ -29,6 +29,7 @@ import kr.co.teamhash.project.uploadfile.exception.StorageFileNotFoundException;
 
 @Slf4j
 @Controller
+@RequestMapping("/project/{nickname}/{title}")
 @RequiredArgsConstructor
 public class UploadFilecontroller {
     
@@ -39,7 +40,7 @@ public class UploadFilecontroller {
     // uploadFile main tamplete
     // 현재는 탬플릿만 반환하고 있으며 이후 해당 프로젝트에서 업로드한 파일의 리스트를
     // a태그에 담아 출력하게 수정할 것
-   @GetMapping("/project/{nickname}/{title}/cloud")
+   @GetMapping("/cloud")
    public String cloud(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
                     Model model,  @CurrentUser Account account) throws IOException {
         
@@ -61,7 +62,7 @@ public class UploadFilecontroller {
 
    // fileupload form에 파일을 올린 뒤 전송하면 해당 위치에서 받아서 DB에 저장
    // 이후에 projectId와 저장하는 사람의 정보도 함께 저장할 것
-	@PostMapping("/project/{nickname}/{title}/cloud/upload")
+	@PostMapping("/cloud/upload")
     public String handleFileUpload(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
                 @RequestParam("file") MultipartFile file, @CurrentUser Account account, RedirectAttributes redirectAttributes) {
 
@@ -76,7 +77,7 @@ public class UploadFilecontroller {
     }
     
     // file delete
-	@PostMapping("/project/{nickname}/{title}/cloud/delete")
+	@PostMapping("/cloud/delete")
     public String deleteFile(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
                  @CurrentUser Account account, Long fileId) {
 
@@ -95,7 +96,7 @@ public class UploadFilecontroller {
     // 파일 다운로드 맵핑
     // 아래의 주소에 get요청을 보내면 파일 다운로드가 제공됨
     // 이후 파일의 리스트를 a태그에 담아 아래의 url을 담게 할 것
-    @GetMapping("/project/{nickname}/{title}/cloud/download/{fileId}")
+    @GetMapping("/cloud/download/{fileId}")
     public ResponseEntity<Resource> downloadFile(@PathVariable("fileId") String fileId) {
         // Load file from database
         

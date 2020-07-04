@@ -61,9 +61,6 @@ public class ProjectController {
     }
 
 
-
-
-
     // 구현해야 하는 것
     // 1. 해당 프로젝트에 맞는 정보 전달
     //      - projectID를 통해 검사 후 없으면 noProject 페이지 반환
@@ -80,6 +77,7 @@ public class ProjectController {
     //      - service에서 projectId로 검색하던 것을 title로 검색하게 수정
     //          - 기존 서비스를 모두 수정하지 않고 userNickName에서
     //            해당 projectTitle의 id를 추출해 보내주는 것으로 수정하자.
+
     @GetMapping("/main")
     public String projectMain(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
                               Model model, @CurrentUser Account account){
