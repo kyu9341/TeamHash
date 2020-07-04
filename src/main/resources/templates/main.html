@@ -439,7 +439,7 @@
                             </div>
                         </div>
                     </div>
-                   </div>
+                </div>
                     
                    
                     
@@ -503,7 +503,7 @@
                 <div class="form-group">
                     <button th:if="${error != null}"  onclick="location.href='/main'" type="submit" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button th:if="${error == null}" type="submit" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" >Save changes</button>
+                    <button type="submit" class="btn btn-primary" >프로젝트 생성</button>
                 </div>
                 </form>
 
@@ -521,7 +521,7 @@
         <div class="card" th:each="project_member : ${projectList}" >
             
             <div class="card-body">
-                <a th:href="@{'/project/' + ${project_member.project.builderNick} + '/' + ${project_member.project.title}}">
+                <a th:href="@{'/project/' + ${project_member.project.builderNick} + '/' + ${project_member.project.title} + '/main'}">
                     <h5 class="card-title"  th:text="${project_member.project.title}"></h5>
                 </a>
                 

@@ -243,7 +243,7 @@
         <ul class="nav nav-tabs  justify-content-center">
             <li class="nav-item">
                 <a class="nav-link" th:classappend="${currentProject == 'project'}? active" 
-                href="#" th:href="@{'/project/'+${nickname}+'/'+${title}}">프로젝트 현황</a>
+                href="#" th:href="@{'/project/'+${nickname}+'/'+${title} + '/main'}">프로젝트 현황</a>
             </li>
 
             <li class="nav-item">

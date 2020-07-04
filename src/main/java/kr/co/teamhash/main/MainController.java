@@ -8,6 +8,7 @@ import kr.co.teamhash.domain.entity.ScheduleDTO;
 import kr.co.teamhash.domain.repository.AccountRepository;
 import kr.co.teamhash.project.form.ProjectBuildForm;
 import kr.co.teamhash.project.ProjectService;
+import kr.co.teamhash.project.validator.ProjectBuildValidator;
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
@@ -15,7 +16,14 @@ import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+
+import javax.validation.Valid;
 
 @Controller
 @RequiredArgsConstructor
@@ -23,6 +31,13 @@ public class MainController {
 
     private final ProjectService projectService;
     private final AccountRepository accountRepository;
+    private final ProjectBuildValidator projectBuildValidator;
+
+    @InitBinder("projectBuildForm")
+    public void projectInitBinder(WebDataBinder webDataBinder) {
+        webDataBinder.addValidators(projectBuildValidator);
+    }
+
 
     @GetMapping("/login")
     public String login(){
@@ -51,7 +66,6 @@ public class MainController {
         
             }
 
-
             model.addAttribute("projectBuildForm", new ProjectBuildForm());
             model.addAttribute("projectList", projectList);
             model.addAttribute("schedules", scheduleDTO);
@@ -59,6 +73,27 @@ public class MainController {
 
         }
         return "main";
+    }
+
+
+    @PostMapping("/main")
+    public String buildProjectDone(@Valid @ModelAttribute ProjectBuildForm projectBuildForm, Errors errors,
+                                   Model model , @CurrentUser Account account , String members ){
+        if (errors.hasErrors()) {
+//            List<Project> projectList = projectService.getProjectList(account);
+            Account byNickname = accountRepository.findByNickname(account.getNickname());
+            List<ProjectMember> projectList = byNickname.getProjects();
+            model.addAttribute("projectBuildForm", new ProjectBuildForm());
+            model.addAttribute("projectList", projectList);
+            model.addAttribute(new ProjectBuildForm());
+            model.addAttribute(account);
+            model.addAttribute("error", "이미 사용중인 프로젝트명 입니다.");
+            return "main";
+        }
+
+        projectService.saveNewProject(projectBuildForm, account);
+        System.out.println(members);
+        return "redirect:/main";
     }
 
 }

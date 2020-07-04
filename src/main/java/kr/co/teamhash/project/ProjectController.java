@@ -36,12 +36,12 @@ import kr.co.teamhash.account.CurrentUser;
 
 @Slf4j
 @Controller
+@RequestMapping("/project/{nickname}/{title}")
 @RequiredArgsConstructor
 public class ProjectController {
 
     private final ProjectService projectService;
     private final ProblemShareService problemShareService;
-    private final ProjectBuildValidator projectBuildValidator;
     private final AccountRepository accountRepository;
     private final MemberRepository memberRepository;
     private final ProjectRepository projectRepository;
@@ -49,11 +49,6 @@ public class ProjectController {
     private final MemberValidator memberValidator;
     private final ObjectMapper objectMapper;
     private final ProgressValidator progressValidator;
-
-    @InitBinder("projectBuildForm")
-    public void projectInitBinder(WebDataBinder webDataBinder) {
-        webDataBinder.addValidators(projectBuildValidator);
-    }
 
     @InitBinder("memberForm")
     public void memberInitBinder(WebDataBinder webDataBinder) {
@@ -67,25 +62,6 @@ public class ProjectController {
 
 
 
-    @PostMapping("/main")
-    public String buildProjectDone(@Valid @ModelAttribute ProjectBuildForm projectBuildForm, Errors errors,
-                                   Model model , @CurrentUser Account account ,String members ){
-        if (errors.hasErrors()) {
-//            List<Project> projectList = projectService.getProjectList(account);
-            Account byNickname = accountRepository.findByNickname(account.getNickname());
-            List<ProjectMember> projectList = byNickname.getProjects();
-            model.addAttribute("projectBuildForm", new ProjectBuildForm());
-            model.addAttribute("projectList", projectList);
-            model.addAttribute(new ProjectBuildForm());
-            model.addAttribute(account);
-            model.addAttribute("error", "이미 사용중인 프로젝트명 입니다.");
-            return "main";
-        }
-
-        projectService.saveNewProject(projectBuildForm, account);
-        System.out.println(members);
-        return "redirect:/main";
-    }
 
 
     // 구현해야 하는 것
@@ -104,7 +80,7 @@ public class ProjectController {
     //      - service에서 projectId로 검색하던 것을 title로 검색하게 수정
     //          - 기존 서비스를 모두 수정하지 않고 userNickName에서
     //            해당 projectTitle의 id를 추출해 보내주는 것으로 수정하자.
-    @GetMapping("/project/{nickname}/{title}")
+    @GetMapping("/main")
     public String projectMain(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
                               Model model, @CurrentUser Account account){
 
@@ -131,7 +107,7 @@ public class ProjectController {
         return "project/project-main";
     }
 
-    @GetMapping("/project/{nickname}/{title}/write")
+    @GetMapping("/write")
     public String projectDescription(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
                                      Model model, @CurrentUser Account account) {
         Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
@@ -144,7 +120,7 @@ public class ProjectController {
         return "project/write";
     }
 
-    @PostMapping("/project/{nickname}/{title}/write")
+    @PostMapping("/write")
     public String projectDescriptionForm(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
                                          String description ,Model model, @CurrentUser Account account) {
         Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
@@ -154,7 +130,7 @@ public class ProjectController {
 
 
     // 문제 공유란 메인 페이지
-    @GetMapping("/project/{nickname}/{title}/problem-share")
+    @GetMapping("/problem-share")
     public String problemShareMain(@PathVariable("nickname") String nickname, @PathVariable("title") String title, Model model,  @CurrentUser Account account){
 
 
@@ -191,7 +167,7 @@ public class ProjectController {
 
 
     // 문제 공유란 글 작성 완료
-    @PostMapping("/project/{nickname}/{title}/problem-share/post")
+    @PostMapping("/problem-share/post")
     public String write(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
                         Model model,  @CurrentUser Account account, Problems problem) {
         
@@ -218,7 +194,7 @@ public class ProjectController {
     }
 
     // 코멘트 작성
-    @PostMapping("/project/{nickname}/{title}/problem-share/comment")
+    @PostMapping("/problem-share/comment")
     public String write(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
                         Model model,  @CurrentUser Account account, Comment comment, Long pId) {
         
@@ -248,7 +224,7 @@ public class ProjectController {
     }
 
     //문제 공유글 삭제
-    @DeleteMapping("/project/{nickname}/{title}/problem-share/{problemId}")
+    @DeleteMapping("/problem-share/{problemId}")
     public String problemDelete(@PathVariable("nickname") String nickname, @PathVariable("title")
             String title,@PathVariable("problemId") Long problemId, @CurrentUser Account account, Model model){
         
@@ -275,7 +251,7 @@ public class ProjectController {
         return "redirect:/project/" + nickname + "/" + project.getEncodedTitle() + "/problem-share";
     }
     //코멘트 삭제
-    @DeleteMapping("/project/{nickname}/{title}/problem-share/comment/{commentId}")
+    @DeleteMapping("/problem-share/comment/{commentId}")
     public String commentDelete(@PathVariable("nickname") String nickname, @PathVariable("title")
             String title,@PathVariable("commentId") Long commentId, @CurrentUser Account account, Model model){
         
@@ -303,7 +279,7 @@ public class ProjectController {
 
 
     
-    @GetMapping("/project/{nickname}/{title}/settings")
+    @GetMapping("/settings")
     public String settings(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
                            Model model,  @CurrentUser Account account) throws JsonProcessingException {
 
@@ -326,7 +302,7 @@ public class ProjectController {
         return "project/settings";
     }
 
-    @PostMapping("/project/{nickname}/{title}/settings/add")
+    @PostMapping("/settings/add")
     @ResponseBody
     public ResponseEntity addMember(@RequestBody @Valid MemberForm memberForm,
                                     Errors errors, @PathVariable("title") String title,
@@ -345,7 +321,7 @@ public class ProjectController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/project/{nickname}/{title}/settings/remove")
+    @PostMapping("/settings/remove")
     @ResponseBody
     public ResponseEntity removeNotification(@RequestBody MemberForm memberForm, @PathVariable("title") String title,
                                        @PathVariable("nickname") String builderNick, Model model) {
@@ -358,7 +334,7 @@ public class ProjectController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/project/{nickname}/{title}/settings/remove/member")
+    @PostMapping("/settings/remove/member")
     public String removeMember(@PathVariable("title") String title, @PathVariable("nickname") String nickname, String removeMember,
                                @CurrentUser Account account, Model model) {
 
@@ -371,7 +347,7 @@ public class ProjectController {
         return "project/project-main";
     }
 
-    @PostMapping("/project/{nickname}/{title}/settings/progress")
+    @PostMapping("/settings/progress")
     public String setProgress(@PathVariable("title") String title, @PathVariable("nickname") String nickname,
                               @Valid @ModelAttribute ProgressForm progressForm, Errors errors, @CurrentUser Account account, Model model) {
         Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
