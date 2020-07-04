@@ -80,11 +80,10 @@ public class ProblemShareService {
     public void saveComment(Comment comment, Long problemId, Account account){
 
         //외래키 객체 주입
-
         Problems problem = getProblem(problemId);
         
         //공백값 검출
-        if(comment.getContent().length()<5)
+        if(comment.getContent().length() < 5)
             return;
         
         comment.setProblemId(problem);

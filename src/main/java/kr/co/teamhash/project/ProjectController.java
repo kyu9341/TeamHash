@@ -60,24 +60,6 @@ public class ProjectController {
         webDataBinder.addValidators(progressValidator);
     }
 
-
-    // 구현해야 하는 것
-    // 1. 해당 프로젝트에 맞는 정보 전달
-    //      - projectID를 통해 검사 후 없으면 noProject 페이지 반환
-    // 2. 멤버가 아닌 유저의 접근 막기
-    //      - member에서 해당 프로젝트의 멤버유저 검색
-    // 3. 잘못된 경로 (없는 프로젝트 id, title) 막기
-    //      - 해당 경로의 projectId가 존재하지 않는다면 404page 반환
-    //      - title만 다른경우는 이후 수정
-
-    // 4. 기존 /projectId/title 형식의 url을 /userNickName/projectTitle로 변환하려 한다
-    //      - html에서 get/post 동작의 url 수정
-    //      - controller에서 mapping되는 url 수정
-    //      - controller에서 projectId로 값을 찾던 것 수정
-    //      - service에서 projectId로 검색하던 것을 title로 검색하게 수정
-    //          - 기존 서비스를 모두 수정하지 않고 userNickName에서
-    //            해당 projectTitle의 id를 추출해 보내주는 것으로 수정하자.
-
     @GetMapping("/main")
     public String projectMain(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
                               Model model, @CurrentUser Account account){
@@ -97,8 +79,6 @@ public class ProjectController {
         // 유저가 해당 프로젝트의 맴버인지 확인하는 정보
         model.addAttribute("isMember", isMember);
         model.addAttribute(project);
-        model.addAttribute("title", title);
-        model.addAttribute("nickname", nickname);
         model.addAttribute("members", members);
         model.addAttribute(account);
 
@@ -173,7 +153,6 @@ public class ProjectController {
         if(project == null)
             return "project/no-project";
 
-        
         // 프로젝트의 맴버 리스트에 현재 유저의 아이디가 있다면 페이지 공개
         boolean isMember = projectService.isMember(project.getId(), account);
 
@@ -200,7 +179,6 @@ public class ProjectController {
         if(project == null)
             return "project/no-project";
 
-        
         // 프로젝트의 맴버 리스트에 현재 유저의 아이디가 있다면 페이지 공개
         boolean isMember = projectService.isMember(project.getId(), account);
 
@@ -256,8 +234,7 @@ public class ProjectController {
         // nickname과 projectTitle에 맞는 프로젝트가 없을 때
         if(project == null)
             return "project/no-project";
-        
-        
+
         // 프로젝트의 맴버 리스트에 현재 유저의 아이디가 있다면 페이지 공개
         boolean isMember = projectService.isMember(project.getId(),account);
 

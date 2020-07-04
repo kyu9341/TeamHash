@@ -1,4 +1,4 @@
-package kr.co.teamhash.settings;
+package kr.co.teamhash.settings.form;
 
 import kr.co.teamhash.domain.entity.Account;
 import lombok.Data;

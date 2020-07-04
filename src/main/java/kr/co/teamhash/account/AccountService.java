@@ -5,13 +5,10 @@ import kr.co.teamhash.domain.entity.Account;
 import kr.co.teamhash.domain.repository.AccountRepository;
 import kr.co.teamhash.mail.EmailMessage;
 import kr.co.teamhash.mail.EmailService;
-import kr.co.teamhash.settings.Profile;
+import kr.co.teamhash.settings.form.Profile;
 import kr.co.teamhash.settings.form.NicknameForm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,8 +22,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
 import javax.validation.Valid;
 import java.util.List;
 
