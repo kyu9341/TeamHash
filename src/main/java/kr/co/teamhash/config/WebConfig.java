@@ -1,6 +1,7 @@
 package kr.co.teamhash.config;
 
 import kr.co.teamhash.notification.NotificationInterceptor;
+import kr.co.teamhash.project.ProjectInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.StaticResourceLocation;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 public class WebConfig implements WebMvcConfigurer {
 
     private final NotificationInterceptor notificationInterceptor;
+    private final ProjectInterceptor projectInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -29,5 +31,11 @@ public class WebConfig implements WebMvcConfigurer {
 
         registry.addInterceptor(notificationInterceptor)
                 .excludePathPatterns(staticResourcesPath); // 인터셉터를 적용하지 않을 url 패턴
+
+
+
+        registry.addInterceptor(projectInterceptor)
+                .addPathPatterns("/project/{title}/{nickname}/**")
+                .excludePathPatterns(staticResourcesPath);
     }
 }

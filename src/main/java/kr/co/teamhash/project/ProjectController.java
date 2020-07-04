@@ -77,7 +77,7 @@ public class ProjectController {
 
         // 프로젝트에 필요한 정보와
         // 유저가 해당 프로젝트의 맴버인지 확인하는 정보
-        model.addAttribute("isMember", isMember);
+//        model.addAttribute("isMember", isMember);
         model.addAttribute(project);
         model.addAttribute("members", members);
         model.addAttribute(account);
