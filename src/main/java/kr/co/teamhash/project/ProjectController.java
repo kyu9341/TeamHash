@@ -129,29 +129,26 @@ public class ProjectController {
 
     // 문제 공유란 메인 페이지
     @GetMapping("/problem-share")
-    public String problemShareMain(@PathVariable("nickname") String nickname, @PathVariable("title") String title, Model model,  @CurrentUser Account account){
-
-
+    public String problemShareMain(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
+                                   Model model,  @CurrentUser Account account){
         // nickname과 projectTitle로 projectId 찾기
-        Long projectId = projectService.getProjectId(nickname, title);
+        Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
 
         // nickname과 projectTitle에 맞는 프로젝트가 없을 때
-        if(projectId == null)
+        if(project == null)
             return "project/no-project";
 
 
         // 프로젝트의 맴버 리스트에 현재 유저의 아이디가 있다면 페이지 공개
-        boolean isMember = projectService.isMember(projectId,account);
+        boolean isMember = projectService.isMember(project.getId(), account);
 
         // 프로젝트에 필요한 정보와
         // 유저가 해당 프로젝트의 맴버인지 확인하는 정보
         model.addAttribute("isMember", isMember);
-        model.addAttribute("projectId", projectId);
         model.addAttribute("title", title);
-        
         model.addAttribute("nickname", nickname);
         
-        List<Problems> problemList = problemShareService.getProblemList(projectId);
+        List<Problems> problemList = problemShareService.getProblemList(project.getId());
         Collections.reverse(problemList);
 
         model.addAttribute("problemList", problemList);

@@ -29,7 +29,6 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
     private final MemberRepository memberRepository;
     private final AccountRepository accountRepository;
-    private final NotificationRepository notificationRepository;
 
     // 프로젝트 저장
     public void saveNewProject(ProjectBuildForm projectBuildForm, Account account){
@@ -61,33 +60,9 @@ public class ProjectService {
         memberRepository.save(projectMember);
     }
 
-    // nickname과 projectTitle로 projectId 찾기
-    // 다른 유저와 projectTitle은 겹칠 수 있기 때문
-    // @Transactional
-    public Long getProjectId(String nickname, String title){
-        List<Project> projectList =  projectRepository.findAllByBuilderNick(nickname);
-
-        for (Project project : projectList) {
-            if(project.getTitle().equals(title))
-                return project.getId();
-        }
-
-        return null;
-    }
-
-    // 프로젝트 아이디로 프로젝트 찾기
-    // 프로젝트 아이디로 페이지에 접근할 때 해당 url에서 projectId를 추출해서 사용
-    public Optional<Project> getProject(Long projectId){
-        return projectRepository.findById(projectId);
-    }
-
     // 해당 프로젝트에 포함된 맴버리스트 반환
     public List<ProjectMember> getMemberList(Long projectId){
-
-        List<ProjectMember> projectMemberList = memberRepository.findAllByProjectId(projectId);
-
-        return projectMemberList;
-
+        return memberRepository.findAllByProjectId(projectId);
     }
 
     // 해당 유저의 프로젝트 소속 여부 확인

@@ -45,14 +45,13 @@ public class UploadFilecontroller {
                     Model model,  @CurrentUser Account account) throws IOException {
         
         // nickname과 projectTitle로 projectId 찾기
-        Long projectId = projectService.getProjectId(nickname, title);
+        Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
 
-        List<UploadFile> fileList = uploadFileService.getFileList(projectId);
+        List<UploadFile> fileList = uploadFileService.getFileList(project.getId());
 
         model.addAttribute("fileList", fileList);
         model.addAttribute("nickname", nickname);
         model.addAttribute("title", title);
-        
 
         return "project/cloud";
    }

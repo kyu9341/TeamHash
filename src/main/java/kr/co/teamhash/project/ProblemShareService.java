@@ -21,19 +21,17 @@ public class ProblemShareService {
     private final CommentRepository commentRepository;
 
     // 문제 공유 글 저장
-    public Long saveProblem(Problems problem, Long projectId,Account account){
-
-
+    public void saveProblem(Problems problem, Long projectId, Account account){
         //공백 값 검출
-        if(problem.getTitle().length()<3)
-            return null;
-        else if(problem.getContent().length()<9)
-            return null;
+        if(problem.getTitle().length() < 3)
+            return;
+        else if(problem.getContent().length() < 9)
+            return;
 
         problem.setProjectId(projectId);
         problem.setWriterId(account);
-    
-        return problemsRepository.save(problem).getId();
+
+        problemsRepository.save(problem);
     }
 
     // 문제 공유 글 리스트 얻기

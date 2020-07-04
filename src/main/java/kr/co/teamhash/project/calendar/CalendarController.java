@@ -96,16 +96,15 @@ public class CalendarController {
         Long scheduleId = calendarForm.getScheduleId();
         log.info("scheduleId : " + scheduleId);
         // nickname과 projectTitle로 projectId 찾기
-        Long projectId = projectService.getProjectId(nickname, title);
+        Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
 
-        if (projectId == null) {
+        if (project == null) {
             return ResponseEntity.badRequest().build();
         }
 
         System.out.println(scheduleId);
         calendarService.deleteSchedule(scheduleId);
 
-        model.addAttribute("projectId", projectId);
         model.addAttribute("title", title);
         model.addAttribute("account", account);
         return ResponseEntity.ok().build();
