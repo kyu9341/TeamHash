@@ -220,7 +220,7 @@
                                         <button>수정</button>
                                     </a> -->
                                     
-                                    <form id="delete-form" th:action="@{'/project/'+${nickname}+'/'+${title}+'/problem-share/' + ${problem.id}}" 
+                                    <form id="delete-post-form" th:action="@{'/project/'+${nickname}+'/'+${title}+'/problem-share/' + ${problem.id}}"
                                         method="post" th:if="${#authentication.name == problem.writerId.nickname}">
                                         <input type="hidden" name="_method" value="delete"/>
                                         <button class="btn btn-outline-danger post-delete-btn">삭제</button>
@@ -265,8 +265,6 @@
                                         </div>
                                     </div>
                                 </form>
-                                
-                                
                             
    
                         </div>
@@ -275,7 +273,7 @@
                                 <li class="comment" >
 
 
-                                    <form id="delete-form" th:action="@{'/project/'+${nickname}+'/'+${title}+'/problem-share/comment/' + ${comment.id}}"
+                                    <form id="delete-comment-form" th:action="@{'/project/'+${nickname}+'/'+${title}+'/problem-share/comment/' + ${comment.id}}"
                                         th:if="${#authentication.name == comment.writerId.nickname}" method="post">
                                         <input type="hidden" name="_method" value="delete"/>
                                         <button class="btn btn-outline-danger pull-right comment-delete-btn">
@@ -305,8 +303,6 @@
                                         <p th:text="${comment.content}"></p>
 
                                         
-                                        
-                                        
                                     </div>
                                  
                                     <hr>
@@ -314,22 +310,15 @@
                             </ul>
                         </div>
                     </div>
-              
- 
 
     </div>
 
     <footer th:replace="fragments.html :: footer"></footer>
 
     <script th:inline="javascript">
-        
-
-        
-        
 
         //let timeData = getTime(nowTime);
-        
-        
+
         // set problem time
         setWriteTimeByClassName("problem-time");
         setWriteTimeByClassName("comment-time");
@@ -350,11 +339,9 @@
             else{
                 $(this).text(" " + timeGap);
             }
-            
-            
+
         });
         };
-
 
         // how many times from write day
         function getTimeGap(timeData) {
@@ -381,17 +368,9 @@
                 else if(nowSec < 86400){
                     return (nowSec/3600).toFixed(0) + "시간전";
                 }
-            }else
+            } else
                 return null;
-            
-
-
         };
-
-        
-
-       
-        
 
     </script>
 </body>

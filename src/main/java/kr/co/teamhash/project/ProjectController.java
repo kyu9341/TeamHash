@@ -9,14 +9,10 @@ import kr.co.teamhash.domain.repository.ProjectRepository;
 import kr.co.teamhash.notification.NotificationService;
 import kr.co.teamhash.project.form.MemberForm;
 import kr.co.teamhash.project.form.ProgressForm;
-import kr.co.teamhash.project.form.ProjectBuildForm;
 import kr.co.teamhash.project.validator.MemberValidator;
 import kr.co.teamhash.project.validator.ProgressValidator;
-import kr.co.teamhash.project.validator.ProjectBuildValidator;
 import lombok.RequiredArgsConstructor;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -72,12 +68,8 @@ public class ProjectController {
 
         List<ProjectMember> members = memberRepository.findAllByProjectId(project.getId());
 
-        // 프로젝트의 맴버 리스트에 현재 유저의 아이디가 있다면 페이지 공개
-        boolean isMember = projectService.isMember(project.getId(), account);
-
         // 프로젝트에 필요한 정보와
         // 유저가 해당 프로젝트의 맴버인지 확인하는 정보
-//        model.addAttribute("isMember", isMember);
         model.addAttribute(project);
         model.addAttribute("members", members);
         model.addAttribute(account);
@@ -85,25 +77,23 @@ public class ProjectController {
         return "project/project-main";
     }
 
-    @GetMapping("/write")
+    @GetMapping("/main/write")
     public String projectDescription(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
                                      Model model, @CurrentUser Account account) {
         Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
-        boolean isMember = projectService.isMember(project.getId(), account);
 
-        model.addAttribute("isMember", isMember);
         model.addAttribute(project);
         model.addAttribute(account);
 
         return "project/write";
     }
 
-    @PostMapping("/write")
+    @PostMapping("/main/write")
     public String projectDescriptionForm(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
                                          String description ,Model model, @CurrentUser Account account) {
         Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
         projectService.createDescription(project, description);
-        return "redirect:/project/" + nickname +"/" + project.getEncodedTitle();
+        return "redirect:/project/" + nickname +"/" + project.getEncodedTitle() + "/main";
     }
 
 
@@ -118,13 +108,9 @@ public class ProjectController {
         if(project == null)
             return "project/no-project";
 
-
-        // 프로젝트의 맴버 리스트에 현재 유저의 아이디가 있다면 페이지 공개
-        boolean isMember = projectService.isMember(project.getId(), account);
-
         // 프로젝트에 필요한 정보와
         // 유저가 해당 프로젝트의 맴버인지 확인하는 정보
-        model.addAttribute("isMember", isMember);
+        model.addAttribute(project);
         model.addAttribute("title", title);
         model.addAttribute("nickname", nickname);
         
@@ -138,9 +124,6 @@ public class ProjectController {
         return "project/problem-share";
     }
 
-
-
-
     // 문제 공유란 글 작성 완료
     @PostMapping("/problem-share/post")
     public String write(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
@@ -153,46 +136,23 @@ public class ProjectController {
         if(project == null)
             return "project/no-project";
 
-        // 프로젝트의 맴버 리스트에 현재 유저의 아이디가 있다면 페이지 공개
-        boolean isMember = projectService.isMember(project.getId(), account);
-
-        // 프로젝트에 필요한 정보와
-        // 유저가 해당 프로젝트의 맴버인지 확인하는 정보
-        model.addAttribute("isMember", isMember);
-        model.addAttribute("title", title);
-        model.addAttribute("nickname", nickname);
-
         problemShareService.saveProblem(problem, project.getId(), account);
-
-        return "redirect:/project/"+nickname+"/"+ project.getEncodedTitle() +"/problem-share/";
+        return "redirect:/project/" + nickname +"/" + project.getEncodedTitle() + "/problem-share/";
     }
 
     // 코멘트 작성
     @PostMapping("/problem-share/comment")
     public String write(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
                         Model model,  @CurrentUser Account account, Comment comment, Long pId) {
-        
-        // nickname과 projectTitle로 projectId 찾기
+
         Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
 
         // nickname과 projectTitle에 맞는 프로젝트가 없을 때
         if(project == null)
             return "project/no-project";
 
-        // 프로젝트의 맴버 리스트에 현재 유저의 아이디가 있다면 페이지 공개
-        boolean isMember = projectService.isMember(project.getId(), account);
-
-        // 프로젝트에 필요한 정보와
-        // 유저가 해당 프로젝트의 맴버인지 확인하는 정보
-        model.addAttribute("isMember", isMember);
-        model.addAttribute("projectId", project.getId());
-
-        model.addAttribute("title", title);
-        model.addAttribute("nickname", nickname);
-        
-        // 입력받은 comment 내용, 커멘트가 달린 문제공유글 id, 해당 코멘트를 작성한 유저 
+        // 입력받은 comment 내용, 커멘트가 달린 문제공유글 id, 해당 코멘트를 작성한 유저
         problemShareService.saveComment(comment, pId, account);
-
         return "redirect:/project/" + nickname + "/" + project.getEncodedTitle() + "/problem-share/";
     }
 
@@ -207,20 +167,8 @@ public class ProjectController {
         // nickname과 projectTitle에 맞는 프로젝트가 없을 때
         if(project == null)
             return "project/no-project";
-        
-        
-        // 프로젝트의 맴버 리스트에 현재 유저의 아이디가 있다면 페이지 공개
-        boolean isMember = projectService.isMember(project.getId(),account);
 
-        // 프로젝트에 필요한 정보와
-        // 유저가 해당 프로젝트의 맴버인지 확인하는 정보
-        model.addAttribute("isMember", isMember);
-        model.addAttribute("projectId", project.getId());
-        model.addAttribute("title", title);
-
-        model.addAttribute("nickname", nickname);
         problemShareService.deleteProblem(problemId,account);
-
         return "redirect:/project/" + nickname + "/" + project.getEncodedTitle() + "/problem-share";
     }
     //코멘트 삭제
@@ -235,22 +183,10 @@ public class ProjectController {
         if(project == null)
             return "project/no-project";
 
-        // 프로젝트의 맴버 리스트에 현재 유저의 아이디가 있다면 페이지 공개
-        boolean isMember = projectService.isMember(project.getId(),account);
-
-        // 프로젝트에 필요한 정보와
-        // 유저가 해당 프로젝트의 맴버인지 확인하는 정보
-        model.addAttribute("isMember", isMember);
-        model.addAttribute("title", title);
-
-        model.addAttribute("nickname", nickname);
         problemShareService.deleteComment(commentId,account);
-
         return "redirect:/project/" + nickname + "/" + project.getEncodedTitle() + "/problem-share";
     }
 
-
-    
     @GetMapping("/settings")
     public String settings(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
                            Model model,  @CurrentUser Account account) throws JsonProcessingException {
@@ -286,10 +222,8 @@ public class ProjectController {
         String memberNickname = memberForm.getMemberNickname();
 
         log.info("title: " + title);
-
         // 초대 알림 보냄
         notificationService.addNotification(memberNickname, title, builderNick);
-
         return ResponseEntity.ok().build();
     }
 
@@ -315,8 +249,7 @@ public class ProjectController {
             return "project/settings";
         }
         projectService.removeMember(project.getId(), removeMember);
-
-        return "project/project-main";
+        return "redirect:/project/" + nickname + "/" + project.getEncodedTitle() + "/main";
     }
 
     @PostMapping("/settings/progress")
@@ -326,11 +259,11 @@ public class ProjectController {
 
         if (errors.hasErrors()) {
             model.addAttribute("error", "0 ~ 100의 값만 입력하세요.");
-            return "redirect:/project/" + nickname + "/" + project.getEncodedTitle() + "/settings/";
+            return "redirect:/project/" + nickname + "/" + project.getEncodedTitle() + "/settings";
         }
         Integer progress = Integer.parseInt(progressForm.getProgress());
         projectService.updateProgress(title, nickname, progress);
-        return "redirect:/project/" + nickname + "/" + project.getEncodedTitle() + "/settings/";
+        return "redirect:/project/" + nickname + "/" + project.getEncodedTitle() + "/settings";
     }
 
 }

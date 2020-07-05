@@ -49,14 +49,13 @@ public class UploadFilecontroller {
 
         List<UploadFile> fileList = uploadFileService.getFileList(project.getId());
 
+        model.addAttribute(project);
         model.addAttribute("fileList", fileList);
         model.addAttribute("nickname", nickname);
         model.addAttribute("title", title);
 
         return "project/cloud";
    }
-
-
 
 
    // fileupload form에 파일을 올린 뒤 전송하면 해당 위치에서 받아서 DB에 저장

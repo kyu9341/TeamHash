@@ -26,7 +26,7 @@
                 <!-- project projectMember  -->
                 <div th:if="${isMember}">
                     <form class="needs-validation col-sm-10"
-                          th:action="@{'/project/'+${nickname}+'/'+${title}+'/write'}" method="post"
+                          th:action="@{'/project/'+${nickname}+'/'+${title}+'/main/write'}" method="post"
                           novalidate>
                         <div class="form-group mt-3">
                             <label for="description"></label>

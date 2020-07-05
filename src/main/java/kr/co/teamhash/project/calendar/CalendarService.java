@@ -31,17 +31,13 @@ public class CalendarService {
             System.out.println("no data");
         }
         else{
-            
             Project project = projectRepository.findById(projectId).get();
             schedule.setProject(project);
             schedule.getProject().getSchedules().add(schedule);
-    
-            
             
             scheduleRepository.save(schedule);
         }
 
-        
     }
 
     //스케줄 삭제

@@ -152,7 +152,7 @@ public class AccountController {
         projectService.saveProjectMember(account.getNickname(), projectTitle, projectBuilder); // 수락한 경우 프로젝트 멤버로 등록
         notificationService.deleteNotification(notificationId); // 해당 알림 제거
 
-        return String.format("redirect:/project/%s/%s", projectBuilder, URLEncoder.encode(projectTitle, StandardCharsets.UTF_8));
+        return String.format("redirect:/project/%s/%s/main", projectBuilder, URLEncoder.encode(projectTitle, StandardCharsets.UTF_8));
     }
 
     @PostMapping("/profile/{nickname}/reject/{notificationId}")
