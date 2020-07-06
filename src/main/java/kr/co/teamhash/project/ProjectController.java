@@ -1,18 +1,5 @@
 package kr.co.teamhash.project;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import kr.co.teamhash.domain.entity.*;
-import kr.co.teamhash.domain.repository.AccountRepository;
-import kr.co.teamhash.domain.repository.MemberRepository;
-import kr.co.teamhash.domain.repository.ProjectRepository;
-import kr.co.teamhash.notification.NotificationService;
-import kr.co.teamhash.project.form.MemberForm;
-import kr.co.teamhash.project.form.ProgressForm;
-import kr.co.teamhash.project.validator.MemberValidator;
-import kr.co.teamhash.project.validator.ProgressValidator;
-import lombok.RequiredArgsConstructor;
-
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -20,15 +7,42 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
-import lombok.extern.slf4j.Slf4j;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.teamhash.account.CurrentUser;
+import kr.co.teamhash.domain.entity.Account;
+import kr.co.teamhash.domain.entity.Comment;
+import kr.co.teamhash.domain.entity.Notification;
+import kr.co.teamhash.domain.entity.Problems;
+import kr.co.teamhash.domain.entity.Project;
+import kr.co.teamhash.domain.entity.ProjectMember;
+import kr.co.teamhash.domain.repository.AccountRepository;
+import kr.co.teamhash.domain.repository.MemberRepository;
+import kr.co.teamhash.domain.repository.ProjectRepository;
+import kr.co.teamhash.notification.NotificationService;
+import kr.co.teamhash.project.form.MemberForm;
+import kr.co.teamhash.project.form.ProblemShareForm;
+import kr.co.teamhash.project.form.ProgressForm;
+import kr.co.teamhash.project.validator.MemberValidator;
+import kr.co.teamhash.project.validator.ProgressValidator;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
@@ -127,15 +141,23 @@ public class ProjectController {
     // 문제 공유란 글 작성 완료
     @PostMapping("/problem-share/post")
     public String write(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
-                        Model model,  @CurrentUser Account account, Problems problem) {
+                        Model model,  @CurrentUser Account account,@Valid ProblemShareForm problemForm, Errors errors) {
+        
+
         
         // nickname과 projectTitle로 projectId 찾기
         Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
 
+        if (errors.hasErrors()) {
+            model.addAttribute("error", "최소 입력 길이를 만족시켜 주세요");
+            return "redirect:/project/" + nickname +"/" + project.getEncodedTitle() + "/problem-share/";
+        }
         // nickname과 projectTitle에 맞는 프로젝트가 없을 때
         if(project == null)
             return "project/no-project";
-
+        Problems problem = new Problems();
+        problem.setTitle(problemForm.getTitle());
+        problem.setContent(problemForm.getContent());
         problemShareService.saveProblem(problem, project.getId(), account);
         return "redirect:/project/" + nickname +"/" + project.getEncodedTitle() + "/problem-share/";
     }

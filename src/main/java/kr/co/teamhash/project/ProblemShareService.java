@@ -22,11 +22,6 @@ public class ProblemShareService {
 
     // 문제 공유 글 저장
     public void saveProblem(Problems problem, Long projectId, Account account){
-        //공백 값 검출
-        if(problem.getTitle().length() < 3)
-            return;
-        else if(problem.getContent().length() < 9)
-            return;
 
         problem.setProjectId(projectId);
         problem.setWriterId(account);
@@ -36,12 +31,17 @@ public class ProblemShareService {
 
     // 문제 공유 글 리스트 얻기
     public List<Problems> getProblemList(Long projectId){
-        return problemsRepository.findByProjectId(projectId);
+
+        List<Problems> problemList = problemsRepository.findByProjectId(projectId);
+
+        return problemList;
     }
 
     // 문제 공유 글 내용 얻기
     public Problems getProblem(Long problemId){
-        return problemsRepository.findById(problemId).get();
+        Problems problem = problemsRepository.findById(problemId).get();
+
+        return problem;
     }
 
     // 문제 공유 글 삭제
