@@ -187,6 +187,17 @@ public class ProjectController {
         return "redirect:/project/" + nickname + "/" + project.getEncodedTitle() + "/problem-share";
     }
 
+    @GetMapping("/kanban")
+    public String kanban(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
+                         Model model, @CurrentUser Account account) {
+        Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
+
+
+        model.addAttribute(project);
+        return "project/kanban";
+    }
+
+
     @GetMapping("/settings")
     public String settings(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
                            Model model,  @CurrentUser Account account) throws JsonProcessingException {
