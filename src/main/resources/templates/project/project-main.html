@@ -25,7 +25,7 @@
             <!-- project projectMember  -->
             <div th:if="${isMember}">
 
-                <li class="list-group-item text-white bg-info">프로젝트 멤버</li>
+                <li class="list-group-item text-white bg-info mt-4">프로젝트 멤버</li>
                 <ul class="list-group" th:each="member : ${members}">
                     <a id="member-list" href="#"
                        class="member-list list-group-item list-group-item-action">
@@ -41,7 +41,7 @@
 
                 </ul>
                 <br>
-                <div id="progress-div" class="progress">
+                <div id="progress-div" class="progress mt-4">
                     <div class="progress-bar progress-bar-striped" id="progress" th:text="${project.progress}+'%'" role="progressbar" aria-valuenow="1"
                          style="width: 0%;" aria-valuemin="0" aria-valuemax="100">
                     </div>
