@@ -5,7 +5,7 @@
 <style>
     .main-profile {
         margin: auto;
-        min-height: 500px;
+        min-height: 700px;
         color: #FFFFFF;
         background-color: #0f4c81;
         display: flex;
@@ -13,6 +13,126 @@
         text-align: center;
 
 
+    }
+
+    @import url(https://fonts.googleapis.com/css?family=Roboto:400,300,700);
+    @import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css);
+
+    *,
+    *:after,
+    *:before {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+    body,
+    html {
+        font-size: 100%;
+        padding: 0;
+        margin: 0;
+        height: 100%;
+    }
+
+    /* clearfix */
+    .clearfix:before,
+    .clearfix:after {
+        content: " ";
+        display: table;
+    }
+
+    .clearfix:after {
+        clear: both;
+    }
+
+    body {
+        font-family: 'Roboto', Calibri, Arial, sans-serif;
+        color: #89867e;
+        background: #fff;
+    }
+
+    a {
+        color: #888;
+        text-decoration: none;
+    }
+
+    a:hover,
+    a:active {
+        color: #333;
+    }
+
+
+
+
+    /* General button style (reset) */
+    .button {
+        border: none;
+        font-family: inherit;
+        font-size: inherit;
+        color: inherit;
+        background: none;
+        cursor: pointer;
+        padding: 25px 80px;
+        display: inline-block;
+        margin: 10px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 700;
+        outline: none;
+        position: relative;
+        -webkit-transition: all 0.3s;
+        -moz-transition: all 0.3s;
+        transition: all 0.3s;
+    }
+
+    .button:after {
+        content: '';
+        position: absolute;
+        z-index: -1;
+        -webkit-transition: all 0.3s;
+        -moz-transition: all 0.3s;
+        transition: all 0.3s;
+    }
+
+    .button-4 {
+        border-radius: 50px;
+        border: 3px solid #fff;
+        color: #fff;
+        overflow: hidden;
+    }
+
+    .button-4:active {
+        border-color: #7d8588;
+        color: #7d8588;
+    }
+
+    .button-4:hover {
+        background: #b6c6d3;
+    }
+
+    .button-4>.fa {
+        position: absolute;
+        height: 100%;
+        font-size: 125%;
+        line-height: 3.5;
+        color: #fff;
+        -webkit-transition: all 0.3s;
+        -moz-transition: all 0.3s;
+        transition: all 0.3s;
+    }
+
+    .button-4:active>.fa {
+        color: #7d8588;
+    }
+
+    /* Button 4a */
+    .button-4a>.fa {
+        left: 130%;
+        top: 0;
+    }
+
+    .button-4a:hover>.fa {
+        left: 80%;
     }
 </style>
 
@@ -23,16 +143,26 @@
     <div class="main-profile">
         <div class="container">
             <div class="row">
-                <div class="col-6"><br><br><br><br><br><br>
-                    <h1>협업 아직도 만나서 하시나요?</h1>
-                    <p class="lead">Team#을 이용해 협업을 손쉽게 해보세요
+                <div class="col-md-6">
+
+                    <p  style="font-size:60px;" ><br>협업 아직도 만나서 하시나요?</p>
+                    <p class="lead" style="font-size:30px;">Team#을 이용해 협업을 손쉽게 해보세요
                         <br> 많은 기능으로 당신의 협업을 도와드릴게요
                         <br> 지금 바로 체험 해 보세요
                     </p>
 
+                    <div>
+                        <button class="button button-4 button-4a icon-arrow-right">
+                            <i class="fa fa-arrow-right"></i>login</button>
+                    </div>
+
+
+
+
                 </div>
-                <div class="col">
-                    <a><img src="/images/teamhash-back.png" width="430" height="430"></a>
+
+                <div class="col-md-6">
+                    <a style="float: right; margin-top: 10px;"><img src="/images/1.jpg"></a>
 
 
                 </div>
@@ -42,14 +172,15 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-1">
-            </div>
-            <div class="col-10">
+            
+            <div class="col">
                 <section class="aboutus py-5" id="aboutus">
                     <div class="container">
-                        <div class="row" style="text-align:center;">
+                        <p align="center" style="font-size:60px;"  ><br>주요기능 소개</p>
 
-                            <div class="col-md-6">
+                        <div class="row" style="text-align:center;">
+                            
+                            <div class="col-md-6 mt-5">
                                 <img src="/images/index-main.png">
                             </div>
                             <div class="col-md-6">
@@ -60,7 +191,8 @@
                                     지금 바로 사용해보세요.
                                 </p>
                                 <div class="py-2"></div>
-                                <button type="button" style="text-align: center;" class="btn btn-primary" onclick="location.href='/sign-up'">&nbsp;&nbsp;회원가입&nbsp;&nbsp;</button>
+                                <button type="button" style="text-align: center;" class="btn btn-primary"
+                                    onclick="location.href='/sign-up'">&nbsp;&nbsp;회원가입&nbsp;&nbsp;</button>
 
                             </div>
                         </div>
@@ -74,12 +206,12 @@
                                 <div class="pb-5 mt-5"></div>
                                 <h2>실시간으로 소통할수있는 채팅</h2>
                                 <div class="py-2"></div>
-                                <p>아직도 다른 플랫폼으로 소통하시나요? 
-                                    <br>필요한 대화는 바로바로 나누고 필요한 문서도 바로 저장하세요! 
+                                <p>아직도 다른 플랫폼으로 소통하시나요?
+                                    <br>필요한 대화는 바로바로 나누고 필요한 문서도 바로 저장하세요!
 
                                 </p>
                                 <div class="py-2"></div>
-                               
+
 
                             </div>
                             <div class="col-md-6">
@@ -101,10 +233,10 @@
                                 <div class="py-2"></div>
                                 <p>팀에 문제가 생겨서 팀원들에게 공유하고 싶을때 문제공유 기능을 이용해보세요.
                                     <br>더 쉽게 빠르게 문제공유가 가능합니다
-                        
+
                                 </p>
                                 <div class="py-2"></div>
-                                
+
 
                             </div>
                         </div>
@@ -120,13 +252,13 @@
                                 <div class="py-2"></div>
                                 <p>많은 프로젝트들 날짜 관리가 어려우신가요? TEAM#의 캘린더를 활용해보세요
                                     <br> 프로젝트와 개인으로 이벤트를 관리할수있습니다.
-                        
+
                                 </p>
                                 <div class="py-2"></div>
-                                
+
                             </div>
                             <div class="col-md-6">
-                              
+
                                 <img src="/images/index-calendar.png">
 
                             </div>
