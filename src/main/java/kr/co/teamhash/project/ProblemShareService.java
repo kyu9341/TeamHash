@@ -36,17 +36,12 @@ public class ProblemShareService {
 
     // 문제 공유 글 리스트 얻기
     public List<Problems> getProblemList(Long projectId){
-
-        List<Problems> problemList = problemsRepository.findByProjectId(projectId);
-
-        return problemList;
+        return problemsRepository.findByProjectId(projectId);
     }
 
     // 문제 공유 글 내용 얻기
     public Problems getProblem(Long problemId){
-        Problems problem = problemsRepository.findById(problemId).get();
-
-        return problem;
+        return problemsRepository.findById(problemId).get();
     }
 
     // 문제 공유 글 삭제

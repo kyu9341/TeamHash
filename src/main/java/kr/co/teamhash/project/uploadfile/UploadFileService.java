@@ -22,7 +22,6 @@ import lombok.RequiredArgsConstructor;
 public class UploadFileService{
     private final UploadFileRepository uploadFileRepository;
 
-
     // DB에 파일 저장
     // 어떤 프로젝트에서 업로드 됐는지와
     // 어떤 사람이 업로드 했는지의 정보도 함께 저장한다.
@@ -32,12 +31,9 @@ public class UploadFileService{
         try{
             if(fileName.contains("..")){
                 throw new FileStorageException("invalid path : "+fileName );
-
             }
-
             UploadFile uploadFile = new UploadFile(projectId, uploader, fileName,
                                          file.getContentType(), file.getBytes());
-            
 
             uploadFileRepository.save(uploadFile);
         } catch (IOException ex){
@@ -46,22 +42,18 @@ public class UploadFileService{
     }
 
     public void deleteFile(Long fileId){
-
         uploadFileRepository.deleteById(fileId);
-
     }
 
     // 템플릿에 파일 리스트를 출력해주기 위한 매서드
     // 해당 프로젝트의 리스트만 출력해야 하기 때문에 projectId를 매개변수로 받는다.
     public List<UploadFile> getFileList(Long projectId){
        return uploadFileRepository.findByProjectId(projectId);
-
     }
 
     public UploadFile getFile(Long fileId) {
         return uploadFileRepository.findById(fileId)
                 .orElseThrow(() -> new MyFileNotFoundException("File not found with id " + fileId));
     }
-
 
 }

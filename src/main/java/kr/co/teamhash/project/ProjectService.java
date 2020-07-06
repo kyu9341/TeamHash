@@ -60,11 +60,6 @@ public class ProjectService {
         memberRepository.save(projectMember);
     }
 
-    // 해당 프로젝트에 포함된 맴버리스트 반환
-    public List<ProjectMember> getMemberList(Long projectId){
-        return memberRepository.findAllByProjectId(projectId);
-    }
-
     // 해당 유저의 프로젝트 소속 여부 확인
     public boolean isMember(Long projectId, Account account){
         

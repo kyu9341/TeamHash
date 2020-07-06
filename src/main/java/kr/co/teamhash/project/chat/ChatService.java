@@ -17,21 +17,16 @@ import lombok.RequiredArgsConstructor;
 public class ChatService {
     private final ChatRepository chatRepository;
 
-
     //채팅 저장
     @Transactional
     public void saveChat(Chat chat){
-        
         chatRepository.save(chat);
     }
-
     
     //채팅 목록 가져오기
     @Transactional
     public List<Chat> getChatList(Long projectId){
-        List<Chat> chattings = chatRepository.findByProjectId(projectId);
-
-        return chattings;
+        return chatRepository.findByProjectId(projectId);
     }
 
 }

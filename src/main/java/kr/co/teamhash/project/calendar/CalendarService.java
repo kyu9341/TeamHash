@@ -42,7 +42,6 @@ public class CalendarService {
 
     //스케줄 삭제
     public void deleteSchedule(Long scheduleId){
-
         scheduleRepository.deleteById(scheduleId);
     }
 

@@ -37,6 +37,10 @@ public class CalendarController {
 
         Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
 
+        // nickname과 projectTitle에 맞는 프로젝트가 없을 때
+        if(project == null)
+            return "project/no-project";
+
         // schedule DTO 변환
         List<Schedule> schedules = project.getSchedules();
         List<ScheduleDTO> scheduleDTO = new ArrayList<ScheduleDTO>();
@@ -48,10 +52,6 @@ public class CalendarController {
                                 schedule.getContent(),
                                 schedule.getColor()));
         }
-
-        // nickname과 projectTitle에 맞는 프로젝트가 없을 때
-        if(project == null)
-            return "project/no-project";
 
         // 프로젝트에 필요한 정보와
         // 유저가 해당 프로젝트의 맴버인지 확인하는 정보
