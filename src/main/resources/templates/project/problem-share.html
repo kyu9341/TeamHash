@@ -175,16 +175,16 @@
                                 <div class="d-flex justify-content-between align-items-center">
                                     <!-- post writer icon -->
                                     <div class="mr-2">
-                                        <svg th:if="${#strings.isEmpty(problem.writerId?.profileImage)}" data-jdenticon-value="user127" th:data-jdenticon-value="${problem.writerId.nickname}"
+                                        <svg th:if="${#strings.isEmpty(problem.writer?.profileImage)}" data-jdenticon-value="user127" th:data-jdenticon-value="${problem.writer.nickname}"
                                         width="45" class="rounded-circle"></svg>
-                                        <img th:if="${!#strings.isEmpty(problem.writerId?.profileImage)}" th:src="${problem.writerId.profileImage}"
+                                        <img th:if="${!#strings.isEmpty(problem.writer?.profileImage)}" th:src="${problem.writer.profileImage}"
                                              class="rounded-circle"  width="45">
                                     </div>
 
                                     <!-- post writer name -->
                                     <div class="ml-2">
                                         
-                                        <div class="h5 m-0" th:text="${problem.writerId.nickname}"></div>
+                                        <div class="h5 m-0" th:text="${problem.writer.nickname}"></div>
                                         <!-- <div class="h7 text-muted">Miracles Lee Cross</div> -->
                                     </div>
 
@@ -198,7 +198,7 @@
                                     </a> -->
                                     
                                     <form id="delete-post-form" th:action="@{'/project/'+${nickname}+'/'+${title}+'/problem-share/' + ${problem.id}}"
-                                        method="post" th:if="${#authentication.name == problem.writerId.nickname}">
+                                        method="post" th:if="${#authentication.name == problem.writer.nickname}">
                                         <input type="hidden" name="_method" value="delete"/>
                                         <button class="btn btn-outline-danger post-delete-btn">삭제</button>
                                     </form>
@@ -226,7 +226,7 @@
                                 <form action="#" th:action="@{'/project/'+${nickname}+'/'+${title}+'/problem-share/comment'}" method="post">
                                     <div class="form-group"> 
                                         <div class="input-group mb-3">
-                                            <input  type="hidden" name="pId" th:value="${problem.id}" >
+                                            <input  type="hidden" name="problemId" th:value="${problem.id}" >
                                             <input class="form-control" placeholder="Add a comment" type="text" name="content" required minlength="5">
                                             
                                             <div class="input-group-append">
@@ -251,7 +251,7 @@
 
 
                                     <form id="delete-comment-form" th:action="@{'/project/'+${nickname}+'/'+${title}+'/problem-share/comment/' + ${comment.id}}"
-                                        th:if="${#authentication.name == comment.writerId.nickname}" method="post">
+                                        th:if="${#authentication.name == comment.writer.nickname}" method="post">
                                         <input type="hidden" name="_method" value="delete"/>
                                         <button class="btn btn-outline-danger pull-right comment-delete-btn">
                                             <i class="fa fa-times" aria-hidden="true"></i>
@@ -263,9 +263,9 @@
                                         <!-- <img class="avatar" src="http://bootdey.com/img/Content/user_1.jpg" alt="avatar"> -->
 
 
-                                        <svg th:if="${#strings.isEmpty(comment.writerId?.profileImage)}" data-jdenticon-value="user127" th:data-jdenticon-value="${comment.writerId.nickname}"
+                                        <svg th:if="${#strings.isEmpty(comment.writer?.profileImage)}" data-jdenticon-value="user127" th:data-jdenticon-value="${comment.writer.nickname}"
                                          class="avatar"></svg>
-                                        <img th:if="${!#strings.isEmpty(comment.writerId?.profileImage)}" th:src="${comment.writerId.profileImage}"
+                                        <img th:if="${!#strings.isEmpty(comment.writer?.profileImage)}" th:src="${comment.writer.profileImage}"
                                              class="avatar"  >
 
                                     </a>
@@ -273,7 +273,7 @@
                                     <div class="comment-body">
                                         
                                         <div class="comment-heading">
-                                            <h4 class="user" th:text="${comment.writerId.nickname}"></h4>
+                                            <h4 class="user" th:text="${comment.writer.nickname}"></h4>
                                             <h5 class="time comment-time" th:text="${comment.createdDate}"></h5>
                                           
                                         </div>

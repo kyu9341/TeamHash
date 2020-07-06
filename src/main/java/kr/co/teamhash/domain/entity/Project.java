@@ -46,4 +46,13 @@ public class Project {
     public String getEncodedTitle() {
         return URLEncoder.encode(this.title, StandardCharsets.UTF_8);
     }
+
+    public boolean checkMember (Account account) {
+        for (ProjectMember projectMember : this.getMembers()) {
+            if (projectMember.getAccount().equals(account)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

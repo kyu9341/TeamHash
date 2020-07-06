@@ -25,12 +25,12 @@ public class Comment {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name ="problems_id")
-    private Problems problemId;
+    @JoinColumn(name ="problem_id")
+    private Problem problem;
 
     @ManyToOne
     @JoinColumn(name ="account_id")
-    private Account writerId;
+    private Account writer;
 
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;

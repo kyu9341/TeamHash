@@ -114,7 +114,7 @@ public class ProjectController {
         model.addAttribute("title", title);
         model.addAttribute("nickname", nickname);
         
-        List<Problems> problemList = problemShareService.getProblemList(project.getId());
+        List<Problem> problemList = problemShareService.getProblemList(project.getId());
         Collections.reverse(problemList);
 
         model.addAttribute("problemList", problemList);
@@ -126,16 +126,20 @@ public class ProjectController {
 
     // 문제 공유란 글 작성 완료
     @PostMapping("/problem-share/post")
-    public String write(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
-                        Model model,  @CurrentUser Account account, Problems problem) {
+    public String write(@PathVariable("nickname") String nickname, @PathVariable("title") String projectTitle,
+                        Model model,  @CurrentUser Account account, String writer, String title, String content) {
         
         // nickname과 projectTitle로 projectId 찾기
-        Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
+        Project project = projectRepository.findByTitleAndBuilderNick(projectTitle, nickname);
 
         // nickname과 projectTitle에 맞는 프로젝트가 없을 때
         if(project == null)
             return "project/no-project";
 
+        // TODO problemForm 으로 변경예정
+        Problem problem = new Problem();
+        problem.setTitle(title);
+        problem.setContent(content);
         problemShareService.saveProblem(problem, project.getId(), account);
         return "redirect:/project/" + nickname +"/" + project.getEncodedTitle() + "/problem-share/";
     }
@@ -143,7 +147,7 @@ public class ProjectController {
     // 코멘트 작성
     @PostMapping("/problem-share/comment")
     public String write(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
-                        Model model,  @CurrentUser Account account, Comment comment, Long pId) {
+                        Model model,  @CurrentUser Account account, Comment comment, Long problemId) {
 
         Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
 
@@ -152,7 +156,7 @@ public class ProjectController {
             return "project/no-project";
 
         // 입력받은 comment 내용, 커멘트가 달린 문제공유글 id, 해당 코멘트를 작성한 유저
-        problemShareService.saveComment(comment, pId, account);
+        problemShareService.saveComment(comment, problemId, account);
         return "redirect:/project/" + nickname + "/" + project.getEncodedTitle() + "/problem-share/";
     }
 

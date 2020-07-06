@@ -43,36 +43,13 @@ public class ProjectService {
 
         // 프로젝트 저장
         projectRepository.save(project);
-
-        // Project DB와 일대다 관계의 Member DB
-        // 프로젝트 생성 시 프로젝트를 생성한 사람의 id를 Member DB에 저장
-        // 이후에 초대되는 유저들을 Member에 Project id와 함께 저장한다.        
-        ProjectMember projectMember = ProjectMember.builder()
-                .joinDate(LocalDateTime.now())
-                .project(project)
-                .account(account)
-                .build();
-
-        // 멤버 저장
-        // 이후 프로젝트 생성 페이지에서 유저를 검색해서 등록할 수 있게 변경
-        // 유저를 검색해서 등록을 한다고 바로 맴버에 등록이 되는것이 아닌 
-        // 초대 메세지를 보내는 형식으로 하는것이 좋을 듯
-        memberRepository.save(projectMember);
+        saveProjectMember(account.getNickname(), project.getTitle(), project.getBuilderNick());
     }
 
     // 해당 유저의 프로젝트 소속 여부 확인
     public boolean isMember(Long projectId, Account account){
-        
-        boolean im = false;
-        List<ProjectMember> projectMemberList = memberRepository.findAllByProjectId(projectId);
-
-        for(ProjectMember projectMember : projectMemberList){
-            if(projectMember.getAccount().getId().equals(account.getId())){
-                im = true;
-                break;
-            }
-        }
-        return im;
+        Optional<Project> project = projectRepository.findById(projectId);
+        return project.get().checkMember(account);
     }
 
     public void saveProjectMember(String nickname, String title, String builderNick) {
@@ -83,7 +60,6 @@ public class ProjectService {
                 .project(project)
                 .joinDate(LocalDateTime.now())
                 .build());
-
     }
 
     public void createDescription(Project project, String description) {

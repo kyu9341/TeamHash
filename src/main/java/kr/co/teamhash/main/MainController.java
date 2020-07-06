@@ -78,7 +78,7 @@ public class MainController {
 
     @PostMapping("/main")
     public String buildProjectDone(@Valid @ModelAttribute ProjectBuildForm projectBuildForm, Errors errors,
-                                   Model model , @CurrentUser Account account , String members ){
+                                   Model model , @CurrentUser Account account){
         if (errors.hasErrors()) {
 //            List<Project> projectList = projectService.getProjectList(account);
             Account byNickname = accountRepository.findByNickname(account.getNickname());
@@ -92,7 +92,6 @@ public class MainController {
         }
 
         projectService.saveNewProject(projectBuildForm, account);
-        System.out.println(members);
         return "redirect:/main";
     }
 
