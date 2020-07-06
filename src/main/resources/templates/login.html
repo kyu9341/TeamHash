@@ -106,12 +106,12 @@
 
 <body>
 
-<div class="signup-form">
-
+<div class="signup-form mt-5">
+ 
+        <img src="/images/login-img.png" alt="TeamHash" style="max-width: 100%; height: 100;" />
+    
         <form action="#" class="needs-validation" th:action="@{/login}" method="post" novalidate>
-        <hgroup>
-            <img src="/images/logo.png" alt="TeamHash" style="max-width: 100%; height: auto;" />
-        </hgroup>
+        
         <h3>로그인</h3>
 
         <hr>
@@ -119,7 +119,7 @@
 
 
             <div class="form-group">
-                <label for="username">username</label>
+                <label for="username">이메일</label>
                 <input id="username" type="username" name="username" class="form-control" required minlength="3" maxlength="20">
                 <small id="nicknameHelp" class="form-text text-muted">
                     가입할 때 사용한 이메일을 입력하세요.
