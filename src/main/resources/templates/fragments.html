@@ -22,24 +22,24 @@
             background-color: #FFFFFF;
         }
 
-        html,body {
+        html, body {
             height: 100%;
             margin: 0;
             padding: 0;
         }
 
-         .container{
-             max-width: 100%;
-             position: relative;
-             min-height: 100%;
-         }
-        
+        .container {
+            max-width: 100%;
+            position: relative;
+            min-height: 100%;
+        }
 
 
-        .tagify--outside{
+        .tagify--outside {
             border: 0;
         }
-        .tagify--outside .tagify__input{
+
+        .tagify--outside .tagify__input {
             order: -1;
             flex: 100%;
             border: 1px solid var(--tags-border-color);
@@ -47,109 +47,126 @@
             transition: .1s;
         }
 
-        .tagify--outside .tagify__input:hover{ border-color:var(--tags-hover-border-color); }
-        .tagify--outside.tagify--focus .tagify__input{
-            transition:0s;
+        .tagify--outside .tagify__input:hover {
+            border-color: var(--tags-hover-border-color);
+        }
+
+        .tagify--outside.tagify--focus .tagify__input {
+            transition: 0s;
             border-color: var(--tags-focus-border-color);
         }
 
 
-
         /* footer */
 
-   
-        .row{
+
+        .row {
             margin-left: 0px;
             margin-right: 0px;
         }
-        .container-fluid{
+
+        .container-fluid {
             padding: 0%;
             height: 0px;
         }
 
-        .icon-list{
+        .icon-list {
             margin-top: 10px;
         }
+
         section .section-title {
             text-align: center;
             color: #007b5e;
             margin-bottom: 50px;
             text-transform: uppercase;
         }
+
         #footer {
             background: #0f4c81 !important;
             margin-top: 10%;
-            position: relative; 
+            position: relative;
             bottom: 0;
             left: 0;
             right: 0;
             width: 100%;
-            
-            
+
+
         }
-        #footer h5{
+
+        #footer h5 {
             padding-left: 10px;
             border-left: 3px solid #eeeeee;
             padding-bottom: 6px;
             margin-bottom: 20px;
-            color:#ffffff;
+            color: #ffffff;
         }
+
         #footer a {
             color: #ffffff;
             text-decoration: none !important;
             background-color: transparent;
             -webkit-text-decoration-skip: objects;
         }
-        #footer ul.social li{
+
+        #footer ul.social li {
             padding: 3px 0;
-            
+
         }
-        .social{
+
+        .social {
             margin-bottom: 0px;
         }
+
         #footer ul.social li a i {
             margin-right: 5px;
-            font-size:25px;
+            font-size: 25px;
             -webkit-transition: .5s all ease;
             -moz-transition: .5s all ease;
             transition: .5s all ease;
         }
+
         #footer ul.social li:hover a i {
-            font-size:30px;
-            margin-top:-10px;
+            font-size: 30px;
+            margin-top: -10px;
         }
+
         #footer ul.social li a,
-        #footer ul.quick-links li a{
-            color:#ffffff;
+        #footer ul.quick-links li a {
+            color: #ffffff;
         }
-        #footer ul.social li a:hover{
-            color:#eeeeee;
+
+        #footer ul.social li a:hover {
+            color: #eeeeee;
         }
-        #footer ul.quick-links li{
+
+        #footer ul.quick-links li {
             padding: 3px 0;
             -webkit-transition: .5s all ease;
             -moz-transition: .5s all ease;
             transition: .5s all ease;
         }
-        #footer ul.quick-links li:hover{
+
+        #footer ul.quick-links li:hover {
             padding: 3px 0;
-            margin-left:5px;
-            font-weight:700;
+            margin-left: 5px;
+            font-weight: 700;
         }
-        #footer ul.quick-links li a i{
+
+        #footer ul.quick-links li a i {
             margin-right: 5px;
         }
+
         #footer ul.quick-links li:hover a i {
             font-weight: 700;
         }
 
-        @media (max-width:767px){
+        @media (max-width: 767px) {
             #footer h5 {
-            padding-left: 0;
-            border-left: transparent;
-            padding-bottom: 0px;
-            margin-bottom: 10px;
-        }
+                padding-left: 0;
+                border-left: transparent;
+                padding-bottom: 0px;
+                margin-bottom: 10px;
+            }
         }
 
 
@@ -190,16 +207,17 @@
             <li class="nav-item" sec:authorize="isAuthenticated()">
                 <a class="nav-link" th:href="@{'/profile/' + ${#authentication.name} + '/notification'}">
                     <span class="text-secondary" th:if="${!hasNotification}"><i class="fa fa-bell-o"
-                                                                             aria-hidden="true"></i></span>
+                                                                                aria-hidden="true"></i></span>
                     <span class="text-warning" th:if="${hasNotification}"><i class="fa fa-bell"
-                                                                          aria-hidden="true"></i></span>
+                                                                             aria-hidden="true"></i></span>
                 </a>
             </li>
             <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
                 <div class="btn-group">
                     <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="false">
-                        <svg th:if="${#strings.isEmpty(account?.profileImage)}" data-jdenticon-value="user127" th:data-jdenticon-value="${#authentication.name}"
+                        <svg th:if="${#strings.isEmpty(account?.profileImage)}" data-jdenticon-value="user127"
+                             th:data-jdenticon-value="${#authentication.name}"
                              width="24" height="24" class="rounded border bg-light"></svg>
                         <img th:if="${!#strings.isEmpty(account?.profileImage)}" th:src="${account.profileImage}"
                              width="24" height="24" class="rounded border">
@@ -221,7 +239,7 @@
     </div>
 </nav>
 
-<nav th:fragment="project-nav (currentProject)" >
+<nav th:fragment="project-nav (currentProject)">
     <div class="top bg-light">
         <br>
         <!-- 페이지 네비게이션 -->
@@ -231,7 +249,8 @@
                     <nav aria-label="breadcrumb justify-content-center">
                         <ol class="breadcrumb ">
                             <li class="breadcrumb-item"><a href="/main">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page" th:text="${title+' / '+ currentProject}"></li>
+                            <li class="breadcrumb-item active" aria-current="page"
+                                th:text="${title+' / '+ currentProject}"></li>
                         </ol>
                     </nav>
                 </div>
@@ -242,66 +261,90 @@
         <p class="text-center ">
         <ul class="nav nav-tabs  justify-content-center">
             <li class="nav-item">
-                <a class="nav-link" th:classappend="${currentProject == 'project'}? active" 
-                href="#" th:href="@{'/project/'+${nickname}+'/'+${title} + '/main'}">프로젝트 현황</a>
+                <a class="nav-link" th:classappend="${currentProject == 'project'}? active"
+                   href="#" th:href="@{'/project/'+${nickname}+'/'+${title} + '/main'}">프로젝트 현황</a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" th:classappend="${currentProject == 'problem'}? active"  href="#" th:href="@{'/project/'+${nickname}+'/'+${title}+'/problem-share'}">
+                <a class="nav-link" th:classappend="${currentProject == 'problem'}? active" href="#"
+                   th:href="@{'/project/'+${nickname}+'/'+${title}+'/problem-share'}">
                     <svg class="bi bi-question-octagon-fill" width="1em" height="1em" viewBox="0 0 16 16"
-                        fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                         fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd"
-                            d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353L11.46.146zM6.57 6.033H5.25C5.22 4.147 6.68 3.5 8.006 3.5c1.397 0 2.673.73 2.673 2.24 0 1.08-.635 1.594-1.244 2.057-.737.559-1.01.768-1.01 1.486v.355H7.117l-.007-.463c-.038-.927.495-1.498 1.168-1.987.59-.444.965-.736.965-1.371 0-.825-.628-1.168-1.314-1.168-.901 0-1.358.603-1.358 1.384zm1.251 6.443c-.584 0-1.009-.394-1.009-.927 0-.552.425-.94 1.01-.94.609 0 1.028.388 1.028.94 0 .533-.42.927-1.029.927z" />
+                              d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353L11.46.146zM6.57 6.033H5.25C5.22 4.147 6.68 3.5 8.006 3.5c1.397 0 2.673.73 2.673 2.24 0 1.08-.635 1.594-1.244 2.057-.737.559-1.01.768-1.01 1.486v.355H7.117l-.007-.463c-.038-.927.495-1.498 1.168-1.987.59-.444.965-.736.965-1.371 0-.825-.628-1.168-1.314-1.168-.901 0-1.358.603-1.358 1.384zm1.251 6.443c-.584 0-1.009-.394-1.009-.927 0-.552.425-.94 1.01-.94.609 0 1.028.388 1.028.94 0 .533-.42.927-1.029.927z"/>
                     </svg>
                     &nbsp;문제공유</a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link"  th:classappend="${currentProject == 'chatting'}? active" href="#" th:href="@{'/project/'+${nickname}+'/'+${title}+'/chatting'}"><span class="glyphicon glyphicon-star" aria-hidden="true">
+                <a class="nav-link" th:classappend="${currentProject == 'chatting'}? active" href="#"
+                   th:href="@{'/project/'+${nickname}+'/'+${title}+'/chatting'}"><span class="glyphicon glyphicon-star"
+                                                                                       aria-hidden="true">
                         <svg class="bi bi-chat-square-dots" width="1em" height="1em" viewBox="0 0 16 16"
-                            fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                             fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd"
-                                d="M14 1H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h2.5a2 2 0 0 1 1.6.8L8 14.333 9.9 11.8a2 2 0 0 1 1.6-.8H14a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2.5a1 1 0 0 1 .8.4l1.9 2.533a1 1 0 0 0 1.6 0l1.9-2.533a1 1 0 0 1 .8-.4H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
+                                  d="M14 1H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h2.5a2 2 0 0 1 1.6.8L8 14.333 9.9 11.8a2 2 0 0 1 1.6-.8H14a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2.5a1 1 0 0 1 .8.4l1.9 2.533a1 1 0 0 0 1.6 0l1.9-2.533a1 1 0 0 1 .8-.4H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
                             <path
-                                d="M5 6a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+                                    d="M5 6a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
                         </svg>
                         &nbsp;채팅</a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" th:classappend="${currentProject == 'Calendar'}? active"  href="#" th:href="@{'/project/'+${nickname}+'/'+${title}+'/calendar'}">
-                    <svg class="bi bi-calendar-check" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
-                        <path fill-rule="evenodd" d="M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1zm1-3a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2z"/>
-                        <path fill-rule="evenodd" d="M3.5 0a.5.5 0 0 1 .5.5V1a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 .5-.5zm9 0a.5.5 0 0 1 .5.5V1a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 .5-.5z"/>
-                      </svg>
+                <a class="nav-link" th:classappend="${currentProject == 'Calendar'}? active" href="#"
+                   th:href="@{'/project/'+${nickname}+'/'+${title}+'/calendar'}">
+                    <svg class="bi bi-calendar-check" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor"
+                         xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                              d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                        <path fill-rule="evenodd"
+                              d="M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1zm1-3a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2z"/>
+                        <path fill-rule="evenodd"
+                              d="M3.5 0a.5.5 0 0 1 .5.5V1a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 .5-.5zm9 0a.5.5 0 0 1 .5.5V1a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 .5-.5z"/>
+                    </svg>
                     &nbsp;캘린더</a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link"  th:classappend="${currentProject == 'document'}? active" href="#" th:href="@{'/project/'+${nickname}+'/'+${title}+'/cloud'}" 
-                tabindex="-1" aria-disabled="true">
+                <a class="nav-link" th:classappend="${currentProject == 'Kanban'}? active" href="#"
+                   th:href="@{'/project/'+${nickname}+'/'+${title}+'/kanban'}">
+                    <svg class="bi bi-calendar-check" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor"
+                         xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                              d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                        <path fill-rule="evenodd"
+                              d="M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1zm1-3a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2z"/>
+                        <path fill-rule="evenodd"
+                              d="M3.5 0a.5.5 0 0 1 .5.5V1a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 .5-.5zm9 0a.5.5 0 0 1 .5.5V1a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 .5-.5z"/>
+                    </svg>
+                    &nbsp;칸반보드</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" th:classappend="${currentProject == 'document'}? active" href="#"
+                   th:href="@{'/project/'+${nickname}+'/'+${title}+'/cloud'}"
+                   tabindex="-1" aria-disabled="true">
                     <svg class="bi bi-file-earmark" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor"
-                        xmlns="http://www.w3.org/2000/svg">
+                         xmlns="http://www.w3.org/2000/svg">
                         <path
-                            d="M4 1h5v1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V6h1v7a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2z" />
-                        <path d="M9 4.5V1l5 5h-3.5A1.5 1.5 0 0 1 9 4.5z" />
+                                d="M4 1h5v1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V6h1v7a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2z"/>
+                        <path d="M9 4.5V1l5 5h-3.5A1.5 1.5 0 0 1 9 4.5z"/>
                     </svg>&nbsp; 클라우드</a>
 
             </li>
             <li class="nav-item" th:if="${#authentication.name == nickname}">
-                <a class="nav-link"  th:classappend="${currentProject == 'settings'}? active" href="#"
+                <a class="nav-link" th:classappend="${currentProject == 'settings'}? active" href="#"
                    th:href="@{'/project/'+${nickname}+'/'+${title}+'/settings'}" tabindex="-1" aria-disabled="true">
                     <svg class="bi bi-gear-fill" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor"
-                        xmlns="http://www.w3.org/2000/svg">
+                         xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd"
-                            d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 0 0-5.86 2.929 2.929 0 0 0 0 5.858z" />
+                              d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 0 0-5.86 2.929 2.929 0 0 0 0 5.858z"/>
                     </svg>
                     &nbsp; 설정</a>
             </li>
         </ul>
         </p>
-        
+
     </div>
 </nav>
 
@@ -316,35 +359,36 @@
 </div>
 
 
-
 <footer th:fragment="footer" class="container-fluid text-center">
 
     <div style="height: 200px;">
 
     </div>
-	<section id="footer">
-		
-			<div class="row">
-				<div class="col-xs-12 col-sm-12 col-md-12 icon-list">
-					<ul class="list-unstyled list-inline social text-center">
-						<li class="list-inline-item"><a href=""><i class="fa fa-facebook"></i></a></li>
-						<li class="list-inline-item"><a href=""><i class="fa fa-twitter"></i></a></li>
-						<li class="list-inline-item"><a href=""><i class="fa fa-instagram"></i></a></li>
-						<li class="list-inline-item"><a href=""><i class="fa fa-google-plus"></i></a></li>
-						<li class="list-inline-item"><a href="" target="_blank"><i class="fa fa-envelope"></i></a></li>
-					</ul>
-				</div>
-				</hr>
-			</div>	
-			<div class="row">
-				<div class="col-xs-12 col-sm-12 col-md-12 mt-2 mt-sm-2 text-center text-white">
-					<p><u><a href="https://www.nationaltransaction.com/">TeamHash</a></u>is a collaborative web platform for students. Try various functions</p>
-					<p class="h6">&copy All right Reversed.<a class="text-green ml-2" href="https://www.sunlimetech.com" target="_blank">Sunlimetech</a></p>
-				</div>
-				</hr>
-			</div>	
-		
-	</section>
+    <section id="footer">
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 icon-list">
+                <ul class="list-unstyled list-inline social text-center">
+                    <li class="list-inline-item"><a href=""><i class="fa fa-facebook"></i></a></li>
+                    <li class="list-inline-item"><a href=""><i class="fa fa-twitter"></i></a></li>
+                    <li class="list-inline-item"><a href=""><i class="fa fa-instagram"></i></a></li>
+                    <li class="list-inline-item"><a href=""><i class="fa fa-google-plus"></i></a></li>
+                    <li class="list-inline-item"><a href="" target="_blank"><i class="fa fa-envelope"></i></a></li>
+                </ul>
+            </div>
+            </hr>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 mt-2 mt-sm-2 text-center text-white">
+                <p><u><a href="https://www.nationaltransaction.com/">TeamHash</a></u>is a collaborative web platform for
+                    students. Try various functions</p>
+                <p class="h6">&copy All right Reversed.<a class="text-green ml-2" href="https://www.sunlimetech.com"
+                                                          target="_blank">Sunlimetech</a></p>
+            </div>
+            </hr>
+        </div>
+
+    </section>
 </footer>
 
 
@@ -358,7 +402,7 @@
 
             Array.prototype.filter.call(forms, function (form) {
                 form.addEventListener('submit', function (event) {
-                    if(form.checkValidity() === false){
+                    if (form.checkValidity() === false) {
                         event.preventDefault();
                         event.stopPropagation();
                     }

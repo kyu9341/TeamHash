@@ -23,7 +23,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Getter @Setter @EqualsAndHashCode(of = "id")
 @Builder @AllArgsConstructor @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class Problems {
+public class Problem {
     @Id @GeneratedValue
     private Long id;
 
@@ -34,7 +34,7 @@ public class Problems {
 
     @ManyToOne
     @JoinColumn(name ="account_id")
-    private Account writerId;
+    private Account writer;
 
     @Column(length = 100, nullable = false)
     private String title;
@@ -43,7 +43,7 @@ public class Problems {
     private String content;
 
     //Comment의 ProblemId와 연결을 의미함
-    @OneToMany(mappedBy="problemId")
+    @OneToMany(mappedBy="problem")
     private List<Comment> comments = new ArrayList<Comment>();
 
 
@@ -55,5 +55,8 @@ public class Problems {
     @LastModifiedDate
     private LocalDateTime modifiedDate;
 
+    public boolean isAuthor (Account account) {
+        return this.getWriter().equals(account);
+    }
 
 }
