@@ -11,6 +11,7 @@ import kr.co.teamhash.domain.entity.Comment;
 import kr.co.teamhash.domain.entity.Problems;
 import kr.co.teamhash.domain.repository.CommentRepository;
 import kr.co.teamhash.domain.repository.ProblemsRepository;
+import kr.co.teamhash.project.form.ProblemShareForm;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -21,10 +22,14 @@ public class ProblemShareService {
     private final CommentRepository commentRepository;
 
     // 문제 공유 글 저장
-    public void saveProblem(Problems problem, Long projectId, Account account){
+    public void saveProblem(ProblemShareForm problemForm, Long projectId, Account account){
 
-        problem.setProjectId(projectId);
-        problem.setWriterId(account);
+        Problems problem = Problems.builder()
+                    .title(problemForm.getTitle())
+                    .content(problemForm.getContent())
+                    .projectId(projectId)
+                    .writerId(account)
+                    .build();
 
         problemsRepository.save(problem);
     }

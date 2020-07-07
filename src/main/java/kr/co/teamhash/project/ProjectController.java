@@ -141,7 +141,7 @@ public class ProjectController {
     // 문제 공유란 글 작성 완료
     @PostMapping("/problem-share/post")
     public String write(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
-                        Model model,  @CurrentUser Account account,@Valid ProblemShareForm problemForm, Errors errors) {
+                        Model model,  @CurrentUser Account account, @Valid ProblemShareForm problemForm, Errors errors) {
         
 
         
@@ -155,10 +155,9 @@ public class ProjectController {
         // nickname과 projectTitle에 맞는 프로젝트가 없을 때
         if(project == null)
             return "project/no-project";
-        Problems problem = new Problems();
-        problem.setTitle(problemForm.getTitle());
-        problem.setContent(problemForm.getContent());
-        problemShareService.saveProblem(problem, project.getId(), account);
+
+  
+        problemShareService.saveProblem(problemForm, project.getId(), account);
         return "redirect:/project/" + nickname +"/" + project.getEncodedTitle() + "/problem-share/";
     }
 
