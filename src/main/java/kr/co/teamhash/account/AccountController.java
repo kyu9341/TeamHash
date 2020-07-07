@@ -96,8 +96,8 @@ public class AccountController {
     @GetMapping("/profile/{nickname}")
     public String viewProfile(@PathVariable String nickname, Model model, @CurrentUser Account account) {
         Account byNickname = accountService.getAccountByNickname(nickname);
+        List<Notification> notifications = notificationService.getAllNotification(account);
 
-        List<Notification> notifications = notificationRepository.findAllByAccountId(account.getId());
         model.addAttribute("notifications", notifications);
         model.addAttribute(byNickname);
         // 해당 get 파라미터로 넘어온 닉네임에 해당하는 Account 객체와 현재 인증된 객체를 비교
@@ -110,8 +110,8 @@ public class AccountController {
     @GetMapping("/profile/{nickname}/notification") // 알림 버튼으로 넘어온 경우
     public String viewNotification(@PathVariable String nickname, Model model, @CurrentUser Account account) {
         Account byNickname = accountService.getAccountByNickname(nickname);
+        List<Notification> notifications = notificationService.getAllNotification(account);
 
-        List<Notification> notifications = notificationRepository.findAllByAccountId(account.getId());
         model.addAttribute("notifications", notifications);
         model.addAttribute(byNickname);
         // 해당 get 파라미터로 넘어온 닉네임에 해당하는 Account 객체와 현재 인증된 객체를 비교

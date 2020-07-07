@@ -50,4 +50,7 @@ public class NotificationService {
     }
 
 
+    public List<Notification> getAllNotification(Account account) {
+        return notificationRepository.findAllByAccountId(account.getId());
+    }
 }

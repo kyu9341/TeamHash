@@ -49,8 +49,6 @@ public class ProjectController {
     private final ProjectService projectService;
     private final ProblemShareService problemShareService;
     private final AccountRepository accountRepository;
-    private final MemberRepository memberRepository;
-    private final ProjectRepository projectRepository;
     private final NotificationService notificationService;
     private final MemberValidator memberValidator;
     private final ObjectMapper objectMapper;
@@ -183,7 +181,7 @@ public class ProjectController {
                            Model model,  @CurrentUser Account account) throws JsonProcessingException {
 
         Project project = projectService.getProject(nickname, title);
-        List<ProjectMember> members = memberRepository.findAllByProjectId(project.getId());
+        List<ProjectMember> members = projectService.getMemberList(project);
 
         model.addAttribute(account);
         model.addAttribute("members", members);
@@ -250,7 +248,7 @@ public class ProjectController {
             return "redirect:/project/" + nickname + "/" + project.getEncodedTitle() + "/settings";
         }
         Integer progress = Integer.parseInt(progressForm.getProgress());
-        projectService.updateProgress(title, nickname, progress);
+        projectService.updateProgress(project, progress);
         return "redirect:/project/" + nickname + "/" + project.getEncodedTitle() + "/settings";
     }
 

@@ -78,8 +78,7 @@ public class ProjectService {
         memberRepository.removeByAccountIdAndProjectId(account.getId(), projectId);
     }
 
-    public void updateProgress(String title, String nickname, Integer progressPer) {
-        Project project = getProject(title, nickname);
+    public void updateProgress(Project project, Integer progressPer) {
         project.setProgress(progressPer);
         projectRepository.save(project);
     }

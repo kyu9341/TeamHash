@@ -30,7 +30,6 @@ public class ChatController {
 
     private final ChatService chatservice;
     private final ProjectService projectService;
-    private final ProjectRepository projectRepository;
 
     @GetMapping("/project/{nickname}/{title}/chatting") // 첫 화면 매핑
     public String index(Model model, @PathVariable("nickname") String nickname,
