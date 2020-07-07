@@ -32,7 +32,6 @@ public class ProjectService {
 
     // 프로젝트 저장
     public void saveNewProject(ProjectBuildForm projectBuildForm, Account account){
-
         Project project = Project.builder()
                 .title(projectBuildForm.getTitle())
                 .subtitle(projectBuildForm.getSubTitle())
@@ -40,7 +39,7 @@ public class ProjectService {
                 .builderNick(projectBuildForm.getBuilderNick())
                 .buildDate(LocalDateTime.now())
                 .build();
-
+        project.parseTitle();
         // 프로젝트 저장
         projectRepository.save(project);
         saveProjectMember(account.getNickname(), project.getTitle(), project.getBuilderNick());

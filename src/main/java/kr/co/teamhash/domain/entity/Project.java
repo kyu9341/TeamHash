@@ -59,4 +59,8 @@ public class Project {
     public void addSchedule (Schedule schedule) {
         this.getSchedules().add(schedule);
     }
+
+    public void parseTitle() {
+        this.title = this.title.trim().replace(" ", "-");
+    }
 }
