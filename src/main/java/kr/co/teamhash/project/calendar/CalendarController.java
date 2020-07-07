@@ -28,7 +28,6 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class CalendarController {
 
-    private final ProjectService projectService;
     private final CalendarService calendarService;
     private final ProjectRepository projectRepository;
 
@@ -78,7 +77,7 @@ public class CalendarController {
             return "redirect:/project/" + nickname + "/" + project.getEncodedTitle() + "/calendar";
         }
        
-        calendarService.saveNewSchedule(scheduleForm, account, project.getId());
+        calendarService.saveNewSchedule(scheduleForm, project);
         return "redirect:/project/" + nickname + "/" + project.getEncodedTitle() + "/calendar";
 
     }

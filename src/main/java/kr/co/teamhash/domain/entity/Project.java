@@ -55,4 +55,8 @@ public class Project {
         }
         return false;
     }
+
+    public void addSchedule (Schedule schedule) {
+        this.getSchedules().add(schedule);
+    }
 }
