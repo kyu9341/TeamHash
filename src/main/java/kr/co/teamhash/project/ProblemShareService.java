@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import kr.co.teamhash.project.form.CommentForm;
 import org.springframework.stereotype.Service;
 
 import kr.co.teamhash.domain.entity.Account;
@@ -25,11 +26,11 @@ public class ProblemShareService {
     // 문제 공유 글 저장
     public void saveProblem(ProblemShareForm problemForm, Long projectId, Account account){
 
-        Problems problem = Problems.builder()
+        Problem problem = Problem.builder()
                     .title(problemForm.getTitle())
                     .content(problemForm.getContent())
                     .projectId(projectId)
-                    .writerId(account)
+                    .writer(account)
                     .build();
         problemsRepository.save(problem);
     }
@@ -48,45 +49,35 @@ public class ProblemShareService {
     public void deleteProblem(Long problemId, Account currentUser){
         // 문제 공유 글 삭제시 해당 글에 있는 
         // 코멘트를 모두 제거해야 한다.
-
         Optional<Problem> problem = problemsRepository.findById(problemId);
-        if (problem.get().isAuthor(currentUser)) {
+        if (problem.get().isWriter(currentUser))
             commentRepository.deleteAllByProblem(problem.get());
-        }
+        else
+            throw new IllegalArgumentException("자신이 작성한 글만 삭제할 수 있습니다.");
         problemsRepository.deleteById(problemId);
 
     }
 
 
     //코멘트 작성
-    public void saveComment(Comment comment, Long problemId, Account account){
+    public void saveComment(CommentForm commentForm, Account account){
 
-        //외래키 객체 주입
-        Problem problem = getProblem(problemId);
-        
-        //공백값 검출
-        if(comment.getContent().length() < 5)
-            return;
-        
-        comment.setProblem(problem);
-        comment.getProblem().getComments().add(comment);
-        comment.setWriter(account);
-
+        Problem problem = getProblem(Long.parseLong(commentForm.getProblemId()));
+        Comment comment = Comment.builder()
+                .content(commentForm.getContent())
+                .problem(problem)
+                .writer(account)
+                .build();
+        problem.addComment(comment);
         commentRepository.save(comment);
     }
 
     //코멘트 삭제
     public void deleteComment(Long commentId, Account currentUser){
-
-        if(!commentRepository.findById(commentId).get().getWriter().
-                getId().equals(currentUser.getId())){
-
-            System.out.println("not your comment");
-        }else{
-            System.out.println("your comment");
+        Optional<Comment> comment = commentRepository.findById(commentId);
+        if (comment.get().isWriter(currentUser))
             commentRepository.deleteById(commentId);
-        }
-
-        
+        else
+            throw new IllegalArgumentException("자신이 작성한 글만 삭제할 수 있습니다.");
     }
 }

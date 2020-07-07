@@ -10,6 +10,8 @@ import javax.validation.Valid;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import kr.co.teamhash.domain.entity.*;
+import kr.co.teamhash.project.form.CommentForm;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,12 +28,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.teamhash.account.CurrentUser;
-import kr.co.teamhash.domain.entity.Account;
-import kr.co.teamhash.domain.entity.Comment;
-import kr.co.teamhash.domain.entity.Notification;
-import kr.co.teamhash.domain.entity.Problems;
-import kr.co.teamhash.domain.entity.Project;
-import kr.co.teamhash.domain.entity.ProjectMember;
 import kr.co.teamhash.domain.repository.AccountRepository;
 import kr.co.teamhash.domain.repository.MemberRepository;
 import kr.co.teamhash.domain.repository.ProjectRepository;
@@ -122,8 +118,6 @@ public class ProjectController {
         if(project == null)
             return "project/no-project";
 
-        // 프로젝트에 필요한 정보와
-        // 유저가 해당 프로젝트의 맴버인지 확인하는 정보
         model.addAttribute(project);
         model.addAttribute("title", title);
         model.addAttribute("nickname", nickname);
@@ -141,18 +135,17 @@ public class ProjectController {
     // 문제 공유란 글 작성 완료
     @PostMapping("/problem-share/post")
     public String write(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
-                        Model model,  @CurrentUser Account account, @Valid ProblemShareForm problemForm, Errors errors) {
-       
-        // nickname과 projectTitle로 projectId 찾기
-        Project project = projectRepository.findByTitleAndBuilderNick(projectTitle, nickname);
+                        Model model,  @CurrentUser Account account, @Valid @ModelAttribute ProblemShareForm problemForm, Errors errors) {
+
+        Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
+
+        if(project == null)
+            return "project/no-project";
 
         if (errors.hasErrors()) {
             model.addAttribute("error", "최소 입력 길이를 만족시켜 주세요");
             return "redirect:/project/" + nickname +"/" + project.getEncodedTitle() + "/problem-share/";
         }
-        // nickname과 projectTitle에 맞는 프로젝트가 없을 때
-        if(project == null)
-            return "project/no-project";
   
         problemShareService.saveProblem(problemForm, project.getId(), account);
         return "redirect:/project/" + nickname +"/" + project.getEncodedTitle() + "/problem-share/";
@@ -161,7 +154,7 @@ public class ProjectController {
     // 코멘트 작성
     @PostMapping("/problem-share/comment")
     public String write(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
-                        Model model,  @CurrentUser Account account, Comment comment, Long problemId) {
+                        Model model, @CurrentUser Account account, @Valid CommentForm commentForm) {
 
         Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
 
@@ -170,14 +163,14 @@ public class ProjectController {
             return "project/no-project";
 
         // 입력받은 comment 내용, 커멘트가 달린 문제공유글 id, 해당 코멘트를 작성한 유저
-        problemShareService.saveComment(comment, problemId, account);
+        problemShareService.saveComment(commentForm, account);
         return "redirect:/project/" + nickname + "/" + project.getEncodedTitle() + "/problem-share/";
     }
 
     //문제 공유글 삭제
     @DeleteMapping("/problem-share/{problemId}")
     public String problemDelete(@PathVariable("nickname") String nickname, @PathVariable("title")
-            String title,@PathVariable("problemId") Long problemId, @CurrentUser Account account, Model model){
+            String title, @PathVariable("problemId") Long problemId, @CurrentUser Account account, Model model){
         
         // nickname과 projectTitle로 projectId 찾기
         Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
@@ -192,7 +185,7 @@ public class ProjectController {
     //코멘트 삭제
     @DeleteMapping("/problem-share/comment/{commentId}")
     public String commentDelete(@PathVariable("nickname") String nickname, @PathVariable("title")
-            String title,@PathVariable("commentId") Long commentId, @CurrentUser Account account, Model model){
+            String title,@PathVariable("commentId") Long commentId, @CurrentUser Account account){
         
         // nickname과 projectTitle로 projectId 찾기
         Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);

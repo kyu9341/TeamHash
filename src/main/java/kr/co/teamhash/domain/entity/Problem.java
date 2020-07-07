@@ -29,9 +29,6 @@ public class Problem {
 
     private Long projectId;
 
-    // @Column(length = 10, nullable = false)
-    // private String writer;
-
     @ManyToOne
     @JoinColumn(name ="account_id")
     private Account writer;
@@ -46,8 +43,6 @@ public class Problem {
     @OneToMany(mappedBy="problem")
     private List<Comment> comments = new ArrayList<Comment>();
 
-
-
     @CreatedDate
     @Column(updatable = false)
     private LocalDateTime createdDate;
@@ -55,8 +50,11 @@ public class Problem {
     @LastModifiedDate
     private LocalDateTime modifiedDate;
 
-    public boolean isAuthor (Account account) {
+    public boolean isWriter (Account account) {
         return this.getWriter().equals(account);
     }
 
+    public void addComment (Comment comment) {
+        this.comments.add(comment);
+    }
 }

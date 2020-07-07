@@ -39,4 +39,9 @@ public class Comment {
     @Column(updatable = false)
     private LocalDateTime createdDate;
 
+    public boolean isWriter(Account account) {
+        return this.writer.equals(account);
+    }
+
+
 }
