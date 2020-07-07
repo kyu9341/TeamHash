@@ -29,7 +29,6 @@ import lombok.extern.slf4j.Slf4j;
 public class CalendarController {
 
     private final CalendarService calendarService;
-    private final ProjectRepository projectRepository;
     private final ProjectService projectService;
 
     // 캘린더

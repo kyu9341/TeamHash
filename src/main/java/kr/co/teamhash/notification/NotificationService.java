@@ -1,5 +1,6 @@
 package kr.co.teamhash.notification;
 
+import kr.co.teamhash.account.AccountService;
 import kr.co.teamhash.domain.entity.Account;
 import kr.co.teamhash.domain.entity.Notification;
 import kr.co.teamhash.domain.entity.Project;
@@ -19,11 +20,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class NotificationService {
     private final NotificationRepository notificationRepository;
-    private final AccountRepository accountRepository;
+    private final AccountService accountService;
     private final ProjectService projectService;
 
     public void addNotification(String invitedMember, String title, String nickname) {
-        Account account = accountRepository.findByNickname(invitedMember);
+        Account account = accountService.getAccountByNickname(invitedMember);
         Project project = projectService.getProject(nickname, title);
         notificationRepository.save(Notification.builder()
                 .account(account)
@@ -35,7 +36,7 @@ public class NotificationService {
     }
 
     public void removeTagNotification(String invitedMember, String title, String nickname) {
-        Account account = accountRepository.findByNickname(invitedMember);
+        Account account = accountService.getAccountByNickname(invitedMember);
         Project project = projectService.getProject(nickname, title);
         notificationRepository.removeByAccountIdAndProjectId(account.getId(), project.getId());
     }

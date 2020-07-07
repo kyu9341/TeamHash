@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import kr.co.teamhash.account.AccountService;
 import kr.co.teamhash.domain.entity.Notification;
 import kr.co.teamhash.domain.entity.ProjectMember;
 import kr.co.teamhash.domain.repository.AccountRepository;
@@ -28,7 +29,7 @@ public class ProjectService {
 
     private final ProjectRepository projectRepository;
     private final MemberRepository memberRepository;
-    private final AccountRepository accountRepository;
+    private final AccountService accountService;
 
     public Project getProject(String nickname, String title) {
         Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
@@ -58,8 +59,8 @@ public class ProjectService {
     }
 
     public void saveProjectMember(String nickname, String title, String builderNick) {
-        Account account = accountRepository.findByNickname(nickname);
-        Project project = getProject(title, builderNick);
+        Account account = accountService.getAccountByNickname(nickname);
+        Project project = projectRepository.findByTitleAndBuilderNick(title, builderNick);
         memberRepository.save(ProjectMember.builder()
                 .account(account)
                 .project(project)
@@ -73,7 +74,7 @@ public class ProjectService {
     }
 
     public void removeMember(Long projectId, String removeMember) {
-        Account account = accountRepository.findByNickname(removeMember);
+        Account account = accountService.getAccountByNickname(removeMember);
         memberRepository.removeByAccountIdAndProjectId(account.getId(), projectId);
     }
 
