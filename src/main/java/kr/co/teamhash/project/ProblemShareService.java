@@ -12,6 +12,7 @@ import kr.co.teamhash.domain.entity.Comment;
 import kr.co.teamhash.domain.entity.Problem;
 import kr.co.teamhash.domain.repository.CommentRepository;
 import kr.co.teamhash.domain.repository.ProblemsRepository;
+import kr.co.teamhash.project.form.ProblemShareForm;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -22,16 +23,14 @@ public class ProblemShareService {
     private final CommentRepository commentRepository;
 
     // 문제 공유 글 저장
-    public void saveProblem(Problem problem, Long projectId, Account account){
-        //공백 값 검출
-        if(problem.getTitle().length() < 3)
-            return;
-        else if(problem.getContent().length() < 9)
-            return;
+    public void saveProblem(ProblemShareForm problemForm, Long projectId, Account account){
 
-        problem.setProjectId(projectId);
-        problem.setWriter(account);
-
+        Problems problem = Problems.builder()
+                    .title(problemForm.getTitle())
+                    .content(problemForm.getContent())
+                    .projectId(projectId)
+                    .writerId(account)
+                    .build();
         problemsRepository.save(problem);
     }
 
@@ -39,7 +38,7 @@ public class ProblemShareService {
     public List<Problem> getProblemList(Long projectId){
         return problemsRepository.findByProjectId(projectId);
     }
-
+  
     // 문제 공유 글 내용 얻기
     public Problem getProblem(Long problemId){
         return problemsRepository.findById(problemId).get();

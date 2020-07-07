@@ -24,19 +24,22 @@ public class CalendarService {
     private final ProjectRepository projectRepository;
 
     //스케줄 저장
-    public void saveNewSchedule(Schedule schedule, Account account, Long projectId ){
+    public void saveNewSchedule(ScheduleForm scheduleForm, Account account, Long projectId ){
         
-        // null data check
-        if(schedule.getTitle().length() < 1 || schedule.getDate().length() < 1 || schedule.getColor().length() < 1){
-            System.out.println("no data");
-        }
-        else{
-            Project project = projectRepository.findById(projectId).get();
-            schedule.setProject(project);
-            schedule.getProject().getSchedules().add(schedule);
-            
-            scheduleRepository.save(schedule);
-        }
+        
+        Project project = projectRepository.findById(projectId).get();
+        Schedule schedule = Schedule.builder()
+                    .project(project)
+                    .date(scheduleForm.getDate())
+                    .title(scheduleForm.getTitle())
+                    .content(scheduleForm.getContent())
+                    .color(scheduleForm.getColor())
+                    .build();
+        
+        schedule.getProject().getSchedules().add(schedule);
+        
+        scheduleRepository.save(schedule);
+        
 
     }
 
