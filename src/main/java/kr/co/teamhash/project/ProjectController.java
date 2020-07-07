@@ -70,13 +70,8 @@ public class ProjectController {
     public String projectMain(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
                               Model model, @CurrentUser Account account){
 
-        Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
-
-        // nickname과 projectTitle에 맞는 프로젝트가 없을 때
-        if(project == null)
-            return "project/no-project";
-
-        List<ProjectMember> members = memberRepository.findAllByProjectId(project.getId());
+        Project project = projectService.getProject(nickname, title);
+        List<ProjectMember> members = projectService.getMemberList(project);
 
         // 프로젝트에 필요한 정보와
         // 유저가 해당 프로젝트의 맴버인지 확인하는 정보
@@ -90,7 +85,7 @@ public class ProjectController {
     @GetMapping("/main/write")
     public String projectDescription(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
                                      Model model, @CurrentUser Account account) {
-        Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
+        Project project = projectService.getProject(nickname, title);
 
         model.addAttribute(project);
         model.addAttribute(account);
@@ -101,7 +96,7 @@ public class ProjectController {
     @PostMapping("/main/write")
     public String projectDescriptionForm(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
                                          String description ,Model model, @CurrentUser Account account) {
-        Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
+        Project project = projectService.getProject(nickname, title);
         projectService.createDescription(project, description);
         return "redirect:/project/" + nickname +"/" + project.getEncodedTitle() + "/main";
     }
@@ -112,21 +107,13 @@ public class ProjectController {
     public String problemShareMain(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
                                    Model model,  @CurrentUser Account account){
         // nickname과 projectTitle로 projectId 찾기
-        Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
-
-        // nickname과 projectTitle에 맞는 프로젝트가 없을 때
-        if(project == null)
-            return "project/no-project";
-
-        model.addAttribute(project);
-        model.addAttribute("title", title);
-        model.addAttribute("nickname", nickname);
-        
+        Project project = projectService.getProject(nickname, title);
         List<Problem> problemList = problemShareService.getProblemList(project.getId());
         Collections.reverse(problemList);
 
+        model.addAttribute(project);
         model.addAttribute("problemList", problemList);
-        model.addAttribute("account", account);
+        model.addAttribute(account);
         model.addAttribute("nowTime",  LocalDateTime.now());
 
         return "project/problem-share";
@@ -137,10 +124,7 @@ public class ProjectController {
     public String write(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
                         Model model,  @CurrentUser Account account, @Valid @ModelAttribute ProblemShareForm problemForm, Errors errors) {
 
-        Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
-
-        if(project == null)
-            return "project/no-project";
+        Project project = projectService.getProject(nickname, title);
 
         if (errors.hasErrors()) {
             model.addAttribute("error", "최소 입력 길이를 만족시켜 주세요");
@@ -156,11 +140,7 @@ public class ProjectController {
     public String write(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
                         Model model, @CurrentUser Account account, @Valid CommentForm commentForm) {
 
-        Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
-
-        // nickname과 projectTitle에 맞는 프로젝트가 없을 때
-        if(project == null)
-            return "project/no-project";
+        Project project = projectService.getProject(nickname, title);
 
         // 입력받은 comment 내용, 커멘트가 달린 문제공유글 id, 해당 코멘트를 작성한 유저
         problemShareService.saveComment(commentForm, account);
@@ -171,13 +151,8 @@ public class ProjectController {
     @DeleteMapping("/problem-share/{problemId}")
     public String problemDelete(@PathVariable("nickname") String nickname, @PathVariable("title")
             String title, @PathVariable("problemId") Long problemId, @CurrentUser Account account, Model model){
-        
-        // nickname과 projectTitle로 projectId 찾기
-        Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
 
-        // nickname과 projectTitle에 맞는 프로젝트가 없을 때
-        if(project == null)
-            return "project/no-project";
+        Project project = projectService.getProject(nickname, title);
 
         problemShareService.deleteProblem(problemId,account);
         return "redirect:/project/" + nickname + "/" + project.getEncodedTitle() + "/problem-share";
@@ -186,13 +161,8 @@ public class ProjectController {
     @DeleteMapping("/problem-share/comment/{commentId}")
     public String commentDelete(@PathVariable("nickname") String nickname, @PathVariable("title")
             String title,@PathVariable("commentId") Long commentId, @CurrentUser Account account){
-        
-        // nickname과 projectTitle로 projectId 찾기
-        Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
 
-        // nickname과 projectTitle에 맞는 프로젝트가 없을 때
-        if(project == null)
-            return "project/no-project";
+        Project project = projectService.getProject(nickname, title);
 
         problemShareService.deleteComment(commentId,account);
         return "redirect:/project/" + nickname + "/" + project.getEncodedTitle() + "/problem-share";
@@ -201,8 +171,7 @@ public class ProjectController {
     @GetMapping("/kanban")
     public String kanban(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
                          Model model, @CurrentUser Account account) {
-        Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
-
+        Project project = projectService.getProject(nickname, title);
 
         model.addAttribute(project);
         return "project/kanban";
@@ -213,7 +182,7 @@ public class ProjectController {
     public String settings(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
                            Model model,  @CurrentUser Account account) throws JsonProcessingException {
 
-        Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
+        Project project = projectService.getProject(nickname, title);
         List<ProjectMember> members = memberRepository.findAllByProjectId(project.getId());
 
         model.addAttribute(account);
@@ -264,12 +233,9 @@ public class ProjectController {
 
     @PostMapping("/settings/remove/member")
     public String removeMember(@PathVariable("title") String title, @PathVariable("nickname") String nickname, String removeMember,
-                               @CurrentUser Account account, Model model) {
+                               @CurrentUser Account account) {
+        Project project = projectService.getProject(nickname, title);
 
-        Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
-        if (project == null) {
-            return "project/settings";
-        }
         projectService.removeMember(project.getId(), removeMember);
         return "redirect:/project/" + nickname + "/" + project.getEncodedTitle() + "/main";
     }
@@ -277,7 +243,7 @@ public class ProjectController {
     @PostMapping("/settings/progress")
     public String setProgress(@PathVariable("title") String title, @PathVariable("nickname") String nickname,
                               @Valid @ModelAttribute ProgressForm progressForm, Errors errors, @CurrentUser Account account, Model model) {
-        Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
+        Project project = projectService.getProject(nickname, title);
 
         if (errors.hasErrors()) {
             model.addAttribute("error", "0 ~ 100의 값만 입력하세요.");

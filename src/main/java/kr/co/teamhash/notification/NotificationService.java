@@ -20,12 +20,11 @@ import java.util.List;
 public class NotificationService {
     private final NotificationRepository notificationRepository;
     private final AccountRepository accountRepository;
-    private final ProjectRepository projectRepository;
+    private final ProjectService projectService;
 
-
-    public void addNotification(String invitedMember, String title, String builderNick) {
+    public void addNotification(String invitedMember, String title, String nickname) {
         Account account = accountRepository.findByNickname(invitedMember);
-        Project project = projectRepository.findByTitleAndBuilderNick(title, builderNick);
+        Project project = projectService.getProject(nickname, title);
         notificationRepository.save(Notification.builder()
                 .account(account)
                 .project(project)
@@ -35,9 +34,9 @@ public class NotificationService {
                 .build());
     }
 
-    public void removeTagNotification(String invitedMember, String title, String builderNick) {
+    public void removeTagNotification(String invitedMember, String title, String nickname) {
         Account account = accountRepository.findByNickname(invitedMember);
-        Project project = projectRepository.findByTitleAndBuilderNick(title, builderNick);
+        Project project = projectService.getProject(nickname, title);
         notificationRepository.removeByAccountIdAndProjectId(account.getId(), project.getId());
     }
 

@@ -37,7 +37,7 @@ public class ChatController {
                         @PathVariable("title") String title, @CurrentUser Account account) {
 
         // nickname과 projectTitle로 projectId 찾기
-        Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
+        Project project = projectService.getProject(nickname, title);
         // 채팅에서의 유저 이미지 매핑을 위해
         // 해당 프로젝트의 모든 유저 이미지와 이름을 가져온다
         List<ProjectMember> projectMember = project.getMembers();

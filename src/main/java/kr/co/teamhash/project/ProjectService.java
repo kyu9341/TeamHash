@@ -30,6 +30,12 @@ public class ProjectService {
     private final MemberRepository memberRepository;
     private final AccountRepository accountRepository;
 
+    public Project getProject(String nickname, String title) {
+        Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
+        checkIfExistingProject(project);
+        return project;
+    }
+
     // 프로젝트 저장
     public void saveNewProject(ProjectBuildForm projectBuildForm, Account account){
         Project project = Project.builder()
@@ -53,7 +59,7 @@ public class ProjectService {
 
     public void saveProjectMember(String nickname, String title, String builderNick) {
         Account account = accountRepository.findByNickname(nickname);
-        Project project = projectRepository.findByTitleAndBuilderNick(title, builderNick);
+        Project project = getProject(title, builderNick);
         memberRepository.save(ProjectMember.builder()
                 .account(account)
                 .project(project)
@@ -72,8 +78,18 @@ public class ProjectService {
     }
 
     public void updateProgress(String title, String nickname, Integer progressPer) {
-        Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
+        Project project = getProject(title, nickname);
         project.setProgress(progressPer);
         projectRepository.save(project);
+    }
+
+    public void checkIfExistingProject(Project project) {
+        if (project == null) {
+            throw new IllegalArgumentException("존재하지 않는 프로젝트입니다.");
+        }
+    }
+
+    public List<ProjectMember> getMemberList(Project project) {
+        return memberRepository.findAllByProjectId(project.getId());
     }
 }

@@ -99,7 +99,7 @@
                 <div class="col-md-6 gedf-main">
     
                     <!--- \\\\\\\Make Post-->
-                    <form action="#" th:action="@{'/project/'+${nickname}+'/'+${title}+'/problem-share/post'}" method="post">
+                    <form action="#" th:action="@{'/project/'+${project.builderNick}+'/'+${project.title}+'/problem-share/post'}" method="post">
                         <div class="card gedf-card">
 
                             <!-- Make post header -->
@@ -197,7 +197,7 @@
                                         <button>수정</button>
                                     </a> -->
                                     
-                                    <form id="delete-post-form" th:action="@{'/project/'+${nickname}+'/'+${title}+'/problem-share/' + ${problem.id}}"
+                                    <form id="delete-post-form" th:action="@{'/project/'+${project.builderNick}+'/'+${project.title}+'/problem-share/' + ${problem.id}}"
                                         method="post" th:if="${#authentication.name == problem.writer.nickname}">
                                         <input type="hidden" name="_method" value="delete"/>
                                         <button class="btn btn-outline-danger post-delete-btn">삭제</button>
@@ -223,7 +223,7 @@
                         <div class="card-footer">
                             
                             
-                                <form action="#" th:action="@{'/project/'+${nickname}+'/'+${title}+'/problem-share/comment'}" method="post">
+                                <form action="#" th:action="@{'/project/'+${project.builderNick}+'/'+${project.title}+'/problem-share/comment'}" method="post">
                                     <div class="form-group"> 
                                         <div class="input-group mb-3">
                                             <input  type="hidden" name="problemId" th:value="${problem.id}" >
@@ -250,7 +250,7 @@
                                 <li class="comment" >
 
 
-                                    <form id="delete-comment-form" th:action="@{'/project/'+${nickname}+'/'+${title}+'/problem-share/comment/' + ${comment.id}}"
+                                    <form id="delete-comment-form" th:action="@{'/project/'+${project.builderNick}+'/'+${project.title}+'/problem-share/comment/' + ${comment.id}}"
                                         th:if="${#authentication.name == comment.writer.nickname}" method="post">
                                         <input type="hidden" name="_method" value="delete"/>
                                         <button class="btn btn-outline-danger pull-right comment-delete-btn">

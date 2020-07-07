@@ -30,17 +30,14 @@ public class CalendarController {
 
     private final CalendarService calendarService;
     private final ProjectRepository projectRepository;
+    private final ProjectService projectService;
 
     // 캘린더
     @GetMapping("/calendar")
     public String calendar(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
                            Model model,  @CurrentUser Account account){
 
-        Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
-
-        // nickname과 projectTitle에 맞는 프로젝트가 없을 때
-        if(project == null)
-            return "project/no-project";
+        Project project = projectService.getProject(nickname, title);
 
         // schedule DTO 변환
         List<Schedule> schedules = project.getSchedules();
@@ -69,8 +66,7 @@ public class CalendarController {
     public String makeSchedule(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
                                 Model model,  @CurrentUser Account account, @Valid ScheduleForm scheduleForm, Errors errors){
         
-        // nickname과 projectTitle로 projectId 찾기
-        Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
+        Project project = projectService.getProject(nickname, title);
 
         if (errors.hasErrors()) {
             model.addAttribute("error", "최소 입력 길이를 만족시켜 주세요");
@@ -85,18 +81,8 @@ public class CalendarController {
     // 스케줄 삭제
     @PostMapping("/calendar/delete")
     @ResponseBody
-    public ResponseEntity deleteSchedule(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
-                                         Model model, @CurrentUser Account account, @RequestBody ScheduleForm scheduleForm) {
+    public ResponseEntity deleteSchedule(@RequestBody ScheduleForm scheduleForm) {
         Long scheduleId = scheduleForm.getScheduleId();
-        log.info("scheduleId : " + scheduleId);
-        // nickname과 projectTitle로 projectId 찾기
-        Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
-
-        if (project == null) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        System.out.println(scheduleId);
         calendarService.deleteSchedule(scheduleId);
         return ResponseEntity.ok().build();
     }

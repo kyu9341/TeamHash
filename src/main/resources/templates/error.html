@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html :: head"></head>
+<body>
+<nav th:replace="fragments.html :: main-nav"></nav>
+
+    <div class="container py-5 text-center">
+        <h1>TEAM #</h1>
+        <p class="lead text-muted">
+            잘못된 요청입니다.<br/>
+        </p>
+        <p>
+            <a th:href="@{/main}" class="btn btn-primary my-2">메인으로 이동</a>
+        </p>
+    </div>
+</body>
+</html>

@@ -22,7 +22,6 @@ import kr.co.teamhash.domain.entity.Project;
 public class CalendarService {
     
     private final ScheduleRepository scheduleRepository;
-    private final ProjectRepository projectRepository;
 
     //스케줄 저장
     public void saveNewSchedule(ScheduleForm scheduleForm, Project project){
