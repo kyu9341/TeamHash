@@ -30,14 +30,13 @@ public class ChatController {
 
     private final ChatService chatservice;
     private final ProjectService projectService;
-    private final ProjectRepository projectRepository;
 
     @GetMapping("/project/{nickname}/{title}/chatting") // 첫 화면 매핑
     public String index(Model model, @PathVariable("nickname") String nickname,
                         @PathVariable("title") String title, @CurrentUser Account account) {
 
         // nickname과 projectTitle로 projectId 찾기
-        Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
+        Project project = projectService.getProject(nickname, title);
         // 채팅에서의 유저 이미지 매핑을 위해
         // 해당 프로젝트의 모든 유저 이미지와 이름을 가져온다
         List<ProjectMember> projectMember = project.getMembers();

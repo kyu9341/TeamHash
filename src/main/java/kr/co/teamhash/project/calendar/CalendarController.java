@@ -3,6 +3,8 @@ package kr.co.teamhash.project.calendar;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.co.teamhash.domain.repository.ProjectRepository;
@@ -10,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.validation.Errors;
 import kr.co.teamhash.account.CurrentUser;
 import kr.co.teamhash.domain.entity.Account;
 import kr.co.teamhash.domain.entity.Project;
@@ -26,20 +28,15 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class CalendarController {
 
-    private final ProjectService projectService;
     private final CalendarService calendarService;
-    private final ProjectRepository projectRepository;
+    private final ProjectService projectService;
 
     // 캘린더
     @GetMapping("/calendar")
     public String calendar(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
                            Model model,  @CurrentUser Account account){
 
-        Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
-
-        // nickname과 projectTitle에 맞는 프로젝트가 없을 때
-        if(project == null)
-            return "project/no-project";
+        Project project = projectService.getProject(nickname, title);
 
         // schedule DTO 변환
         List<Schedule> schedules = project.getSchedules();
@@ -66,12 +63,16 @@ public class CalendarController {
     // 스케줄 생성
     @PostMapping("/calendar/make")
     public String makeSchedule(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
-                                Model model,  @CurrentUser Account account, Schedule schedule){
+                                Model model,  @CurrentUser Account account, @Valid ScheduleForm scheduleForm, Errors errors){
         
-        // nickname과 projectTitle로 projectId 찾기
-        Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
+        Project project = projectService.getProject(nickname, title);
 
-        calendarService.saveNewSchedule(schedule, account, project.getId());
+        if (errors.hasErrors()) {
+            model.addAttribute("error", "최소 입력 길이를 만족시켜 주세요");
+            return "redirect:/project/" + nickname + "/" + project.getEncodedTitle() + "/calendar";
+        }
+       
+        calendarService.saveNewSchedule(scheduleForm, project);
         return "redirect:/project/" + nickname + "/" + project.getEncodedTitle() + "/calendar";
 
     }
@@ -79,18 +80,8 @@ public class CalendarController {
     // 스케줄 삭제
     @PostMapping("/calendar/delete")
     @ResponseBody
-    public ResponseEntity deleteSchedule(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
-                                         Model model, @CurrentUser Account account, @RequestBody CalendarForm calendarForm) {
-        Long scheduleId = calendarForm.getScheduleId();
-        log.info("scheduleId : " + scheduleId);
-        // nickname과 projectTitle로 projectId 찾기
-        Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
-
-        if (project == null) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        System.out.println(scheduleId);
+    public ResponseEntity deleteSchedule(@RequestBody ScheduleForm scheduleForm) {
+        Long scheduleId = scheduleForm.getScheduleId();
         calendarService.deleteSchedule(scheduleId);
         return ResponseEntity.ok().build();
     }

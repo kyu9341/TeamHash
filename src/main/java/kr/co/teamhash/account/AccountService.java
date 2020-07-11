@@ -125,4 +125,28 @@ public class AccountService implements UserDetailsService {
         accountRepository.save(account);
         login(account); // 변경된 닉네임으로 다시 인증처리
     }
+
+    public Account getAccountByNickname(String nickname) {
+        Account account = accountRepository.findByNickname(nickname);
+        checkIfExistingAccount(account);
+        return account;
+    }
+
+    public Account getAccountByEmail(String email) {
+        Account account = accountRepository.findByEmail(email);
+        checkIfExistingAccount(account);
+        return account;
+    }
+
+    public void checkIfExistingAccount(Account account) {
+        if (account == null) {
+            throw new IllegalArgumentException("해당하는 사용자가 없습니다.");
+        }
+    }
+
+    public void checkIfExistingNickname(String nickname) {
+        if (nickname == null) {
+            throw new IllegalArgumentException(nickname + "에 해당하는 사용자가 없습니다.");
+        }
+    }
 }

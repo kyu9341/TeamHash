@@ -1,5 +1,6 @@
 package kr.co.teamhash.project.calendar;
 
+import kr.co.teamhash.domain.entity.Problem;
 import kr.co.teamhash.domain.repository.ProjectRepository;
 import kr.co.teamhash.domain.repository.ScheduleRepository;
 
@@ -21,23 +22,18 @@ import kr.co.teamhash.domain.entity.Project;
 public class CalendarService {
     
     private final ScheduleRepository scheduleRepository;
-    private final ProjectRepository projectRepository;
 
     //스케줄 저장
-    public void saveNewSchedule(Schedule schedule, Account account, Long projectId ){
-        
-        // null data check
-        if(schedule.getTitle().length() < 1 || schedule.getDate().length() < 1 || schedule.getColor().length() < 1){
-            System.out.println("no data");
-        }
-        else{
-            Project project = projectRepository.findById(projectId).get();
-            schedule.setProject(project);
-            schedule.getProject().getSchedules().add(schedule);
-            
-            scheduleRepository.save(schedule);
-        }
-
+    public void saveNewSchedule(ScheduleForm scheduleForm, Project project){
+        Schedule schedule = Schedule.builder()
+                    .project(project)
+                    .date(scheduleForm.getDate())
+                    .title(scheduleForm.getTitle())
+                    .content(scheduleForm.getContent())
+                    .color(scheduleForm.getColor())
+                    .build();
+        project.addSchedule(schedule);
+        scheduleRepository.save(schedule);
     }
 
     //스케줄 삭제

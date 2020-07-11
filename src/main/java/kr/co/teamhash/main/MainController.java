@@ -1,5 +1,6 @@
 package kr.co.teamhash.main;
 
+import kr.co.teamhash.account.AccountService;
 import kr.co.teamhash.account.CurrentUser;
 import kr.co.teamhash.domain.entity.Account;
 import kr.co.teamhash.domain.entity.ProjectMember;
@@ -30,7 +31,7 @@ import javax.validation.Valid;
 public class MainController {
 
     private final ProjectService projectService;
-    private final AccountRepository accountRepository;
+    private final AccountService accountService;
     private final ProjectBuildValidator projectBuildValidator;
 
     @InitBinder("projectBuildForm")
@@ -40,7 +41,7 @@ public class MainController {
 
 
     @GetMapping("/login")
-    public String login(){
+    public String login() {
         return "login";
     }
 
@@ -48,51 +49,45 @@ public class MainController {
     // 유저 메인 페이지에서 프로젝트의 리스트를 받기 위해
     // projectService에서 받은 뒤 템플릿으로 전송
     @GetMapping("/main")
-    public String main(@CurrentUser Account account, Model model){
-        if(account != null){
-            Account byNickname = accountRepository.findByNickname(account.getNickname());
-            List<ProjectMember> projectList = byNickname.getProjects();
-            List<ScheduleDTO> scheduleDTO = new ArrayList<ScheduleDTO>();
+    public String main(@CurrentUser Account account, Model model) {
+        Account byNickname = accountService.getAccountByNickname(account.getNickname());
+        List<ProjectMember> projectList = byNickname.getProjects();
+        List<ScheduleDTO> scheduleDTO = new ArrayList<ScheduleDTO>();
 
-            // account가 속해있는 프로젝트에서 모든 스케쥴을 가져온다.
-            for(ProjectMember project : projectList){
-                for (Schedule schedule : project.getProject().getSchedules()) {
-                    scheduleDTO.add(new ScheduleDTO(schedule.getId(),
-                                        schedule.getDate(),
-                                        schedule.getTitle(),
-                                        schedule.getContent(),
-                                        schedule.getColor()));
-                }
-        
+        // account가 속해있는 프로젝트에서 모든 스케쥴을 가져온다.
+        for (ProjectMember project : projectList) {
+            for (Schedule schedule : project.getProject().getSchedules()) {
+                scheduleDTO.add(new ScheduleDTO(schedule.getId(),
+                        schedule.getDate(),
+                        schedule.getTitle(),
+                        schedule.getContent(),
+                        schedule.getColor()));
             }
-
-            model.addAttribute("projectBuildForm", new ProjectBuildForm());
-            model.addAttribute("projectList", projectList);
-            model.addAttribute("schedules", scheduleDTO);
-            model.addAttribute(account);
-
         }
+
+        model.addAttribute("projectBuildForm", new ProjectBuildForm());
+        model.addAttribute("projectList", projectList);
+        model.addAttribute("schedules", scheduleDTO);
+        model.addAttribute(account);
+
         return "main";
     }
 
 
     @PostMapping("/main")
     public String buildProjectDone(@Valid @ModelAttribute ProjectBuildForm projectBuildForm, Errors errors,
-                                   Model model , @CurrentUser Account account , String members ){
+                                   Model model, @CurrentUser Account account) {
         if (errors.hasErrors()) {
-//            List<Project> projectList = projectService.getProjectList(account);
-            Account byNickname = accountRepository.findByNickname(account.getNickname());
+            Account byNickname = accountService.getAccountByNickname(account.getNickname());
             List<ProjectMember> projectList = byNickname.getProjects();
             model.addAttribute("projectBuildForm", new ProjectBuildForm());
             model.addAttribute("projectList", projectList);
-            model.addAttribute(new ProjectBuildForm());
             model.addAttribute(account);
             model.addAttribute("error", "이미 사용중인 프로젝트명 입니다.");
             return "main";
         }
 
         projectService.saveNewProject(projectBuildForm, account);
-        System.out.println(members);
         return "redirect:/main";
     }
 

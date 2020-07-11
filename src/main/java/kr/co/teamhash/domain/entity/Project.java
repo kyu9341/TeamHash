@@ -46,4 +46,21 @@ public class Project {
     public String getEncodedTitle() {
         return URLEncoder.encode(this.title, StandardCharsets.UTF_8);
     }
+
+    public boolean checkMember (Account account) {
+        for (ProjectMember projectMember : this.getMembers()) {
+            if (projectMember.getAccount().equals(account)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void addSchedule (Schedule schedule) {
+        this.getSchedules().add(schedule);
+    }
+
+    public void parseTitle() {
+        this.title = this.title.trim().replace(" ", "-");
+    }
 }

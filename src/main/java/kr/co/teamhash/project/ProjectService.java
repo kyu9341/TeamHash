@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import kr.co.teamhash.account.AccountService;
 import kr.co.teamhash.domain.entity.Notification;
 import kr.co.teamhash.domain.entity.ProjectMember;
 import kr.co.teamhash.domain.repository.AccountRepository;
@@ -28,11 +29,16 @@ public class ProjectService {
 
     private final ProjectRepository projectRepository;
     private final MemberRepository memberRepository;
-    private final AccountRepository accountRepository;
+    private final AccountService accountService;
+
+    public Project getProject(String nickname, String title) {
+        Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
+        checkIfExistingProject(project);
+        return project;
+    }
 
     // 프로젝트 저장
     public void saveNewProject(ProjectBuildForm projectBuildForm, Account account){
-
         Project project = Project.builder()
                 .title(projectBuildForm.getTitle())
                 .subtitle(projectBuildForm.getSubTitle())
@@ -40,50 +46,26 @@ public class ProjectService {
                 .builderNick(projectBuildForm.getBuilderNick())
                 .buildDate(LocalDateTime.now())
                 .build();
-
+        project.parseTitle();
         // 프로젝트 저장
         projectRepository.save(project);
-
-        // Project DB와 일대다 관계의 Member DB
-        // 프로젝트 생성 시 프로젝트를 생성한 사람의 id를 Member DB에 저장
-        // 이후에 초대되는 유저들을 Member에 Project id와 함께 저장한다.        
-        ProjectMember projectMember = ProjectMember.builder()
-                .joinDate(LocalDateTime.now())
-                .project(project)
-                .account(account)
-                .build();
-
-        // 멤버 저장
-        // 이후 프로젝트 생성 페이지에서 유저를 검색해서 등록할 수 있게 변경
-        // 유저를 검색해서 등록을 한다고 바로 맴버에 등록이 되는것이 아닌 
-        // 초대 메세지를 보내는 형식으로 하는것이 좋을 듯
-        memberRepository.save(projectMember);
+        saveProjectMember(account.getNickname(), project.getTitle(), project.getBuilderNick());
     }
 
     // 해당 유저의 프로젝트 소속 여부 확인
     public boolean isMember(Long projectId, Account account){
-        
-        boolean im = false;
-        List<ProjectMember> projectMemberList = memberRepository.findAllByProjectId(projectId);
-
-        for(ProjectMember projectMember : projectMemberList){
-            if(projectMember.getAccount().getId().equals(account.getId())){
-                im = true;
-                break;
-            }
-        }
-        return im;
+        Optional<Project> project = projectRepository.findById(projectId);
+        return project.get().checkMember(account);
     }
 
     public void saveProjectMember(String nickname, String title, String builderNick) {
-        Account account = accountRepository.findByNickname(nickname);
+        Account account = accountService.getAccountByNickname(nickname);
         Project project = projectRepository.findByTitleAndBuilderNick(title, builderNick);
         memberRepository.save(ProjectMember.builder()
                 .account(account)
                 .project(project)
                 .joinDate(LocalDateTime.now())
                 .build());
-
     }
 
     public void createDescription(Project project, String description) {
@@ -92,13 +74,22 @@ public class ProjectService {
     }
 
     public void removeMember(Long projectId, String removeMember) {
-        Account account = accountRepository.findByNickname(removeMember);
+        Account account = accountService.getAccountByNickname(removeMember);
         memberRepository.removeByAccountIdAndProjectId(account.getId(), projectId);
     }
 
-    public void updateProgress(String title, String nickname, Integer progressPer) {
-        Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
+    public void updateProgress(Project project, Integer progressPer) {
         project.setProgress(progressPer);
         projectRepository.save(project);
+    }
+
+    public void checkIfExistingProject(Project project) {
+        if (project == null) {
+            throw new IllegalArgumentException("존재하지 않는 프로젝트입니다.");
+        }
+    }
+
+    public List<ProjectMember> getMemberList(Project project) {
+        return memberRepository.findAllByProjectId(project.getId());
     }
 }

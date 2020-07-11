@@ -1,18 +1,5 @@
 package kr.co.teamhash.project;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import kr.co.teamhash.domain.entity.*;
-import kr.co.teamhash.domain.repository.AccountRepository;
-import kr.co.teamhash.domain.repository.MemberRepository;
-import kr.co.teamhash.domain.repository.ProjectRepository;
-import kr.co.teamhash.notification.NotificationService;
-import kr.co.teamhash.project.form.MemberForm;
-import kr.co.teamhash.project.form.ProgressForm;
-import kr.co.teamhash.project.validator.MemberValidator;
-import kr.co.teamhash.project.validator.ProgressValidator;
-import lombok.RequiredArgsConstructor;
-
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -20,15 +7,38 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
-import lombok.extern.slf4j.Slf4j;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import kr.co.teamhash.domain.entity.*;
+import kr.co.teamhash.project.form.CommentForm;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.teamhash.account.CurrentUser;
+import kr.co.teamhash.domain.repository.AccountRepository;
+import kr.co.teamhash.domain.repository.MemberRepository;
+import kr.co.teamhash.domain.repository.ProjectRepository;
+import kr.co.teamhash.notification.NotificationService;
+import kr.co.teamhash.project.form.MemberForm;
+import kr.co.teamhash.project.form.ProblemShareForm;
+import kr.co.teamhash.project.form.ProgressForm;
+import kr.co.teamhash.project.validator.MemberValidator;
+import kr.co.teamhash.project.validator.ProgressValidator;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
@@ -39,8 +49,6 @@ public class ProjectController {
     private final ProjectService projectService;
     private final ProblemShareService problemShareService;
     private final AccountRepository accountRepository;
-    private final MemberRepository memberRepository;
-    private final ProjectRepository projectRepository;
     private final NotificationService notificationService;
     private final MemberValidator memberValidator;
     private final ObjectMapper objectMapper;
@@ -60,13 +68,8 @@ public class ProjectController {
     public String projectMain(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
                               Model model, @CurrentUser Account account){
 
-        Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
-
-        // nickname과 projectTitle에 맞는 프로젝트가 없을 때
-        if(project == null)
-            return "project/no-project";
-
-        List<ProjectMember> members = memberRepository.findAllByProjectId(project.getId());
+        Project project = projectService.getProject(nickname, title);
+        List<ProjectMember> members = projectService.getMemberList(project);
 
         // 프로젝트에 필요한 정보와
         // 유저가 해당 프로젝트의 맴버인지 확인하는 정보
@@ -80,7 +83,7 @@ public class ProjectController {
     @GetMapping("/main/write")
     public String projectDescription(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
                                      Model model, @CurrentUser Account account) {
-        Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
+        Project project = projectService.getProject(nickname, title);
 
         model.addAttribute(project);
         model.addAttribute(account);
@@ -91,7 +94,7 @@ public class ProjectController {
     @PostMapping("/main/write")
     public String projectDescriptionForm(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
                                          String description ,Model model, @CurrentUser Account account) {
-        Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
+        Project project = projectService.getProject(nickname, title);
         projectService.createDescription(project, description);
         return "redirect:/project/" + nickname +"/" + project.getEncodedTitle() + "/main";
     }
@@ -102,23 +105,13 @@ public class ProjectController {
     public String problemShareMain(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
                                    Model model,  @CurrentUser Account account){
         // nickname과 projectTitle로 projectId 찾기
-        Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
-
-        // nickname과 projectTitle에 맞는 프로젝트가 없을 때
-        if(project == null)
-            return "project/no-project";
-
-        // 프로젝트에 필요한 정보와
-        // 유저가 해당 프로젝트의 맴버인지 확인하는 정보
-        model.addAttribute(project);
-        model.addAttribute("title", title);
-        model.addAttribute("nickname", nickname);
-        
-        List<Problems> problemList = problemShareService.getProblemList(project.getId());
+        Project project = projectService.getProject(nickname, title);
+        List<Problem> problemList = problemShareService.getProblemList(project.getId());
         Collections.reverse(problemList);
 
+        model.addAttribute(project);
         model.addAttribute("problemList", problemList);
-        model.addAttribute("account", account);
+        model.addAttribute(account);
         model.addAttribute("nowTime",  LocalDateTime.now());
 
         return "project/problem-share";
@@ -127,46 +120,37 @@ public class ProjectController {
     // 문제 공유란 글 작성 완료
     @PostMapping("/problem-share/post")
     public String write(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
-                        Model model,  @CurrentUser Account account, Problems problem) {
-        
-        // nickname과 projectTitle로 projectId 찾기
-        Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
+                        Model model,  @CurrentUser Account account, @Valid @ModelAttribute ProblemShareForm problemForm, Errors errors) {
 
-        // nickname과 projectTitle에 맞는 프로젝트가 없을 때
-        if(project == null)
-            return "project/no-project";
+        Project project = projectService.getProject(nickname, title);
 
-        problemShareService.saveProblem(problem, project.getId(), account);
+        if (errors.hasErrors()) {
+            model.addAttribute("error", "최소 입력 길이를 만족시켜 주세요");
+            return "redirect:/project/" + nickname +"/" + project.getEncodedTitle() + "/problem-share/";
+        }
+  
+        problemShareService.saveProblem(problemForm, project.getId(), account);
         return "redirect:/project/" + nickname +"/" + project.getEncodedTitle() + "/problem-share/";
     }
 
     // 코멘트 작성
     @PostMapping("/problem-share/comment")
     public String write(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
-                        Model model,  @CurrentUser Account account, Comment comment, Long pId) {
+                        Model model, @CurrentUser Account account, @Valid CommentForm commentForm) {
 
-        Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
-
-        // nickname과 projectTitle에 맞는 프로젝트가 없을 때
-        if(project == null)
-            return "project/no-project";
+        Project project = projectService.getProject(nickname, title);
 
         // 입력받은 comment 내용, 커멘트가 달린 문제공유글 id, 해당 코멘트를 작성한 유저
-        problemShareService.saveComment(comment, pId, account);
+        problemShareService.saveComment(commentForm, account);
         return "redirect:/project/" + nickname + "/" + project.getEncodedTitle() + "/problem-share/";
     }
 
     //문제 공유글 삭제
     @DeleteMapping("/problem-share/{problemId}")
     public String problemDelete(@PathVariable("nickname") String nickname, @PathVariable("title")
-            String title,@PathVariable("problemId") Long problemId, @CurrentUser Account account, Model model){
-        
-        // nickname과 projectTitle로 projectId 찾기
-        Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
+            String title, @PathVariable("problemId") Long problemId, @CurrentUser Account account, Model model){
 
-        // nickname과 projectTitle에 맞는 프로젝트가 없을 때
-        if(project == null)
-            return "project/no-project";
+        Project project = projectService.getProject(nickname, title);
 
         problemShareService.deleteProblem(problemId,account);
         return "redirect:/project/" + nickname + "/" + project.getEncodedTitle() + "/problem-share";
@@ -174,25 +158,30 @@ public class ProjectController {
     //코멘트 삭제
     @DeleteMapping("/problem-share/comment/{commentId}")
     public String commentDelete(@PathVariable("nickname") String nickname, @PathVariable("title")
-            String title,@PathVariable("commentId") Long commentId, @CurrentUser Account account, Model model){
-        
-        // nickname과 projectTitle로 projectId 찾기
-        Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
+            String title,@PathVariable("commentId") Long commentId, @CurrentUser Account account){
 
-        // nickname과 projectTitle에 맞는 프로젝트가 없을 때
-        if(project == null)
-            return "project/no-project";
+        Project project = projectService.getProject(nickname, title);
 
         problemShareService.deleteComment(commentId,account);
         return "redirect:/project/" + nickname + "/" + project.getEncodedTitle() + "/problem-share";
     }
 
+    @GetMapping("/kanban")
+    public String kanban(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
+                         Model model, @CurrentUser Account account) {
+        Project project = projectService.getProject(nickname, title);
+
+        model.addAttribute(project);
+        return "project/kanban";
+    }
+
+
     @GetMapping("/settings")
     public String settings(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
                            Model model,  @CurrentUser Account account) throws JsonProcessingException {
 
-        Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
-        List<ProjectMember> members = memberRepository.findAllByProjectId(project.getId());
+        Project project = projectService.getProject(nickname, title);
+        List<ProjectMember> members = projectService.getMemberList(project);
 
         model.addAttribute(account);
         model.addAttribute("members", members);
@@ -242,12 +231,9 @@ public class ProjectController {
 
     @PostMapping("/settings/remove/member")
     public String removeMember(@PathVariable("title") String title, @PathVariable("nickname") String nickname, String removeMember,
-                               @CurrentUser Account account, Model model) {
+                               @CurrentUser Account account) {
+        Project project = projectService.getProject(nickname, title);
 
-        Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
-        if (project == null) {
-            return "project/settings";
-        }
         projectService.removeMember(project.getId(), removeMember);
         return "redirect:/project/" + nickname + "/" + project.getEncodedTitle() + "/main";
     }
@@ -255,14 +241,14 @@ public class ProjectController {
     @PostMapping("/settings/progress")
     public String setProgress(@PathVariable("title") String title, @PathVariable("nickname") String nickname,
                               @Valid @ModelAttribute ProgressForm progressForm, Errors errors, @CurrentUser Account account, Model model) {
-        Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
+        Project project = projectService.getProject(nickname, title);
 
         if (errors.hasErrors()) {
             model.addAttribute("error", "0 ~ 100의 값만 입력하세요.");
             return "redirect:/project/" + nickname + "/" + project.getEncodedTitle() + "/settings";
         }
         Integer progress = Integer.parseInt(progressForm.getProgress());
-        projectService.updateProgress(title, nickname, progress);
+        projectService.updateProgress(project, progress);
         return "redirect:/project/" + nickname + "/" + project.getEncodedTitle() + "/settings";
     }
 

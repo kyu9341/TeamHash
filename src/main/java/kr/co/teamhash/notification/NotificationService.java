@@ -1,5 +1,6 @@
 package kr.co.teamhash.notification;
 
+import kr.co.teamhash.account.AccountService;
 import kr.co.teamhash.domain.entity.Account;
 import kr.co.teamhash.domain.entity.Notification;
 import kr.co.teamhash.domain.entity.Project;
@@ -19,13 +20,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class NotificationService {
     private final NotificationRepository notificationRepository;
-    private final AccountRepository accountRepository;
-    private final ProjectRepository projectRepository;
+    private final AccountService accountService;
+    private final ProjectService projectService;
 
-
-    public void addNotification(String invitedMember, String title, String builderNick) {
-        Account account = accountRepository.findByNickname(invitedMember);
-        Project project = projectRepository.findByTitleAndBuilderNick(title, builderNick);
+    public void addNotification(String invitedMember, String title, String nickname) {
+        Account account = accountService.getAccountByNickname(invitedMember);
+        Project project = projectService.getProject(nickname, title);
         notificationRepository.save(Notification.builder()
                 .account(account)
                 .project(project)
@@ -35,9 +35,9 @@ public class NotificationService {
                 .build());
     }
 
-    public void removeTagNotification(String invitedMember, String title, String builderNick) {
-        Account account = accountRepository.findByNickname(invitedMember);
-        Project project = projectRepository.findByTitleAndBuilderNick(title, builderNick);
+    public void removeTagNotification(String invitedMember, String title, String nickname) {
+        Account account = accountService.getAccountByNickname(invitedMember);
+        Project project = projectService.getProject(nickname, title);
         notificationRepository.removeByAccountIdAndProjectId(account.getId(), project.getId());
     }
 
@@ -50,4 +50,7 @@ public class NotificationService {
     }
 
 
+    public List<Notification> getAllNotification(Account account) {
+        return notificationRepository.findAllByAccountId(account.getId());
+    }
 }

@@ -45,7 +45,7 @@ public class UploadFilecontroller {
                     Model model,  @CurrentUser Account account) throws IOException {
         
         // nickname과 projectTitle로 projectId 찾기
-        Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
+       Project project = projectService.getProject(nickname, title);
 
         List<UploadFile> fileList = uploadFileService.getFileList(project.getId());
 
@@ -64,13 +64,9 @@ public class UploadFilecontroller {
     public String handleFileUpload(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
                 @RequestParam("file") MultipartFile file, @CurrentUser Account account, RedirectAttributes redirectAttributes) {
 
-        // nickname과 projectTitle로 projectId 찾기
-        Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
+        Project project = projectService.getProject(nickname, title);
 
         uploadFileService.storeFile(file, project.getId(), account);
-		// redirectAttributes.addFlashAttribute("message",
-		// 		"You successfully uploaded " + file.getOriginalFilename() + "!");
-
        return "redirect:/project/" + nickname + "/" + project.getEncodedTitle() + "/cloud";
     }
     
@@ -79,14 +75,9 @@ public class UploadFilecontroller {
     public String deleteFile(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
                  @CurrentUser Account account, Long fileId) {
 
-        // nickname과 projectTitle로 projectId 찾기
-        Project project = projectRepository.findByTitleAndBuilderNick(title, nickname);
-        
-        System.out.println("delete file : " + fileId);
-        uploadFileService.deleteFile(fileId);
-		// redirectAttributes.addFlashAttribute("message",
-		// 		"You successfully uploaded " + file.getOriginalFilename() + "!");
+        Project project = projectService.getProject(nickname, title);
 
+        uploadFileService.deleteFile(fileId);
         return "redirect:/project/" + nickname + "/" + project.getEncodedTitle() + "/cloud";
 	}
 
