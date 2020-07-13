@@ -79,6 +79,47 @@ class SettingsControllerTest {
     }
 
     @WithAccount("testNickname")
+    @DisplayName("닉네임 수정 폼")
+    @Test
+    void updateAccountForm() throws Exception {
+        mockMvc.perform(get("/settings/account"))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("account"))
+                .andExpect(model().attributeExists("nicknameForm"));
+    }
+
+    @WithAccount("testNickname")
+    @DisplayName("닉네임 수정하기 - 입력값 정상")
+    @Test
+    void updateAccountForm_success() throws Exception {
+        String newNickname = "kwon";
+        mockMvc.perform(post("/settings/account")
+                .param("nickname", newNickname)
+                .with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/settings/account"))
+                .andExpect(flash().attributeExists("message"));
+
+        assertNotNull(accountRepository.findByNickname(newNickname));
+    }
+
+    @WithAccount("testNickname")
+    @DisplayName("닉네임 수정하기 - 입력값 에러")
+    @Test
+    void updateAccount_failure () throws Exception {
+        String newNickname = "/(-_-)\\";
+        mockMvc.perform(post("/settings/account")
+                .param("nickname", newNickname)
+                .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("settings/account"))
+                .andExpect(model().hasErrors())
+                .andExpect(model().attributeExists("account"))
+                .andExpect(model().attributeExists("nicknameForm"));
+    }
+
+
+    @WithAccount("testNickname")
     @DisplayName("패스워드 수정 폼")
     @Test
     void updatePassword_form() throws Exception {
