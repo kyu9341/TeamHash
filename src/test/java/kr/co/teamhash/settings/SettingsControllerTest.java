@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +30,9 @@ class SettingsControllerTest {
 
     @Autowired
     AccountRepository accountRepository;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @WithAccount("testNickname")
     @DisplayName("프로필 수정 폼")
@@ -72,6 +76,49 @@ class SettingsControllerTest {
 
         Account testNickname = accountRepository.findByNickname("testNickname");
         assertNull(testNickname.getIntroduction());
+    }
+
+    @WithAccount("testNickname")
+    @DisplayName("패스워드 수정 폼")
+    @Test
+    void updatePassword_form() throws Exception {
+        mockMvc.perform(get("/settings/password"))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("account"))
+                .andExpect(model().attributeExists("passwordForm"));
+    }
+
+    @WithAccount("testNickname")
+    @DisplayName("패스워드 수정 - 입력값 정상")
+    @Test
+    void updatePassword_success() throws Exception {
+        mockMvc.perform(post("/settings/password")
+                .param("newPassword", "123456")
+                .param("newPasswordConfirm", "123456")
+                .with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/settings/password"))
+                .andExpect(flash().attributeExists("message"));
+
+        Account testNickname = accountRepository.findByNickname("testNickname");
+        assertTrue(passwordEncoder.matches("123456", testNickname.getPassword()));
+    }
+
+    @WithAccount("testNickname")
+    @DisplayName("패스워드 수정 - 입력값 에러 - 패스워드 불일치")
+    @Test
+    void updatePassword_fail() throws Exception {
+        mockMvc.perform(post("/settings/password")
+                .param("newPassword", "123456")
+                .param("newPasswordConfirm", "000000")
+                .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("settings/password"))
+                .andExpect(model().attributeExists("account"))
+                .andExpect(model().attributeExists("passwordForm"))
+                .andExpect(model().hasErrors());
+
+
     }
 
 }
