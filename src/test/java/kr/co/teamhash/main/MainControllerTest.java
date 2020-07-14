@@ -9,6 +9,8 @@ import kr.co.teamhash.domain.entity.ProjectMember;
 import kr.co.teamhash.domain.repository.AccountRepository;
 import kr.co.teamhash.domain.repository.MemberRepository;
 import kr.co.teamhash.domain.repository.ProjectRepository;
+import kr.co.teamhash.project.ProjectService;
+import kr.co.teamhash.project.form.ProjectBuildForm;
 import lombok.With;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -19,6 +21,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -34,6 +38,9 @@ class MainControllerTest {
 
     @Autowired
     AccountService accountService;
+
+    @Autowired
+    ProjectService projectService;
 
     @Autowired
     MockMvc mockMvc;
@@ -130,6 +137,34 @@ class MainControllerTest {
         assertEquals(projectMember.getAccount(), account);
         assertEquals(projectMember.getProject(), project);
     }
+
+
+    @WithAccount("test")
+    @DisplayName("메인 화면 - 프로젝트 생성 - 입력값 에러")
+    @Test
+    void createProject_with_wrong_input() throws Exception {
+        String projectTitle = "testProject";
+        Account account = accountRepository.findByNickname("test");
+        ProjectBuildForm projectBuildForm = new ProjectBuildForm();
+        projectBuildForm.setTitle(projectTitle);
+        projectBuildForm.setSubTitle("testSubTitle");
+        projectBuildForm.setBuilderNick("test");
+        projectService.saveNewProject(projectBuildForm, account);
+
+        mockMvc.perform(post("/main")
+                .param("title", "testProject")
+                .param("subTitle", "testSubTitle")
+                .param("builderNick", "test")
+                .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("main"))
+                .andExpect(model().attributeExists("error"))
+                .andExpect(model().attributeExists("account"))
+                .andExpect(model().attributeExists("projectBuildForm"))
+                .andExpect(authenticated().withUsername("test"));
+        // TODO projectList check
+    }
+
 
 
 }
