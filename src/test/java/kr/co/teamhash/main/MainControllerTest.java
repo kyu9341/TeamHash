@@ -140,7 +140,7 @@ class MainControllerTest {
 
 
     @WithAccount("test")
-    @DisplayName("메인 화면 - 프로젝트 생성 - 입력값 에러")
+    @DisplayName("메인 화면 - 프로젝트 생성 - 입력값 에러 : 중복된 프로젝트명")
     @Test
     void createProject_with_wrong_input() throws Exception {
         String projectTitle = "testProject";
@@ -163,8 +163,7 @@ class MainControllerTest {
                 .andExpect(model().attributeExists("projectBuildForm"))
                 .andExpect(authenticated().withUsername("test"));
         // TODO projectList check
+
     }
-
-
 
 }
