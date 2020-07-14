@@ -3,6 +3,12 @@ package kr.co.teamhash.main;
 import kr.co.teamhash.WithAccount;
 import kr.co.teamhash.account.AccountService;
 import kr.co.teamhash.account.SignUpForm;
+import kr.co.teamhash.domain.entity.Account;
+import kr.co.teamhash.domain.entity.Project;
+import kr.co.teamhash.domain.entity.ProjectMember;
+import kr.co.teamhash.domain.repository.AccountRepository;
+import kr.co.teamhash.domain.repository.MemberRepository;
+import kr.co.teamhash.domain.repository.ProjectRepository;
 import lombok.With;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -31,6 +37,15 @@ class MainControllerTest {
 
     @Autowired
     MockMvc mockMvc;
+
+    @Autowired
+    AccountRepository accountRepository;
+
+    @Autowired
+    ProjectRepository projectRepository;
+
+    @Autowired
+    MemberRepository memberRepository;
 
     @BeforeEach
     void beforeEach(){
@@ -93,6 +108,28 @@ class MainControllerTest {
                 .andExpect(authenticated().withUsername("test"));
     }
 
+    @WithAccount("test")
+    @DisplayName("메인 화면 - 프로젝트 생성 - 입력값 정상")
+    @Test
+    void createProject() throws Exception {
+        String projectTitle = "testProject";
+        mockMvc.perform(post("/main")
+                .param("title", "testProject")
+                .param("subTitle", "testSubTitle")
+                .param("builderNick", "test")
+                .with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/main"))
+                .andExpect(authenticated().withUsername("test"));
+
+        Project project = projectRepository.findByTitleAndBuilderNick(projectTitle, "test");
+        assertNotNull(project);
+        Account account = accountRepository.findByNickname("test");
+        assertNotNull(account);
+        ProjectMember projectMember = memberRepository.findByAccountId(account.getId());
+        assertEquals(projectMember.getAccount(), account);
+        assertEquals(projectMember.getProject(), project);
+    }
 
 
 }
