@@ -1,7 +1,9 @@
 package kr.co.teamhash.main;
 
+import kr.co.teamhash.WithAccount;
 import kr.co.teamhash.account.AccountService;
 import kr.co.teamhash.account.SignUpForm;
+import lombok.With;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,9 +18,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.unauthenticated;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @Transactional
 @SpringBootTest
@@ -76,5 +77,22 @@ class MainControllerTest {
                 .andExpect(redirectedUrl("/"))
                 .andExpect(unauthenticated());
     }
+
+
+    @WithAccount("test")
+    @DisplayName("메인 화면 - 프로젝트가 없는 경우")
+    @Test
+    void main() throws Exception {
+        mockMvc.perform(get("/main"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("main"))
+                .andExpect(model().attributeExists("projectBuildForm"))
+                .andExpect(model().attributeDoesNotExist("projectList"))
+                .andExpect(model().attributeDoesNotExist("schedules"))
+                .andExpect(model().attributeExists("account"))
+                .andExpect(authenticated().withUsername("test"));
+    }
+
+
 
 }
