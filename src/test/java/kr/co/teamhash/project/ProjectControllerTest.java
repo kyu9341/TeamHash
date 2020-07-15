@@ -147,4 +147,21 @@ class ProjectControllerTest {
         assertNotNull(problems);
     }
 
+    @WithAccount("test")
+    @DisplayName("문제 공유란 화면 : post 작성 - 입력값 에러")
+    @Test
+    void problemShare_post_with_wrong_input() throws Exception {
+        String projectTitle = "testProject";
+        Project testProject = projectRepository.findByTitleAndBuilderNick(projectTitle, "test");
+
+        mockMvc.perform(post("/project/test/" + testProject.getEncodedTitle() + "/problem-share/post")
+                .param("title", "제목")
+                .param("content", "내용")
+                .with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/project/test/" + testProject.getEncodedTitle() + "/problem-share"));
+        List<Problem> problems = problemsRepository.findByProjectId(testProject.getId());
+        assertEquals(problems.size(), 0);
+    }
+
 }
