@@ -93,7 +93,7 @@ public class ProjectController {
 
     @PostMapping("/main/write")
     public String projectDescriptionForm(@PathVariable("nickname") String nickname, @PathVariable("title") String title,
-                                         String description ,Model model, @CurrentUser Account account) {
+                                         String description) {
         Project project = projectService.getProject(nickname, title);
         projectService.createDescription(project, description);
         return "redirect:/project/" + nickname +"/" + project.getEncodedTitle() + "/main";
