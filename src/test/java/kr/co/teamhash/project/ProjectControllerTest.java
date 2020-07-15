@@ -4,9 +4,11 @@ import kr.co.teamhash.WithAccount;
 import kr.co.teamhash.account.AccountFactory;
 import kr.co.teamhash.account.AccountService;
 import kr.co.teamhash.domain.entity.Account;
+import kr.co.teamhash.domain.entity.Problem;
 import kr.co.teamhash.domain.entity.Project;
 import kr.co.teamhash.domain.entity.ProjectMember;
 import kr.co.teamhash.domain.repository.MemberRepository;
+import kr.co.teamhash.domain.repository.ProblemsRepository;
 import kr.co.teamhash.domain.repository.ProjectRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -47,6 +49,9 @@ class ProjectControllerTest {
 
     @Autowired
     MemberRepository memberRepository;
+
+    @Autowired
+    ProblemsRepository problemsRepository;
 
     @WithAccount("test")
     @BeforeEach
@@ -106,6 +111,40 @@ class ProjectControllerTest {
 
         assertEquals(testProject.getDescription(), projectDescription);
 
+    }
+
+    @WithAccount("test")
+    @DisplayName("문제 공유란 화면")
+    @Test
+    void problemShare() throws Exception {
+        String projectTitle = "testProject";
+        Project testProject = projectRepository.findByTitleAndBuilderNick(projectTitle, "test");
+
+        mockMvc.perform(get("/project/test/" + testProject.getEncodedTitle() + "/problem-share"))
+                        .andExpect(status().isOk())
+                        .andExpect(view().name("project/problem-share"))
+                        .andExpect(model().attributeExists("account"))
+                        .andExpect(model().attributeExists("project"))
+                        .andExpect(model().attributeExists("isMember"))
+                        .andExpect(model().attributeExists("problemList"))
+                        .andExpect(model().attributeExists("nowTime"));
+    }
+
+    @WithAccount("test")
+    @DisplayName("문제 공유란 화면 : post 작성 - 입력값 정상")
+    @Test
+    void problemShare_post() throws Exception {
+        String projectTitle = "testProject";
+        Project testProject = projectRepository.findByTitleAndBuilderNick(projectTitle, "test");
+
+        mockMvc.perform(post("/project/test/" + testProject.getEncodedTitle() + "/problem-share/post")
+                .param("title", "게시글 제목 입니다.")
+                .param("content", "게시글 내용 입니다.")
+                .with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/project/test/" + testProject.getEncodedTitle() + "/problem-share"));
+        List<Problem> problems = problemsRepository.findByProjectId(testProject.getId());
+        assertNotNull(problems);
     }
 
 }

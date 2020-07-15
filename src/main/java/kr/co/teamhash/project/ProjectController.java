@@ -126,11 +126,11 @@ public class ProjectController {
 
         if (errors.hasErrors()) {
             model.addAttribute("error", "최소 입력 길이를 만족시켜 주세요");
-            return "redirect:/project/" + nickname +"/" + project.getEncodedTitle() + "/problem-share/";
+            return "redirect:/project/" + nickname +"/" + project.getEncodedTitle() + "/problem-share";
         }
   
         problemShareService.saveProblem(problemForm, project.getId(), account);
-        return "redirect:/project/" + nickname +"/" + project.getEncodedTitle() + "/problem-share/";
+        return "redirect:/project/" + nickname +"/" + project.getEncodedTitle() + "/problem-share";
     }
 
     // 코멘트 작성
@@ -142,7 +142,7 @@ public class ProjectController {
 
         // 입력받은 comment 내용, 커멘트가 달린 문제공유글 id, 해당 코멘트를 작성한 유저
         problemShareService.saveComment(commentForm, account);
-        return "redirect:/project/" + nickname + "/" + project.getEncodedTitle() + "/problem-share/";
+        return "redirect:/project/" + nickname + "/" + project.getEncodedTitle() + "/problem-share";
     }
 
     //문제 공유글 삭제
