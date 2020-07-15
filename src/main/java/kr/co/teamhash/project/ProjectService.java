@@ -53,12 +53,6 @@ public class ProjectService {
         return project;
     }
 
-    // 해당 유저의 프로젝트 소속 여부 확인
-    public boolean isMember(Long projectId, Account account){
-        Optional<Project> project = projectRepository.findById(projectId);
-        return project.get().checkMember(account);
-    }
-
     public void saveProjectMember(String nickname, String title, String builderNick) {
         Account account = accountService.getAccountByNickname(nickname);
         Project project = projectRepository.findByTitleAndBuilderNick(title, builderNick);

@@ -1,7 +1,7 @@
 package kr.co.teamhash.domain.entity;
 
-
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
 import java.net.URLEncoder;
@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 // 프로젝트 관리 DB
+@Slf4j
 @Entity
 @Getter @Setter @EqualsAndHashCode(of = "id")
 @Builder @AllArgsConstructor @NoArgsConstructor
@@ -48,7 +49,7 @@ public class Project {
     }
 
     public boolean checkMember (Account account) {
-        for (ProjectMember projectMember : this.getMembers()) {
+        for (ProjectMember projectMember : this.members) {
             if (projectMember.getAccount().equals(account)) {
                 return true;
             }
@@ -57,7 +58,7 @@ public class Project {
     }
 
     public void addSchedule (Schedule schedule) {
-        this.getSchedules().add(schedule);
+        this.schedules.add(schedule);
     }
 
     public void parseTitle() {

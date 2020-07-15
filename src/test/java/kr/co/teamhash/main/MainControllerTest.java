@@ -9,6 +9,7 @@ import kr.co.teamhash.domain.entity.ProjectMember;
 import kr.co.teamhash.domain.repository.AccountRepository;
 import kr.co.teamhash.domain.repository.MemberRepository;
 import kr.co.teamhash.domain.repository.ProjectRepository;
+import kr.co.teamhash.project.ProjectFactory;
 import kr.co.teamhash.project.ProjectService;
 import kr.co.teamhash.project.form.ProjectBuildForm;
 import lombok.With;
@@ -53,6 +54,9 @@ class MainControllerTest {
 
     @Autowired
     MemberRepository memberRepository;
+
+    @Autowired
+    ProjectFactory projectFactory;
 
     @BeforeEach
     void beforeEach(){
@@ -144,12 +148,8 @@ class MainControllerTest {
     @Test
     void createProject_with_wrong_input() throws Exception {
         String projectTitle = "testProject";
-        Account account = accountRepository.findByNickname("test");
-        ProjectBuildForm projectBuildForm = new ProjectBuildForm();
-        projectBuildForm.setTitle(projectTitle);
-        projectBuildForm.setSubTitle("testSubTitle");
-        projectBuildForm.setBuilderNick("test");
-        projectService.saveNewProject(projectBuildForm, account);
+        Account test = accountRepository.findByNickname("test");
+        projectFactory.createProject(projectTitle, test);
 
         mockMvc.perform(post("/main")
                 .param("title", "testProject")

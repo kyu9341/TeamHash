@@ -8,6 +8,7 @@ import kr.co.teamhash.domain.entity.Project;
 import kr.co.teamhash.domain.entity.ProjectMember;
 import kr.co.teamhash.domain.repository.MemberRepository;
 import kr.co.teamhash.domain.repository.ProjectRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,6 @@ class ProjectControllerTest {
     @Autowired
     MemberRepository memberRepository;
 
-
     @WithAccount("test")
     @DisplayName("프로젝트 메인 화면")
     @Test
@@ -54,13 +54,16 @@ class ProjectControllerTest {
         String projectTitle = "project1";
         Account test = accountService.getAccountByNickname("test");
         Project project1 = projectFactory.createProject(projectTitle, test);
+        List<ProjectMember> memberList = memberRepository.findAllByAccountId(project1.getId());
+        project1.setMembers(memberList);
 
-        // TODO project.getMembers() 접근 안되는 문제
+        // TODO project.getMembers() 접근 안되는 문제 - memberList 직접 넣어 해결
         mockMvc.perform(get("/project/test/" + project1.getEncodedTitle() + "/main"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("project/project-main"))
                 .andExpect(model().attributeExists("account"))
                 .andExpect(model().attributeExists("project"))
-                .andExpect(model().attributeExists("members"));
+                .andExpect(model().attributeExists("members"))
+                .andExpect(model().attributeExists("isMember"));
     }
 }

@@ -22,8 +22,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ProjectInterceptor implements HandlerInterceptor {
 
-    private final ProjectService projectService;
-
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -32,7 +30,8 @@ public class ProjectInterceptor implements HandlerInterceptor {
             Map<String, Object> model = modelAndView.getModel(); // 모델에서 해당 프로젝트를 가져온다.
             Project project = (Project) model.get("project");
 
-            boolean isMember = projectService.isMember(project.getId(), account);
+            boolean isMember = project.checkMember(account);
+
             modelAndView.addObject("isMember", isMember);
         }
     }
