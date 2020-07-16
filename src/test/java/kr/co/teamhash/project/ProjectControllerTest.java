@@ -3,10 +3,8 @@ package kr.co.teamhash.project;
 import kr.co.teamhash.WithAccount;
 import kr.co.teamhash.account.AccountFactory;
 import kr.co.teamhash.account.AccountService;
-import kr.co.teamhash.domain.entity.Account;
-import kr.co.teamhash.domain.entity.Problem;
-import kr.co.teamhash.domain.entity.Project;
-import kr.co.teamhash.domain.entity.ProjectMember;
+import kr.co.teamhash.domain.entity.*;
+import kr.co.teamhash.domain.repository.CommentRepository;
 import kr.co.teamhash.domain.repository.MemberRepository;
 import kr.co.teamhash.domain.repository.ProblemsRepository;
 import kr.co.teamhash.domain.repository.ProjectRepository;
@@ -20,6 +18,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -42,6 +42,9 @@ class ProjectControllerTest {
     AccountFactory accountFactory;
 
     @Autowired
+    ProblemFactory problemFactory;
+
+    @Autowired
     AccountService accountService;
 
     @Autowired
@@ -52,6 +55,9 @@ class ProjectControllerTest {
 
     @Autowired
     ProblemsRepository problemsRepository;
+
+    @Autowired
+    CommentRepository commentRepository;
 
     @WithAccount("test")
     @BeforeEach
@@ -162,6 +168,30 @@ class ProjectControllerTest {
                 .andExpect(redirectedUrl("/project/test/" + testProject.getEncodedTitle() + "/problem-share"));
         List<Problem> problems = problemsRepository.findByProjectId(testProject.getId());
         assertEquals(problems.size(), 0);
+    }
+
+
+    @WithAccount("test")
+    @DisplayName("문제 공유란 화면 : comment 작성 - 입력값 정상")
+    @Test
+    void problemShare_comment() throws Exception {
+        String projectTitle = "testProject";
+        Project testProject = projectRepository.findByTitleAndBuilderNick(projectTitle, "test");
+        Account test = accountService.getAccountByNickname("test");
+        Problem problem = problemFactory.createProblem("문제공유 제목", test, testProject.getId());
+        problem.setComments(new ArrayList<Comment>());
+        List<Problem> problems = problemsRepository.findByProjectId(testProject.getId());
+        assertNotNull(problems);
+
+        mockMvc.perform(post("/project/test/" + testProject.getEncodedTitle() + "/problem-share/comment")
+                .param("problemId", problem.getId().toString())
+                .param("content", "댓글 내용 입니다.")
+                .with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/project/test/" + testProject.getEncodedTitle() + "/problem-share"));
+
+        List<Comment> commentList = commentRepository.findAllByProblem(problem);
+        assertEquals(commentList.size(), 1);
     }
 
 }

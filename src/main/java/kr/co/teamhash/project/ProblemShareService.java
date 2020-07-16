@@ -24,7 +24,7 @@ public class ProblemShareService {
     private final CommentRepository commentRepository;
 
     // 문제 공유 글 저장
-    public void saveProblem(ProblemShareForm problemForm, Long projectId, Account account){
+    public Problem saveProblem(ProblemShareForm problemForm, Long projectId, Account account){
 
         Problem problem = Problem.builder()
                     .title(problemForm.getTitle())
@@ -32,7 +32,7 @@ public class ProblemShareService {
                     .projectId(projectId)
                     .writer(account)
                     .build();
-        problemsRepository.save(problem);
+        return problemsRepository.save(problem);
     }
 
     // 문제 공유 글 리스트 얻기
