@@ -51,7 +51,7 @@ public class Problem {
     private LocalDateTime modifiedDate;
 
     public boolean isWriter (Account account) {
-        return this.getWriter().equals(account);
+        return this.writer.equals(account);
     }
 
     public void addComment (Comment comment) {

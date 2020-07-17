@@ -192,6 +192,27 @@ class ProjectControllerTest {
 
         List<Comment> commentList = commentRepository.findAllByProblem(problem);
         assertEquals(commentList.size(), 1);
+        assertEquals(problem.getComments().size(), 1);
+
     }
+
+
+    @WithAccount("test")
+    @DisplayName("문제 공유란 화면 : post 삭제")
+    @Test
+    void problemShare_post_delete() throws Exception {
+        String projectTitle = "testProject";
+        Project testProject = projectRepository.findByTitleAndBuilderNick(projectTitle, "test");
+        Account test = accountService.getAccountByNickname("test");
+        Problem problem = problemFactory.createProblem("문제공유 제목", test, testProject.getId());
+
+        mockMvc.perform(delete("/project/test/" + testProject.getEncodedTitle() + "/problem-share/" + problem.getId())
+                .with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/project/test/" + testProject.getEncodedTitle() + "/problem-share"));
+        List<Problem> problems = problemsRepository.findByProjectId(testProject.getId());
+        assertEquals(problems.size(), 0);
+    }
+
 
 }
