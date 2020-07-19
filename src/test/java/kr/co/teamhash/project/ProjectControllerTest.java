@@ -243,5 +243,24 @@ class ProjectControllerTest {
         assertEquals(comments.size(), 1);
     }
 
+    @WithAccount("test")
+    @DisplayName("프로젝트 설정 화면")
+    @Test
+    void settings() throws Exception {
+        String projectTitle = "testProject";
+        Project testProject = projectRepository.findByTitleAndBuilderNick(projectTitle, "test");
+
+        mockMvc.perform(get("/project/test/" + testProject.getEncodedTitle() + "/settings"))
+               .andExpect(status().isOk())
+               .andExpect(view().name("project/settings"))
+               .andExpect(model().attributeExists("project"))
+               .andExpect(model().attributeExists("members"))
+               .andExpect(model().attributeExists("whitelist"))
+               .andExpect(model().attributeExists("progressForm"))
+               .andExpect(model().attributeExists("isMember"))
+               .andExpect(model().attributeExists("sentInvitations"));
+    }
+
+
 
 }
