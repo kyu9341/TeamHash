@@ -60,7 +60,7 @@ public class ProblemShareService {
 
 
     //코멘트 작성
-    public void saveComment(CommentForm commentForm, Account account){
+    public Comment saveComment(CommentForm commentForm, Account account){
 
         Problem problem = getProblem(Long.parseLong(commentForm.getProblemId()));
         Comment comment = Comment.builder()
@@ -69,14 +69,17 @@ public class ProblemShareService {
                 .writer(account)
                 .build();
         problem.addComment(comment);
-        commentRepository.save(comment);
+        return commentRepository.save(comment);
     }
 
     //코멘트 삭제
     public void deleteComment(Long commentId, Account currentUser){
         Optional<Comment> comment = commentRepository.findById(commentId);
-        if (comment.get().isWriter(currentUser))
+        Problem problem = comment.get().getProblem();
+        if (comment.get().isWriter(currentUser)) {
             commentRepository.deleteById(commentId);
+            problem.removeComment(comment.get());
+        }
         else
             throw new IllegalArgumentException("자신이 작성한 글만 삭제할 수 있습니다.");
     }

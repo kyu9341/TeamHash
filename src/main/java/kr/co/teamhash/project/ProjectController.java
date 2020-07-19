@@ -162,7 +162,7 @@ public class ProjectController {
 
         Project project = projectService.getProject(nickname, title);
 
-        problemShareService.deleteComment(commentId,account);
+        problemShareService.deleteComment(commentId, account);
         return "redirect:/project/" + nickname + "/" + project.getEncodedTitle() + "/problem-share";
     }
 

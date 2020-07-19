@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -46,6 +47,9 @@ class ProjectControllerTest {
 
     @Autowired
     AccountService accountService;
+
+    @Autowired
+    CommentFactory commentFactory;
 
     @Autowired
     ProjectRepository projectRepository;
@@ -212,6 +216,29 @@ class ProjectControllerTest {
                 .andExpect(redirectedUrl("/project/test/" + testProject.getEncodedTitle() + "/problem-share"));
         List<Problem> problems = problemsRepository.findByProjectId(testProject.getId());
         assertEquals(problems.size(), 0);
+    }
+
+    @WithAccount("test")
+    @DisplayName("문제 공유란 화면 : comment 삭제")
+    @Test
+    void problemShare_comment_delete() throws Exception {
+        String projectTitle = "testProject";
+        Project testProject = projectRepository.findByTitleAndBuilderNick(projectTitle, "test");
+        Account test = accountService.getAccountByNickname("test");
+        Problem problem = problemFactory.createProblem("문제공유 제목", test, testProject.getId());
+        problem.setComments(new ArrayList<Comment>());
+        Comment comment1 = commentFactory.createComment("댓글 내용..", test, problem.getId().toString());
+        commentFactory.createComment("댓글 내용22..", test, problem.getId().toString());
+
+        assertEquals(problem.getComments().size(), 2);
+
+        mockMvc.perform(delete("/project/test/" + testProject.getEncodedTitle() + "/problem-share/comment/" + comment1.getId())
+                .with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/project/test/" + testProject.getEncodedTitle() + "/problem-share"));
+
+        List<Comment> comments = problemsRepository.findById(problem.getId()).get().getComments();
+        assertEquals(comments.size(), 1);
     }
 
 
