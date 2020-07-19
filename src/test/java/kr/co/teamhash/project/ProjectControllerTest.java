@@ -209,6 +209,8 @@ class ProjectControllerTest {
         Project testProject = projectRepository.findByTitleAndBuilderNick(projectTitle, "test");
         Account test = accountService.getAccountByNickname("test");
         Problem problem = problemFactory.createProblem("문제공유 제목", test, testProject.getId());
+        problem.setComments(new ArrayList<Comment>());
+        commentFactory.createComment("댓글1111", test, problem.getId().toString());
 
         mockMvc.perform(delete("/project/test/" + testProject.getEncodedTitle() + "/problem-share/" + problem.getId())
                 .with(csrf()))
