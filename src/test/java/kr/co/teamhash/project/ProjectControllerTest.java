@@ -1,19 +1,19 @@
 package kr.co.teamhash.project;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.co.teamhash.WithAccount;
 import kr.co.teamhash.account.AccountFactory;
 import kr.co.teamhash.account.AccountService;
 import kr.co.teamhash.domain.entity.*;
-import kr.co.teamhash.domain.repository.CommentRepository;
-import kr.co.teamhash.domain.repository.MemberRepository;
-import kr.co.teamhash.domain.repository.ProblemsRepository;
-import kr.co.teamhash.domain.repository.ProjectRepository;
+import kr.co.teamhash.domain.repository.*;
+import kr.co.teamhash.project.form.MemberForm;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,32 +36,17 @@ class ProjectControllerTest {
     @Autowired
     MockMvc mockMvc;
 
-    @Autowired
-    ProjectFactory projectFactory;
-
-    @Autowired
-    AccountFactory accountFactory;
-
-    @Autowired
-    ProblemFactory problemFactory;
-
-    @Autowired
-    AccountService accountService;
-
-    @Autowired
-    CommentFactory commentFactory;
-
-    @Autowired
-    ProjectRepository projectRepository;
-
-    @Autowired
-    MemberRepository memberRepository;
-
-    @Autowired
-    ProblemsRepository problemsRepository;
-
-    @Autowired
-    CommentRepository commentRepository;
+    @Autowired ProjectFactory projectFactory;
+    @Autowired AccountFactory accountFactory;
+    @Autowired ProblemFactory problemFactory;
+    @Autowired AccountService accountService;
+    @Autowired CommentFactory commentFactory;
+    @Autowired ProjectRepository projectRepository;
+    @Autowired MemberRepository memberRepository;
+    @Autowired ProblemsRepository problemsRepository;
+    @Autowired CommentRepository commentRepository;
+    @Autowired NotificationRepository notificationRepository;
+    @Autowired ObjectMapper objectMapper;
 
     @WithAccount("test")
     @BeforeEach
@@ -261,6 +246,23 @@ class ProjectControllerTest {
                .andExpect(model().attributeExists("sentInvitations"));
     }
 
+    @WithAccount("test")
+    @DisplayName("프로젝트 설정 화면 - 초대 보내기")
+    @Test
+    void settings_invite() throws Exception {
+        String projectTitle = "testProject";
+        Project testProject = projectRepository.findByTitleAndBuilderNick(projectTitle, "test");
+        Account test2 = accountFactory.createAccount("test2");
+        MemberForm memberForm = new MemberForm();
+        memberForm.setMemberNickname(test2.getNickname());
 
+        mockMvc.perform(post("/project/test/" + testProject.getEncodedTitle() + "/settings/add")
+                .contentType(MediaType.APPLICATION_JSON) // json 형태로 요청이 들어옴
+                .content(objectMapper.writeValueAsString(memberForm)) // memberForm 을 json 으로 변환하여 요청 본문에 넣는다.
+                .with(csrf()))
+                .andExpect(status().isOk());
+        Notification notification = notificationRepository.findByAccountIdAndProjectId(test2.getId(), testProject.getId());
+        assertNotNull(notification);
+    }
 
 }
