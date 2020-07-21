@@ -6,6 +6,7 @@ import kr.co.teamhash.account.AccountFactory;
 import kr.co.teamhash.account.AccountService;
 import kr.co.teamhash.domain.entity.*;
 import kr.co.teamhash.domain.repository.*;
+import kr.co.teamhash.notification.NotificationService;
 import kr.co.teamhash.project.form.MemberForm;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -40,6 +41,7 @@ class ProjectControllerTest {
     @Autowired AccountFactory accountFactory;
     @Autowired ProblemFactory problemFactory;
     @Autowired AccountService accountService;
+    @Autowired NotificationService notificationService;
     @Autowired CommentFactory commentFactory;
     @Autowired ProjectRepository projectRepository;
     @Autowired MemberRepository memberRepository;
@@ -265,4 +267,24 @@ class ProjectControllerTest {
         assertNotNull(notification);
     }
 
+    @WithAccount("test")
+    @DisplayName("프로젝트 설정 화면 - 초대 취소하기")
+    @Test
+    void settings_invite_cancel() throws Exception {
+        String projectTitle = "testProject";
+        Project testProject = projectRepository.findByTitleAndBuilderNick(projectTitle, "test");
+        Account test2 = accountFactory.createAccount("test2");
+        notificationService.addNotification(test2.getNickname(), projectTitle, "test");
+        
+        MemberForm memberForm = new MemberForm();
+        memberForm.setMemberNickname(test2.getNickname());
+
+        mockMvc.perform(post("/project/test/" + testProject.getEncodedTitle() + "/settings/remove")
+                .contentType(MediaType.APPLICATION_JSON) // json 형태로 요청이 들어옴
+                .content(objectMapper.writeValueAsString(memberForm)) // memberForm 을 json 으로 변환하여 요청 본문에 넣는다.
+                .with(csrf()))
+                .andExpect(status().isOk());
+        Notification notification = notificationRepository.findByAccountIdAndProjectId(test2.getId(), testProject.getId());
+        assertNull(notification);
+    }
 }
