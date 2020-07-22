@@ -287,4 +287,19 @@ class ProjectControllerTest {
         Notification notification = notificationRepository.findByAccountIdAndProjectId(test2.getId(), testProject.getId());
         assertNull(notification);
     }
+
+    @WithAccount("test")
+    @DisplayName("프로젝트 설정 화면 - progress 바 설정 : 입력값 정상")
+    @Test
+    void updateProgress() throws Exception {
+        String projectTitle = "testProject";
+        Project testProject = projectRepository.findByTitleAndBuilderNick(projectTitle, "test");
+
+        mockMvc.perform(post("/project/test/" + testProject.getEncodedTitle() + "/settings/progress")
+                .param("progress", "77")
+                .with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/project/test/" + testProject.getEncodedTitle() + "/settings"));
+        assertEquals(testProject.getProgress(), 77);
+    }
 }
