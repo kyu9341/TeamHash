@@ -41,6 +41,7 @@ class ProjectControllerTest {
     @Autowired AccountFactory accountFactory;
     @Autowired ProblemFactory problemFactory;
     @Autowired AccountService accountService;
+    @Autowired ProjectService projectService;
     @Autowired NotificationService notificationService;
     @Autowired CommentFactory commentFactory;
     @Autowired ProjectRepository projectRepository;
@@ -301,5 +302,27 @@ class ProjectControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/project/test/" + testProject.getEncodedTitle() + "/settings"));
         assertEquals(testProject.getProgress(), 77);
+    }
+
+
+    @WithAccount("test")
+    @DisplayName("프로젝트 설정 화면 - 멤버 삭제")
+    @Test
+    void removeMember() throws Exception {
+        String projectTitle = "testProject";
+        Project testProject = projectRepository.findByTitleAndBuilderNick(projectTitle, "test");
+        Account test2 = accountFactory.createAccount("test2");
+        projectService.saveProjectMember(test2.getNickname(), projectTitle, "test");
+        ProjectMember projectMember = memberRepository.findByAccountId(test2.getId());
+        assertNotNull(projectMember);
+
+        mockMvc.perform(post("/project/test/" + testProject.getEncodedTitle() + "/settings/remove/member")
+                .param("removeMember", "test2")
+                .with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/project/test/" + testProject.getEncodedTitle() + "/main"));
+
+        ProjectMember removedMember = memberRepository.findByAccountId(test2.getId());
+        assertNull(removedMember);
     }
 }
