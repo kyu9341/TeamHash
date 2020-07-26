@@ -18,6 +18,7 @@ public class ScheduleForm {
     @Size(min = 1)
     private String title;
 
+    @NotBlank
     private String content;
 
     @NotBlank
