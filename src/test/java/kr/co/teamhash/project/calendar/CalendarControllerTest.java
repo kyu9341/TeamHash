@@ -88,4 +88,24 @@ class CalendarControllerTest {
         List<Schedule> schedules = scheduleRepository.findByProjectId(testProject.getId());
         assertEquals(schedules.size(), 1);
     }
+
+    @DisplayName("캘린더 화면 - 스케쥴 생성 : 입력값 에러")
+    @WithAccount("test")
+    @Test
+    void makeSchedule_error () throws Exception {
+        String projectTitle = "testProject";
+        Project testProject = projectRepository.findByTitleAndBuilderNick(projectTitle, "test");
+
+        mockMvc.perform(post("/project/test/" + testProject.getEncodedTitle() + "/calendar/make")
+                .param("date", "2020-07-10")
+                .param("color", "#ff0000")
+                .param("title", "")
+                .param("content", "")
+                .with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/project/test/" + testProject.getEncodedTitle() + "/calendar"));
+
+        List<Schedule> schedules = scheduleRepository.findByProjectId(testProject.getId());
+        assertEquals(schedules.size(), 0);
+    }
 }
