@@ -1,5 +1,6 @@
 package kr.co.teamhash.project.calendar;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.co.teamhash.WithAccount;
 import kr.co.teamhash.account.AccountService;
 import kr.co.teamhash.domain.entity.Account;
@@ -17,6 +18,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,9 +37,12 @@ class CalendarControllerTest {
     @Autowired MockMvc mockMvc;
     @Autowired AccountService accountService;
     @Autowired ProjectFactory projectFactory;
+    @Autowired CalendarService calendarService;
     @Autowired MemberRepository memberRepository;
     @Autowired ProjectRepository projectRepository;
     @Autowired ScheduleRepository scheduleRepository;
+    @Autowired ObjectMapper objectMapper;
+
 
     @WithAccount("test")
     @BeforeEach
@@ -104,6 +109,30 @@ class CalendarControllerTest {
                 .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/project/test/" + testProject.getEncodedTitle() + "/calendar"));
+
+        List<Schedule> schedules = scheduleRepository.findByProjectId(testProject.getId());
+        assertEquals(schedules.size(), 0);
+    }
+
+    @DisplayName("캘린더 화면 - 스케쥴 삭제")
+    @WithAccount("test")
+    @Test
+    void removeSchedule () throws Exception {
+        String projectTitle = "testProject";
+        Project testProject = projectRepository.findByTitleAndBuilderNick(projectTitle, "test");
+        ScheduleForm scheduleForm = new ScheduleForm();
+        scheduleForm.setDate("2020-07-10");
+        scheduleForm.setTitle("스케줄 제목");
+        scheduleForm.setColor("#ff0000");
+        scheduleForm.setContent("스케줄 내용");
+        Schedule schedule = calendarService.saveNewSchedule(scheduleForm, testProject);
+        scheduleForm.setScheduleId(schedule.getId());
+
+        mockMvc.perform(post("/project/test/" + testProject.getEncodedTitle() + "/calendar/delete")
+                .contentType(MediaType.APPLICATION_JSON) // json 형태로 요청이 들어옴
+                .content(objectMapper.writeValueAsString(scheduleForm)) // scheduleForm 을 json 으로 변환하여 요청 본문에 넣는다.
+                .with(csrf()))
+                .andExpect(status().isOk());
 
         List<Schedule> schedules = scheduleRepository.findByProjectId(testProject.getId());
         assertEquals(schedules.size(), 0);

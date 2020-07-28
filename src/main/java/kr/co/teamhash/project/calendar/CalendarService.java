@@ -24,7 +24,7 @@ public class CalendarService {
     private final ScheduleRepository scheduleRepository;
 
     //스케줄 저장
-    public void saveNewSchedule(ScheduleForm scheduleForm, Project project){
+    public Schedule saveNewSchedule(ScheduleForm scheduleForm, Project project){
         Schedule schedule = Schedule.builder()
                     .project(project)
                     .date(scheduleForm.getDate())
@@ -33,7 +33,7 @@ public class CalendarService {
                     .color(scheduleForm.getColor())
                     .build();
         project.addSchedule(schedule);
-        scheduleRepository.save(schedule);
+        return scheduleRepository.save(schedule);
     }
 
     //스케줄 삭제
