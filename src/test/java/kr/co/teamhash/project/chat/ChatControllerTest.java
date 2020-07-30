@@ -1,4 +1,4 @@
-package kr.co.teamhash.project.uploadfile;
+package kr.co.teamhash.project.chat;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.co.teamhash.WithAccount;
@@ -6,12 +6,9 @@ import kr.co.teamhash.account.AccountService;
 import kr.co.teamhash.domain.entity.Account;
 import kr.co.teamhash.domain.entity.Project;
 import kr.co.teamhash.domain.entity.ProjectMember;
-import kr.co.teamhash.domain.entity.Schedule;
 import kr.co.teamhash.domain.repository.MemberRepository;
 import kr.co.teamhash.domain.repository.ProjectRepository;
-import kr.co.teamhash.domain.repository.ScheduleRepository;
 import kr.co.teamhash.project.ProjectFactory;
-import kr.co.teamhash.project.calendar.CalendarService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,16 +28,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 @SpringBootTest
 @AutoConfigureMockMvc
-class UploadFilecontrollerTest {
+class ChatControllerTest {
 
-    @Autowired MockMvc mockMvc;
-    @Autowired AccountService accountService;
-    @Autowired ProjectFactory projectFactory;
-    @Autowired MemberRepository memberRepository;
-    @Autowired ProjectRepository projectRepository;
-    @Autowired ObjectMapper objectMapper;
-
-
+    @Autowired
+    MockMvc mockMvc;
+    @Autowired
+    AccountService accountService;
+    @Autowired
+    ProjectFactory projectFactory;
+    @Autowired
+    MemberRepository memberRepository;
+    @Autowired
+    ProjectRepository projectRepository;
+    @Autowired
+    ObjectMapper objectMapper;
 
     @WithAccount("test")
     @BeforeEach
@@ -50,23 +51,24 @@ class UploadFilecontrollerTest {
         Project testProject = projectFactory.createProject(projectTitle, test);
         List<ProjectMember> memberList = memberRepository.findAllByAccountId(testProject.getId());
         testProject.setMembers(memberList);
+        // project.getMembers() 접근 안되는 문제 - memberList 직접 넣어 해결
     }
 
-    @DisplayName("파일 업로드 화면")
+
+    @DisplayName("채팅 화면")
     @WithAccount("test")
     @Test
-    void fileUpload () throws Exception {
+    void chatting () throws Exception {
         String projectTitle = "testProject";
         Project testProject = projectRepository.findByTitleAndBuilderNick(projectTitle, "test");
 
-        mockMvc.perform(get("/project/test/" + testProject.getEncodedTitle() + "/cloud"))
+        mockMvc.perform(get("/project/test/" + testProject.getEncodedTitle() + "/chatting"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("project/cloud"))
-                .andExpect(model().attributeExists("nickname"))
+                .andExpect(view().name("project/chatting"))
+                .andExpect(model().attributeExists("members"))
                 .andExpect(model().attributeExists("project"))
                 .andExpect(model().attributeExists("isMember"))
-                .andExpect(model().attributeExists("fileList"));
+                .andExpect(model().attributeExists("chatList"));
 
     }
-
 }
