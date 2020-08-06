@@ -13,7 +13,7 @@
 
 - VScode, 인텔리J (Spring Boot)
 - mariaDB
-- AWS(호스팅 예정)
+- AWS
 
 ## 동작 흐름도
 
