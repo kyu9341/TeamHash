@@ -3,6 +3,7 @@
 - 졸업 작품 프로젝트 Team#
 - 한이음 프로젝트
 - 대학생을 위한 조별과제 협업 플랫폼 구축
+- [Demo](http://ec2-3-17-16-176.us-east-2.compute.amazonaws.com:8080/)
 
 ## 팀 구성
 
