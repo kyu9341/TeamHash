@@ -187,9 +187,9 @@
         )
 
 
-        ym = onYM.replace(/[^0-9]/g, '0'); //날짜만 추출
+        ym = onYM.replace(/[^0-9]/g, ''); //날짜만 추출
         y = ym.substring(0, 4); //년 쪼개기
-        m = ym.substring(5, 7); //달 쪼개기
+        m = ym.substring(4); //달 쪼개기
         if (onday.length == 1) { //일 쪼개기
             d = '0' + onday;
         }
